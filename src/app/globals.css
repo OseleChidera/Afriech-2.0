@@ -2,32 +2,138 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.fade-in {
+  animation: fadeIn 0.45s ease-in-out; /* Adjust duration and timing function as needed */
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@keyframes scaleAnimation {
+  from {
+    scale: 0.7;
   }
+  to {
+    scale: 1;
+  }
+}
+.scaleAnimation {
+  animation: scaleAnimation 0.45s ease-in-out; /* Adjust duration and timing function as needed */
+}
+
+
+.nav{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  /* align-items: center; */
+  padding: 1rem 0;
+  border-radius: 5px ;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  padding-bottom: 0.25rem;
+  /* overflow: hidden; */
+}
+.nav-item{
+  top: 400%;
+  /* box-shadow: 40px 0px 80px white; */
+}
+.product{
+   box-shadow: inset  1px 1px 1px 1.2px #695acde4;
+   box-shadow:black ;
+}
+.shadow-inner{
+  box-shadow: inset 1px 0px 2px #f9f9f5;
+}
+.nav .active-text{
+display: none;
+}
+
+.nav-item .active .default-image, .nav-item .active .default-text{
+  display: none;
+}
+.nav-item  .active .active-image , .nav-item  .active .active-text{
+  display: block;
+}
+.return{
+transform: rotate(0deg);
+  transition: transform 0.3s ease-out;
+
+}
+.rotate {
+  transform: rotate(-90deg);
+  transition: transform 0.3s ease-in;
+}
+
+@keyframes showButtons {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.show-buttons {
+  animation: showButtons 0.2s ease-in; /* Adjust duration and timing function as needed */
+}
+
+
+@keyframes showCart {
+  from {
+    opacity: 0;
+    scale: 0.02;
+  }
+  to {
+    opacity: 1;
+     scale: 1;
+  }
+}
+
+.show-cart {
+  animation: showCart 0.2s ease-in; /* Adjust duration and timing function as needed */
+}
+.inset-shadow-BrandOptions{
+box-shadow: inset 0px 0px 1.8px black;
+}
+.hide-scrollbar::-webkit-scrollbar{
+display: none;
+}
+
+.react-slideshow-container .default-nav:first-of-type {
+  display: none;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px,0.5fr));
+  gap: 20px;
+  /* padding: 20px; */
+  justify-content: center;
+}
+@keyframes likeProd {
+  from {
+    opacity: 0;
+    scale: 0.02;
+  }
+  to {
+    opacity: 1;
+     scale: 1;
+  }
+}
+
+
+.scaleLikeIcon{
+animation: likeProd 0.25s ease-in-out; /* Adjust duration and timing function as needed */
 }
