@@ -10,8 +10,7 @@ import { database, storage } from '../../../../firebaseConfig.js';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useSelector, useDispatch } from "react-redux";
 import { incrementSignin, decrementSignin, incrementSigninByAmmount, setCurrentUserData } from "../../../redux/user.js"
-import { redirectTo } from "@/utils/ServerFn";
-
+import { useRouter } from 'next/navigation' 
 
 export default function page ({ user }){
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -21,7 +20,11 @@ export default function page ({ user }){
     const [userid, setUserId] = useState(undefined)
     const localUserID = localStorage.getItem('afriTechUserID')
     const userIdFromLocalStorage = localUserID ? JSON.parse(localUserID) : null;
+    const router = useRouter()
 
+    function redirect(path) {
+        router.push(path);
+    }
 
     const userFormEntries = useSelector((state) => state.user.userFormEntries);
     // const currentUserData = useSelector((state) => state.user.currentUserData);
@@ -52,7 +55,7 @@ export default function page ({ user }){
                 newData.profilePicture = image1Url,
                     newData.ninSlipPicture = image2Url
                 updateDoc(docRef, newData)
-                toast.success(`User SignUp complete ${userIdFromLocalStorage}`, {onOpen: () => redirectTo("/home")});
+                toast.success(`User SignUp complete ${userIdFromLocalStorage}`, { onOpen: () => redirect("/home")});
 
             } catch (error) {
                 console.log(error.message)
@@ -110,7 +113,7 @@ export default function page ({ user }){
 
 
     return (
-        <div className="flex min-h-screen max-h-fit h-full w-full flex-col items-center justify-center bg-[#005377] border">
+        <div className="flex min-h-screen max-h-fit h-full w-full flex-col items-center justify-center  bg-[#695acd]  border">
             {steps[pageindex]}
         </div>
     )

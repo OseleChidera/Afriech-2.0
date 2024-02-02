@@ -12,7 +12,7 @@ const CartItemProductComponent = () => {
     // const isPathNameActive = pathName.includes(`/main/${buttonName}`) 
     const [isPathNameActive, setIsPathNameActive] = useState(pathName.includes(`/main/payment`))
   return (
-      <div className="product  relative rounded-lg flex flex-1 gap-2 bg-white overflow-hidden p-1">
+      <div className="product  relative rounded-xl flex flex-1 gap-2 bg-white overflow-hidden p-1">
           <div className=" w-fit  h-fit rounded-xl  shadow-2xl bg-whie overflow-hidden">
               <Image src={phone} className="aspect-auto object-cover " width={70} />
           </div>

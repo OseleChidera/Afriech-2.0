@@ -10,16 +10,20 @@ import { doc, getDoc } from "firebase/firestore";
 import { toast } from 'react-toastify';
 import { SigninSchema } from '../../utils/schemautils'
 import { useSelector, useDispatch } from "react-redux";
-import { setUserIdData, removeUserData, setLoading, fetchDataByUserId, setCurrentUserData, incrementSigninToStartMultistep, incrementSignin } from '../../redux/user'
+import { setUserId, removeUserData, setLoading, fetchDataByUserId, setCurrentUserData, incrementSigninToStartMultistep, incrementSignin } from '../../redux/user'
 import axios from 'axios';
-import { redirect } from "next/navigation";
-import { redirectTo } from "@/utils/ServerFn";
-import next from "next";
+import { useRouter } from 'next/navigation' 
 
 
 export default function SigninMain ({ nextStep, isDisabled }){
     const dispatch = useDispatch();
     const [showPassword, setShowPassword] = useState(false);
+    const router = useRouter()
+
+    function redirect(path) {
+        router.push(path);
+        
+    }
 
     async function checkForUserData(userId, values) {
         console.log(userId)
@@ -31,7 +35,7 @@ export default function SigninMain ({ nextStep, isDisabled }){
             }
             else {
                 toast.success("Login successful home page", { onOpen: () => {
-                    redirectTo("/home")
+                    redirect("/main/home")
                     localStorage.setItem('afriTechUserID', JSON.stringify(`${userId}`))
                 }});
                 console.error('Error fetching data:', error) 
@@ -41,7 +45,7 @@ export default function SigninMain ({ nextStep, isDisabled }){
 
 
     return (
-        <>
+        <div className="flex flex-col gap-4 ">
             <div id="form-two" className="max-w-xs w-full">
                 <div className="mb-3">
                     <span className="font-extrabold capitalize mb-4 text-white text-3xl">
@@ -61,11 +65,14 @@ export default function SigninMain ({ nextStep, isDisabled }){
                                 const uID = userCredential.user.reloadUserInfo.localId
                                 console.log("uID" + " " + uID)
                                 
-                                dispatch(setUserIdData(uID))
+                                dispatch(setUserId(uID))
                                 checkForUserData(uID);
                             })
                             .catch((error) => {
-                                toast.error("auth/invalid-login-credential signup first", {onOpen: () => redirectTo("/signup")});
+                                console.log(error.message);
+                                toast.error("auth/invalid-login-credential signup first", 
+                                {onOpen: () => redirect("/signup")}
+                                );
                                 console.log(error.code, error.message);
                             });
                     }}
@@ -79,7 +86,7 @@ export default function SigninMain ({ nextStep, isDisabled }){
                                 >
                                     Email :{" "}
                                 </label>
-                                <Field name="email" type="email" placeholder="Enter your email" className="w-full p-2 px-5 rounded-3xl" />
+                                <Field name="email" type="email" placeholder="Enter your email" className="w-full p-2 px-5 rounded-xl" />
                                 {errors.email && touched.email ? (
                                     <div className="text-[0.7rem] text-red-600 font-semibold">
                                         {errors.email}
@@ -98,7 +105,7 @@ export default function SigninMain ({ nextStep, isDisabled }){
                                     <Field
                                         name="password"
                                         type={showPassword ? "password" : "text"}
-                                        className="w-full p-2 px-5 rounded-3xl"
+                                        className="w-full p-2 px-5 rounded-xl"
                                         placeholder="Enter your password"
                                     />
 
@@ -128,13 +135,13 @@ export default function SigninMain ({ nextStep, isDisabled }){
                                 <button
                                     className="text-white border-none underline underline-offset-4"
                                     type="button"
-                                    onClick={() => redirectTo('/signin/forgot-password')}
+                                    onClick={() => redirect('/signin/forgot-password')}
                                 >
                                     Forgort Password ?
                                 </button>
                                 <button
                                     type="submit"
-                                    className="font-bold  bg-white text-xl text-[#005377] capitalize px-4 py-[0.55rem] rounded-3xl relative float-right"
+                                    className="font-bold  bg-white text-[#695acd] rounded-xl  text-xl  capitalize px-4 py-[0.55rem] relative float-right"
                                 >
                                     Sign In
                                 </button>
@@ -144,7 +151,14 @@ export default function SigninMain ({ nextStep, isDisabled }){
                     )}
                 </Formik>
             </div>
-        </>
+            <span className="text-white text-center font-medium">OR</span>
+            <button
+                onClick={() => redirect('/signup')}
+                className="font-bold  bg-white text-[#695acd] rounded-xl  text-xl  capitalize px-4 py-[0.55rem] relative float-right"
+            >
+                Sign Up
+            </button>
+        </div >
     );
 };
 

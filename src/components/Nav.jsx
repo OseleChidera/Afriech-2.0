@@ -44,16 +44,16 @@ const buttonDetails = [
 ]
 
 const Nav = () => {
-   
+    const pathName = usePathname();
+    const [isPathNameActive, setIsPathNameActive] = useState(pathName.includes(`/main/hme`))
     const tl = gsap.timeline();
 
     useEffect(() => {
         const elements = document.querySelectorAll('.nav-item'); 
         tl.to(document.querySelector('.active'), { top: '0%', ease: Power3.easeIn, duration: 0.35 })
         const inactiveElements = Array.from(elements).filter(element => !element.classList.contains('active'));
-        tl.to(Array.from(inactiveElements), { top: '0%', ease: Power3.easeInOut, duration: 0.35 , stagger: 0.2})
-            .to('#nav', { css: {alignItems: 'center'}, ease: Power3.easeOut, duration: 1})
-
+        tl.to(Array.from(inactiveElements), { top: '0%', ease: Power3.easeInOut, duration: 0.35, stagger: 0.2 })
+       
        
     }, []);
 
@@ -83,7 +83,7 @@ const NavBtns = ({ buttonName, baseIcon, activeIcon }) => {
   
   return (
       <Link href={`/main/${buttonName}`} >
-          <div className={`flex flex-col items-center gap-1 h-fit tab flex-1 relative nav-item  nav-button ${isPathNameActive ? 'active absolute z-10' : ''} max-h-fit`}>
+          <div className={`flex flex-col items-center gap-1 h-fit tab flex-1 relative nav-item nav-button ${pathName.includes(`/main/home`) ? 'nav-item' : "nav-item-no-animation"} max-h-fit`}>
               <button id="icon-div" className={`flex flex-col items-center justify-center p-4 rounded-2xl 
                 focused ${isPathNameActive ? 'shadow-inner' : ''} `} >
                   <Image
@@ -93,7 +93,7 @@ const NavBtns = ({ buttonName, baseIcon, activeIcon }) => {
                       className={`aspect-square active-image `}
                   />
               </button>
-              <h2 className={`text-white text-sm capitalize font-bold  description  ${isPathNameActive ? 'inactive-text' : 'active-text'}`}>{buttonName}</h2>
+              <h2 className={`text-white text-sm capitalize font-bold  description  ${isPathNameActive  ? 'show-text' : 'hide-text'}`}>{buttonName}</h2>
           </div>
       </Link>
   )

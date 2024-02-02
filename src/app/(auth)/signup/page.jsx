@@ -15,7 +15,7 @@ import Step3 from "../../../components/multistep form/Step3.jsx";
 import Step4 from "../../../components/multistep form/Step4.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import { setLoading, incrementSignup, decrementSignup, incrementSignin, decrementSignin, updateUserFormEntries, fetchDataByUserId, userData, setUserData, incrementAnimationCounter, decrementAnimationCounter } from '../../../redux/user'
-import { redirectTo } from '@/utils/ServerFn';
+import { useRouter } from 'next/navigation' 
 
 
 export default function Multistep() {
@@ -60,7 +60,11 @@ export default function Multistep() {
     }
   }
 
+  const router = useRouter()
 
+  function redirect(path) {
+    router.push(path);
+  }
 
 
   const steps = [
@@ -98,7 +102,7 @@ export default function Multistep() {
             console.log("userDataVariable: " + JSON.stringify(userDataVariable, null, 2))
 
             toast.success('User SignUp complete')
-            redirectTo("/signin");
+            redirect("/signin");
           } else {
             console.log('No such document!');
           }
@@ -137,7 +141,7 @@ export default function Multistep() {
 
 
   return (
-    <div className="flex min-h-screen max-h-fit  max-w-full flex-col items-center justify-center bg-[#005377] border">
+    <div className="flex min-h-screen max-h-fit  max-w-full flex-col items-center justify-center  bg-[#695acd]  border">
       {steps[pageindex]}
     </div>
   )

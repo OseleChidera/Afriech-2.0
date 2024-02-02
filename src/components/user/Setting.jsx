@@ -2,23 +2,32 @@
 import React from 'react'
 import Image from 'next/image'
 import arrow from '../../../public/icons/arrow-white-right.svg'
-import p1 from '../../../public/images/photo1.jpeg'
-import { redirectToNested } from '@/utils/ServerFn'
+import { useRouter } from 'next/navigation'
+import { useSelector, useDispatch } from "react-redux";
+import { setModalToshow, hideModalDispachFn, showModalDispachFn } from '@/redux/user'
+
 
 export default function Setting({ icon, title, description, action }) {
-   function showModal(doc) {
-        console.log('showModal ', doc)
-    }
+    const dispatch = useDispatch();
 
+    function showModal(title) {
+        dispatch(showModalDispachFn())
+        dispatch(setModalToshow(title))
+    }
+    const router = useRouter()
+
+    function redirect(path) {
+        router.push(path);
+    }
     function settingAction(action) {
-        action == 'redirectTo' ? redirectToNested(`/user/${title}`) : showModal(title)
+        action == 'redirectTo' ? redirect(`/main/user/${title.toLowerCase()}`) : showModal(title)
     }
     return (
         <div className="flex items-center justify-between gap-3 rounded-xl bg-[#695acde4] text-white p-2" onClick={() => settingAction(action)}>
-            <div className="user-info flex-1 flex items-center justify-between  border border-black">
-                <div className="flex gap-2 border border-black items-center">
-                    <div className="flex items-center justify-center rounded-full  border border-black w-[35px] h-[35px]">
-                        <Image src={icon} width={35} height={35} className='w  ' />
+            <div className="user-info flex-1 flex items-center justify-between  ">
+                <div className="flex gap-2  items-center">
+                    <div className="flex items-center justify-center rounded-full ml-4 w-[20px] h-[20px]">
+                        <Image src={icon} width={20} height={20} className='w  ' />
                     </div>
                     <div className="">
                         <h1 className='text-lg font-semibold capitalize'>{title}</h1>

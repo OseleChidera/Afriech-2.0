@@ -67,13 +67,13 @@ const Step3 = ({ data, next, prev }) => {
                                 dateFormat="dd/MM/yyyy"
                                 showYearDropdown
                                 placeholderText="Select date of birth"
-                                className="w-full p-2 px-5 rounded-3xl"
+                                className="w-full p-2 px-5 rounded-xl"
                             />
                             {errors.dateOfBirth && <span className='text-[0.7rem] text-red-600 font-semibold'>{errors.dateOfBirth}</span>}
                         </div>
                         <div className="flex gap-2 ">
                             <div className="  text-[0.65rem] font-bold w-full flex flex-col mb-3 ">
-                                <Field as="select" id="genderOptions" name="genderOptions" className="border-none items-center p-3 px-5 rounded-3xl">
+                                <Field as="select" id="genderOptions" name="genderOptions" className="border-none items-center p-3 px-5 rounded-xl">
                                     <option value={values.gender} label="Select Your Gender" />
                                     {genderOptions.map((option) => (
                                         <option key={option.value} value={option.value} className="text-center">
@@ -84,7 +84,7 @@ const Step3 = ({ data, next, prev }) => {
                                 {errors.genderOptions && <span className='text-[0.7rem] text-red-600 font-semibold'>{errors.genderOptions}</span>}
                             </div>
                             <div className="  text-[0.65rem] font-bold w-full flex flex-col mb-3 ">
-                                <Field as="select" id="sectorOption" name="sectorOption" className="border-none p-3 px-5 rounded-3xl">
+                                <Field as="select" id="sectorOption" name="sectorOption" className="border-none p-3 px-5 rounded-xl">
                                     <option value={values.sector} label="Select Your Field" />
                                     {sectorOption.map((option) => (
                                         <option key={option.value} value={option.value} className="text-center">
@@ -101,7 +101,7 @@ const Step3 = ({ data, next, prev }) => {
                                     name="bvnnumber"
                                     type="text"
                                     placeholder="Enter Your BVN Number"
-                                    className="p-3 px-5 rounded-3xl"
+                                    className="p-3 px-5 rounded-xl"
                                 />
                                 {errors.bvnnumber && touched.bvnnumber ? (
                                     <div className='text-[0.7rem] text-red-600 font-semibold'>{errors.bvnnumber}</div>
@@ -113,7 +113,7 @@ const Step3 = ({ data, next, prev }) => {
                                     type="number"
                                     name="ninnumber"
                                     id="ninnumber"
-                                    className="p-3 px-5 rounded-3xl"
+                                    className="p-3 px-5 rounded-xl"
                                     placeholder="Enter Your NIN Number"
                                 />
                                 {errors.ninnumber && touched.ninnumber ? (
@@ -165,9 +165,9 @@ const Step3 = ({ data, next, prev }) => {
                             {errors.profilePicture && <span className='text-[0.7rem] text-red-600 font-semibold'>{errors.profilePicture}</span>}
                         </div>
                         <div className="flex justify-between items-center">
-                            <button type="bbutton" onClick={() => prev(values)} className='justify-center font-bold   bg-white text-xl text-[#005377] capitalize px-4 py-[0.55rem] rounded-3xl relative '
+                            <button type="bbutton" onClick={() => prev(values)} className='justify-center font-bold text-xl capitalize px-4 py-[0.55rem]  bg-white text-[#695acd] rounded-xlrelative '
                             >Prev</button>
-                            <button type="submit" className='justify-center font-bold   bg-white text-xl text-[#005377] capitalize px-4 py-[0.55rem] rounded-3xl relative'
+                            <button type="submit" className='justify-center font-bold   text-xl  capitalize px-4 py-[0.55rem]  bg-white text-[#695acd] rounded-xlrelative'
                             >Next</button>
                         </div>
 

@@ -22,7 +22,8 @@ import { setupAuthObserver } from "../../firebaseAuth";
 import { collection, getDocs, getDoc, getFirestore, doc, onSnapshot } from "firebase/firestore";
 import { Auth, database } from "../../firebaseConfig";
 import { checkIfUserIsloggedIn} from '@/utils/ServerFn'
-import { setUserIdData } from '@/redux/user'
+import { setUserId } from '@/redux/user'
+import { useRouter } from 'next/navigation' 
 
 const page = () => {
   const [fetchedUserData, setFetchedUserData] = useState(null)
@@ -32,7 +33,11 @@ const page = () => {
   
 const dispatch = useDispatch()
 
- 
+  const router = useRouter()
+
+  function redirect(path) {
+    router.push(path);
+  }
 
 
   async function fetchUser(userID) {
@@ -57,6 +62,10 @@ const dispatch = useDispatch()
     }
   }
 
+  function checkIfUserIsloggedIn(userID) {
+    if (userID !== null) redirect('/main/home');
+    else redirect('/signin');
+  }
 
   useEffect(() => {
     const authCallback = (user) => {
@@ -98,7 +107,7 @@ const dispatch = useDispatch()
               </button>
             </Link>
             {/* <Link  className='flex-1'> */}
-            <button onClick={() => dispatch(setUserIdData('rrrrrrrrrrrrrrrr'))} className="rounded-xl bg-[#695acde4] text-white  border-none p-[0.65rem] text-xl font-semibold w-full flex-1">
+            <button onClick={() => checkIfUserIsloggedIn(userID)} className="rounded-xl bg-[#695acde4] text-white  border-none p-[0.65rem] text-xl font-semibold w-full flex-1">
               Resume
             </button>
             {/* </Link> */}

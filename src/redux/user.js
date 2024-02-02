@@ -21,25 +21,34 @@ const formEntries = {
 export const userSlice = createSlice({
     name: "user",
     initialState: {
-        userID: undefined,
+        userID: '',
         loading: false,
         signupIndex: 0,
         signinIndex: 0,
         // homePageNavIndex: 0,
         animationCounter: 0,
         userFormEntries: formEntries,
+        currentUserData: null,
+        userData: null,
         hasStorageAccessPermission: true,
         userAge: null,
-        userData: null,
-        currentUserData: null,
-        firebaseUserInfo: null
+        firebaseUserInfo: {},
+        showModal: true,
+        modalToshow: "",
+        authCallbackUser: null,
+        productsData: null
     },
     reducers: {
-        setUserIdData: (state, action) => {
+        setUserId: (state, action) => {
+            console.log("setUserId setUserId", action.payload)
             state.userID = action.payload
+            console.log("setUserId setUserId", action.payload)
+
         },
-        removeUserIdData: (state, action) => {
+        removeUserId: (state, action) => {
+            console.log('loading true', action.payload)
             state.userID = action.payload
+            console.log('loading true', action.payload)
         },
         setLoading: (state, action) => {
             state.loading = action.payload
@@ -93,7 +102,7 @@ export const userSlice = createSlice({
         },
         setUserData: (state, action) => {
             // console.log("ACTION PAYLOAD:" + action.payload)
-             console.log("setUserData reducer functionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn" + JSON.stringify(action.payload, null, 2))
+            //  console.log("setUserData reducer functionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn" + JSON.stringify(action.payload, null, 2))
             state.userData = action.payload
         },
         removeUserData: (state, action) => {
@@ -104,12 +113,39 @@ export const userSlice = createSlice({
             state.currentUserData = action.payload
         },
         setCurrentfirebaseUserInfo: (state, action) => {
-            // console.log("ACTION PAYLOAD:" + action.payload)
+            // console.log("setCurrentfirebaseUserInfo:" + JSON.stringify(action.payload, null, 2))
             state.firebaseUserInfo = action.payload
+            // console.log("setCurrentfirebaseUserInfo:" + JSON.stringify(action.payload, null, 2))
+
+        },
+        showModalDispachFn: state => {
+            state.showModal = true
+        },
+        hideModalDispachFn: state => {
+            state.showModal = false
+        },
+        setModalToshow: (state, action) => {
+            // console.log("wswawswswswswswsws state: ", JSON.stringify(state.modalToshow , null , 2))
+            // console.log("wswawswswswswswsws: action.payload", action.payload)
+            state.modalToshow = action.payload
+            console.log("wswawswswswswswsws state: ", JSON.stringify(state.modalToshow, null, 2))
+
+        },
+        setAuthCallbackUser: (state, action) => {
+            console.log("setAuthCallbackUser state: ", JSON.stringify(state.modalToshow, null, 2))
+            console.log("setAuthCallbackUser: action.payload", action.payload)
+            state.authCallbackUser = action.payload
+            console.log("setAuthCallbackUser state: ", JSON.stringify(state.modalToshow, null, 2))
+
+        },
+        seProductsData: (state, action) => {
+            // console.log("ACTION PAYLOAD:" + action.payload)
+            console.log("seProductsData" + JSON.stringify(action.payload, null, 2))
+            state.productsData = action.payload
         },
     }
 })
-export const { setUserIdData, setUserData, removeUserData, setLoading, incrementSignup, decrementSignup, incrementSignin, decrementSignin, incrementSigninToStartMultistep, incrementSigninByAmmount, updateUserFormEntries, grantStorageAccess, sethomePageNavIndex, setCurrentUserData, setSignupIndex, setCurrentfirebaseUserInfo, incrementAnimationCounter, decrementAnimationCounter } = userSlice.actions;
+export const { setUserId, setUserData, removeUserData, setLoading, incrementSignup, decrementSignup, incrementSignin, decrementSignin, incrementSigninToStartMultistep, incrementSigninByAmmount, updateUserFormEntries, grantStorageAccess, sethomePageNavIndex, setCurrentUserData, setSignupIndex, setCurrentfirebaseUserInfo, incrementAnimationCounter, decrementAnimationCounter, showModalDispachFn, hideModalDispachFn, setModalToshow, setAuthCallbackUser, seProductsData } = userSlice.actions;
 // export const userData = (state) => state.user.userData;
 export default userSlice.reducer;
 

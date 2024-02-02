@@ -18,7 +18,7 @@ const SignupSchema = Yup.object().shape({
 const FogortpasswordEmail = ({ user, prevStep, currentIndex, setCurrentIndex, isDisabled, setIsDisabled }) => {
     // console.log(user)
     return (
-        <div className="flex min-h-screen max-h-fit h-full w-full flex-col items-center justify-center bg-[#005377] border">
+        <div className="flex min-h-screen max-h-fit h-full w-full flex-col items-center justify-center  bg-[#695acd] border">
             <div id='form-two' className='max-w-xs w-full   scaleAnimation'>
             <div className="mb-3">
                 <span className='font-extrabold capitalize text-white text-3xl mb-6'>
@@ -39,7 +39,7 @@ const FogortpasswordEmail = ({ user, prevStep, currentIndex, setCurrentIndex, is
                         .catch((error) => {toast.error(error.code)});
                     setIsDisabled(isDisabled => true)
                     setTimeout(() => {
-                        setCurrentIndex(currentIndex => 0)
+                        // setCurrentIndex(currentIndex => 0)
                           setIsDisabled(isDisabled => !isDisabled)
                     }, 2000);
                     console.log(values.email)
@@ -50,7 +50,7 @@ const FogortpasswordEmail = ({ user, prevStep, currentIndex, setCurrentIndex, is
                     <Form>
                         <div className="mb-3 ">
                             <label className='font-bold capitalize block mb-[0.25rem] text-white' htmlFor="email">Email : </label>
-                                <Field name="email" type="email" className="w-full p-2 px-5 rounded-3xl" />
+                                <Field name="email" type="email" className="w-full p-2 px-5 rounded-xl" />
                             {errors.email && touched.email ? (
                                 <div className='text-[0.7rem] text-red-600 font-semibold'>{errors.email}</div>
                             ) : null}
@@ -60,14 +60,14 @@ const FogortpasswordEmail = ({ user, prevStep, currentIndex, setCurrentIndex, is
                             <Link href={`/signin`}>
                             <button
                                 type="button"
-                                className='font-bold  bg-white text-xl text-[#005377] capitalize px-4 py-[0.55rem] rounded-3xl relative float-right'>
-                                Back
+                                        className='font-bold  bg-white text-xl text-[#695acd] capitalize px-4 py-[0.55rem] rounded-xl relative float-right'>
+                                        Back to signin
                             </button>
                                 </Link>
                             <button
                                 disabled={isDisabled}
                                 type="submit"
-                                className={`font-bold  bg-white text-xl text-[#005377] capitalize px-4 py-[0.55rem] rounded-3xl relative float-right ${isDisabled ? 'opacity-50' : 'opacity-100'}`}>
+                                    className={`font-bold  bg-white text-xl text-[#695acd] capitalize px-4 py-[0.55rem] rounded-xl relative float-right ${isDisabled ? 'opacity-50' : 'opacity-100'}`}>
                                 Reset
                             </button>
                         </div>

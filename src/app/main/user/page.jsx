@@ -1,6 +1,7 @@
+'use client'
 import Nav from '@/components/Nav'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import UserProfile from '@/components/user/UserProfile'
 import Setting from '@/components/user/Setting'
 import { redirectTo } from '@/utils/ServerFn'
@@ -9,51 +10,65 @@ import security from '../../../../public/icons/security-1.svg'
 import legal from '../../../../public/icons/legal-1.svg'
 import faq from '../../../../public/icons/faq-1.svg'
 import logout from '../../../../public/icons/logout-1.svg'
-export default function page() {
+import Modal from '@/components/user/Modal'
+import { useSelector, useDispatch } from "react-redux";
 
+export default function page() {
+  // const [showModal, setShowModal] = useState(false)
+  
   const settingOptions = [
     {
       icon: help,
-      title: 'feedback',
-      description: 'Get support or send feedback',
-      action: 'redirectTo'
+      title: "feedback",
+      description: "Get support or send feedback",
+      action: "redirectTo",
     },
     {
       icon: security,
-      title: 'reset password',
-      description: 'Change current password',
-      action: 'showModalOnClient'
+      title: "reset password",
+      description: "Change current password",
+      action: "showModalOnClient",
     },
     {
       icon: legal,
-      title: 'Legal',
-      description: 'About our contract with you',
-      action: 'redirectTo'
+      title: "Legal",
+      description: "About our contract with you",
+      action: "redirectTo",
     },
     {
       icon: faq,
-      title: 'FAQ',
-      description: 'Frequently asked questions',
-      action: 'redirectTo'
+      title: "FAQ",
+      description: "Frequently asked questions",
+      action: "redirectTo",
     },
     {
       icon: logout,
-      title: 'Logout',
-      description: 'Logout',
-      action: 'showModalOnClient'
+      title: "Logout",
+      description: "Logout",
+      action: "showModalOnClient",
     },
+  ];
 
-  ]
+  const showModal = useSelector((state) => state.user.showModal);
 
+  const dispatch = useDispatch()
   return (
-    <div className='w-full relative min-h-screen overflow-hidden border border-red-600 p-[20px]'>
-      {/* <div className="p-[20px] flex flex-col gap-4 border border-black "> */}
-        <UserProfile/>
-        <div className="flex flex-col gap-3 overflow-y-auto h-fit  border border-black">
-          {settingOptions.map((settingOption) => (<Setting icon={settingOption.icon} title={settingOption.title} description={settingOption.description} action={settingOption.action} />))}
+    <>
+      {showModal && <Modal/>}
+      <div className={`w-full relative h-fit  border border-red-600 p-[20px] pb-0 ${showModal ? " overflow-" : ''}`}>
+        <UserProfile />
+        <div className="flex flex-col gap-3 h-fit  border border-black">
+          {settingOptions.map((settingOption) => (
+            <Setting
+              icon={settingOption.icon}
+              title={settingOption.title}
+              description={settingOption.description}
+              action={settingOption.action}
+            />
+          ))}
         </div>
-      {/* </div> */}
-      <Nav/>
+        <Nav />
       </div>
-  )
+    </>
+  );
 }

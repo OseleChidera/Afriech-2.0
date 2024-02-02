@@ -30,9 +30,9 @@ const Cart = ({ showCartFn, showCart }) => {
               <Image src={cartIcin} width={20} />
           </div>
           <div className={`location-btn ${showCart ? 'show-cart flex flex-col gap-2' : "hidden"} w-[75vw] absolute top-10 right-0  border border-black rounded-sm p-2 bg-[#f9f9f5]`}>
-              {selectCartItems ? (<button onClick={() => removeSelectCartItemsFn()} className='px-5 border border-black bg-[#695acd] text-white capitalize text-center py-1 rounded-md ' >
+              {selectCartItems ? (<button onClick={() => removeSelectCartItemsFn()} className='px-5 border border-black bg-[#695acd] text-white capitalize text-center py-1 rounded-xl ' >
                   cancel
-              </button>) : (<button onClick={() => setSelectCartItemsFn()} className='px-5 border border-black bg-[#695acd] text-white capitalize text-center py-1 rounded-md ' >
+              </button>) : (<button onClick={() => setSelectCartItemsFn()} className='px-5 border border-black bg-[#695acd] text-white capitalize text-center py-1 rounded-xl ' >
                 chechout specific items
               </button>)}
               <div className={`border border-black bg-[#f9f9f5] text-red flex flex-col gap-2 ${selectCartItems ? "p-2" : " "}`}>

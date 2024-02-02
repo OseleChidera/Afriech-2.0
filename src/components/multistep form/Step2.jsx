@@ -30,7 +30,7 @@ const Step2 = ({ data, next }) => {
 
                         <div className="mb-3">
                             <label className='font-bold capitalize block mb-[0.25rem] text-white' htmlFor="fullname">Fullname : </label>
-                            <Field name="fullname" className="capitalize w-full p-2 px-5 rounded-3xl" placeholder="Firstname Lastname" />
+                            <Field name="fullname" className="capitalize w-full p-2 px-5 rounded-xl" placeholder="Firstname Lastname" />
                             {errors.fullname && touched.fullname ? (
                                 <div className='text-[0.7rem] text-red-600 font-semibold'>{errors.fullname}</div>
                             ) : null}
@@ -53,7 +53,7 @@ const Step2 = ({ data, next }) => {
 
                         <div className="mb-3">
                             <label className='font-bold capitalize block mb-[0.25rem] text-white' htmlFor="phone">Telephone Number: </label>
-                            <Field name="phone" type='text' placeholder="09040500800" className='w-full p-2 px-5 rounded-3xl'/>
+                            <Field name="phone" type='text' placeholder="09040500800" className='w-full p-2 px-5 rounded-xl'/>
                             {errors.phone && touched.phone ? (
                                 <div className='text-[0.7rem] text-red-600 font-semibold'>{errors.phone}</div>
                             ) : null}
@@ -61,12 +61,12 @@ const Step2 = ({ data, next }) => {
 
                         <div className="mb-3">
                             <label className='font-bold capitalize block mb-[0.25rem] text-white' htmlFor="address">Residential address: </label>
-                            <Field name="address" type="text" placeholder="12, Anytown Anywhere Nigeria." className='w-full p-2 px-5 rounded-3xl' />
+                            <Field name="address" type="text" placeholder="12, Anytown Anywhere Nigeria." className='w-full p-2 px-5 rounded-xl' />
                             {errors.address && touched.address ? <div className='text-[0.7rem] text-red-600 font-semibold'>{errors.address}</div> : null}
                         </div>
                         {/* <div className="flex flex-row justify-between items-center"> */}
                         <div className="">
-                            <button type="submit" className='justify-center font-bold   bg-white text-xl text-[#005377] capitalize px-4 py-[0.55rem] rounded-3xl relative float-right'
+                            <button type="submit" className='justify-center font-bold   text-xl  capitalize px-4 py-[0.55rem]  bg-white text-[#695acd] rounded-xl relative float-right'
                             >Next</button>
                         </div>
                         {/* </div> */}
