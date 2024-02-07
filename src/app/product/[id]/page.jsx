@@ -18,6 +18,7 @@ import Reviews from '@/components/product/Reviews';
 export default function Page({ params }) {
     const productID = params.id
     const [product, setProduct] = useState({})
+  const [productId, setProductId] = useState(productID)
     const [mainImage, setMainImage] = useState('')
     
 
@@ -98,9 +99,9 @@ export default function Page({ params }) {
                             <button className='font-bold bg-[#695acd] text-white rounded-xl text-xl capitalize px-4 py-[0.55rem] relative '>find out more </button>
                 </Link>
             </div>
-                    <Reviews productId={productID} reviews={product?.reviews} />
+                    <Reviews productId={productId} reviews={product?.reviews} />
           </div>
-            <AddToCartBtn qty={product?.qty} price={product?.price}/>
+          {product?.qty !== 0 && ( <AddToCartBtn productID={productId} qty={product?.qty} price={product?.price}/>)}
         </div>
       </>
     );

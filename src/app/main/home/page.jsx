@@ -14,8 +14,8 @@ const page = () => {
   return (
     <div className='w-full relative min-h-screen max-h-fit border border-red-600   overflow-y-auto'>
       <div className="pt-8 pb-[120px] flex flex-col gap-4">
-        <SearchBar />
-        <BrandOptions />
+        {/* <SearchBar /> */}
+        {/* <BrandOptions /> */}
         <ImageSlider />
         <PopularIems />
         <PopularIems />

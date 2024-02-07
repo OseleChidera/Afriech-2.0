@@ -1,0 +1,29 @@
+import Image from 'next/image'
+import React, { useEffect, useState } from 'react'
+import trashIcon from '../../../public/icons/trashIcon.svg'
+import { deleteReview } from '../../utils/helperFunctions'
+import { useSelector, useDispatch } from "react-redux";
+
+
+export default function Review({ productId, userID, reviewID, review, date}) {
+    const userIdFromReduxStore = useSelector((state) => state.user.userID);
+
+
+
+  return (
+      <div className=' bg-[#695acd] text-white rounded-xl capitalize px-4 py-[0.55rem] relative flex flex-row justify-between  items-center gap-6 w-full'>
+          <div className="flex flex-col gap-1  ">
+              <span id="userID" className='text-[0.6rem]'>{userID}</span>
+              <div className="min-h-fit max-h-[6ch] overflow-scroll  flex-1 max-w-full w-full  text-balance">
+                  <span id="review" className='text-sm '>{review}</span>
+              </div>
+         </div>
+          {userID == userIdFromReduxStore && 
+              (<div className="" onClick={() => deleteReview(productId, reviewID)}>
+                  <Image src={trashIcon} width={20} height={20} />
+              </div>)
+          }
+          <span id="review-time" className='text-[0.55rem] absolute right-2 bottom-1'>{date}</span>
+    </div>
+  )
+}

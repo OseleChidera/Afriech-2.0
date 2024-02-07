@@ -7,11 +7,18 @@ import arrow from '../../public/icons/arrow-white.svg'
 import { gsap, Power3, TimelineLite } from 'gsap';
 import Cart from './cartItem/Cart'
 import ChangeLocation from './LoactionIsland/ChangeLocation'
+import { useSelector } from 'react-redux'
+import { getUserData } from '@/utils/helperFunctions' 
+
+
+
 const Location = () => {
     const tl = gsap.timeline();
 
     const [locationSearchIsShown, setLocationSearchIsShown] = useState(false)
     const [showCart, setShowCart] = useState(false)
+    const [userData , setUserData] = useState(null)
+  const userID = useSelector((state) => state.user.userID);
     function showLocationSearchBar (){
         setLocationSearchIsShown(!locationSearchIsShown)
         setShowCart(false)
@@ -26,11 +33,18 @@ const Location = () => {
         setLocationSearchIsShown(!locationSearchIsShown)
     }
 
-    function showCartFn() {
+    function showCartFn(fetchCartItems) {
         setShowCart(!showCart)
         setLocationSearchIsShown(false)
-        // console.log(showCart)
+        console.log(showCart)
+      getUserData(userID, setUserData)
+      console.log("cartData ", userData)
     }
+
+
+
+  // console.log("userData yyyyyyyyyyyyyyyyyyyyy ", userData)
+
   return (
     <div className='flex items-center justify-between border border-black w-full p-2 sticky z-10 top-0 bg-[#695acd] text-white'>
         <div className="location flex items-center gap-1 relative border border-black ">
@@ -43,7 +57,7 @@ const Location = () => {
           <div id='main-location' className='main-location underline-offset-2 underline'>
              {location}
           </div>
-          <Cart showCartFn={showCartFn} showCart={showCart}/>
+      <Cart showCartFn={showCartFn} showCart={showCart} userData={userData}/>
 
     </div>
   )

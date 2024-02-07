@@ -16,7 +16,7 @@ export default function page() {
         }
         // setFeedbackWarn(false)
         setFeedbackSent(true)
-        console.log(feedback)
+        // console.log(feedback)
         setTimeout(()=>{
             setFeedback
             setFeedbackSent(false)

@@ -47,7 +47,7 @@ export default function Page() {
     ]
 
 
-    console.log(authCallbackUser)
+    // console.log(authCallbackUser)
     // console.table(userInfoArray)
     const showModal = useSelector((state) => state.user.showModal);
   return (

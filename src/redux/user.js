@@ -140,7 +140,7 @@ export const userSlice = createSlice({
         },
         seProductsData: (state, action) => {
             // console.log("ACTION PAYLOAD:" + action.payload)
-            console.log("seProductsData" + JSON.stringify(action.payload, null, 2))
+            // console.log("seProductsData" + JSON.stringify(action.payload, null, 2))
             state.productsData = action.payload
         },
     }

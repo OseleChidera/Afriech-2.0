@@ -47,6 +47,8 @@ const layout = ({children}) => {
       console.log('Error fetching data:', error, error.code, error.message);
     }
   }
+
+  
   async function fetchMarketplaceData() {
     try {
       // Reference to your Firestore collection
@@ -66,7 +68,7 @@ const layout = ({children}) => {
         // Dispatch the array of data to your Redux store
         dispatch(seProductsData(dataArray));
 
-        console.log('Array of Document data:', dataArray);
+        // console.log('Array of Document data:', dataArray);
         // Perform any actions with the array of data here
       });
 

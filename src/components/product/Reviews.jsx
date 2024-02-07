@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { generateRandomUserId, getCurrentDateTime , addReview } from '../../utils/helperFunctions'
 import { useSelector, useDispatch } from "react-redux";
+import Review from './Review';
 
 export default function Reviews({reviews , productId}) {
   const [review, setReview] = useState('')
   const [isFocused, setIsFocused] = useState(false);
   const userID = useSelector((state) => state.user.userID);
 
-  console.log(userID)
+  // console.log(userID)
 
   const handleTextareaFocus = () => {
     setIsFocused(true);
@@ -28,8 +29,8 @@ export default function Reviews({reviews , productId}) {
 
 
   return (
-    <div className="border border-black">
-      <div className="border border-black">
+    <div className="border border-black flex flex-col items-center gap-6">
+      <div className="border border-black w-[90%]">
         <h1 className="capitalize font-bold text-2xl text-center mb-4">
           Product reviews
         </h1>
@@ -40,7 +41,8 @@ export default function Reviews({reviews , productId}) {
               id=""
               cols="30"
               rows="4"
-              maxLength={200}
+              
+              maxLength={100}
               className="p-2 border border-black rounded-xl w-full text-sm"
               placeholder="Enter your review of this product"
               value={review}
@@ -60,12 +62,12 @@ export default function Reviews({reviews , productId}) {
           </button>
         </div>
       </div>
-      <div id="existingReviews" className='border  border-black'>
+      <div id="existingReviews" className='border  border-black flex flex-col gap-4 w-full'>
         {
-          reviews?.map((review) => <span>review</span>)
+          reviews?.map((review) => <Review date={review?.date} review={review?.review} userID={review?.userId} reviewID={review?.reviewId} productId={productId}/> )
         }
       </div>
-      <span className='text-xs'>{reviews?.length} reviews of this product fo far</span>
+      <h2 className='text-sm  text-center'>{reviews?.length} reviews of this product fo far</h2>
     </div>
   );
 }
