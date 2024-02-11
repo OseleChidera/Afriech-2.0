@@ -51,7 +51,7 @@ const dispatch = useDispatch()
       // Set up real-time listener for changes
       const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
         const fetchedUserData = snapshot.data();
-        console.log("user id from dynamic: ", fetchedUserData)
+        // console.log("user id from dynamic: ", fetchedUserData)
         setFetchedUserData(fetchedUserData);
       });
 

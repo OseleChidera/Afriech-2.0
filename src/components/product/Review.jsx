@@ -5,7 +5,7 @@ import { deleteReview } from '../../utils/helperFunctions'
 import { useSelector, useDispatch } from "react-redux";
 
 
-export default function Review({ productId, userID, reviewID, review, date}) {
+export default function Review({ productId, userID, reviewID, review, date, collectionString }) {
     const userIdFromReduxStore = useSelector((state) => state.user.userID);
 
 
@@ -19,7 +19,7 @@ export default function Review({ productId, userID, reviewID, review, date}) {
               </div>
          </div>
           {userID == userIdFromReduxStore && 
-              (<div className="" onClick={() => deleteReview(productId, reviewID)}>
+              (<div className="" onClick={() => deleteReview(productId, reviewID, collectionString)}>
                   <Image src={trashIcon} width={20} height={20} />
               </div>)
           }

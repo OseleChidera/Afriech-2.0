@@ -3,50 +3,24 @@ import Location from '@/components/Location'
 import React, { useEffect, useState }from 'react'
 import { setupAuthObserver } from "../../../firebaseAuth";
 import { useSelector, useDispatch } from "react-redux";
-import { setCurrentfirebaseUserInfo, setUserId, setLoading, setAuthCallbackUser, seProductsData } from '../../redux/user'
+import { setCurrentfirebaseUserInfo, setUserId, setLoading, setAuthCallbackUser, setProductsData, setPopularProductsData, setuserCartData, setuserFavouritesData, setuserFinancingData } from '../../redux/user'
 import {database} from '../../../firebaseConfig';
 import { collection, getDocs, getDoc, getFirestore, doc, onSnapshot } from "firebase/firestore";
+
+import { getUserData, fetchPopularProductsData, getUserFinancingData } from '@/utils/helperFunctions';
+
+
+
+
 const layout = ({children}) => {
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [cart, setCart] = useState(null);
+  const [favourites, setFavourites] = useState(null);
+  const [financingData, setFinancingData] = useState(null);
+  const [popularProducts, setPopularProducts] = useState([])
   const loading = useSelector((state) => state.user.loading);
-
-  async function getUserData(userID) {
-    console.log("userID: ", userID)
-
-    dispatch(setLoading(true))
-    console.log('loading true', loading)
-
-    try {
-      const userDocRef = doc(database, 'Users', userID);
-
-      // Fetch initial data
-      const initialSnapshot = await getDoc(userDocRef);
-      const initialUserData = initialSnapshot.data();
-
-      // Set initial data
-      setUserData(initialUserData ? initialUserData.profilePicture || "" : "");
-      dispatch(setCurrentfirebaseUserInfo(userData))
-      // setTimeout(() => { dispatch(setLoading(false)) }, 3000)}
-    setTimeout(() => { dispatch(setLoading(false)) }, 2000)
-      console.log('loading false', loading)
-
-      // Set up real-time listener for changes
-      const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
-        const fetchedUserData = snapshot.data();
-
-        console.log("user id from dynamic: ", fetchedUserData)
-        setUserData(fetchedUserData);
-        dispatch(setCurrentfirebaseUserInfo(fetchedUserData))
-      });
-
-      // Cleanup the listener when the component unmounts or as needed
-      return () => unsubscribe();
-    } catch (error) {
-      console.log('Error fetching data:', error, error.code, error.message);
-    }
-  }
 
   
   async function fetchMarketplaceData() {
@@ -66,7 +40,8 @@ const layout = ({children}) => {
         });
 
         // Dispatch the array of data to your Redux store
-        dispatch(seProductsData(dataArray));
+        dispatch(setProductsData(dataArray));
+        // console.table(dataArray)
 
         // console.log('Array of Document data:', dataArray);
         // Perform any actions with the array of data here
@@ -79,19 +54,36 @@ const layout = ({children}) => {
     }
   }
 
+
+ 
+  dispatch(setPopularProductsData(popularProducts));
+  dispatch(setCurrentfirebaseUserInfo(userData));
+  dispatch(setuserFavouritesData(favourites));
+  dispatch(setuserCartData(cart));
+  dispatch(setuserFinancingData(financingData));
+
   useEffect(() => {
+    fetchPopularProductsData(setPopularProducts)
+  }, [])
+
+  useEffect(() => {
+    // fetchPopularProductsData(setPopularProducts)
+    //  console.log(popularProducts)
+    
     fetchMarketplaceData()
     const authCallback = (user) => {
       if (user) {
-        getUserData(user.uid)
+        getUserData(user.uid, setUserData, setCart, setFavourites, setFinancingData)
         dispatch(setUserId(`${user.uid}`))
         dispatch(setAuthCallbackUser(user))
-        console.log('User is authenticated in mMMmmMM', user);
+        console.log('User is authenticated in mMMmmMM', user.uid);
       } else {
-        console.log('User is not authenticated.mMMmmMM');
+        // console.log('User is not authenticated.mMMmmMM');
       }
     };
 
+
+    // console.log("popularProducts OUTSIDE USEEFFECT", popularProducts)
     // Set up the auth observer
     setupAuthObserver(authCallback);
 

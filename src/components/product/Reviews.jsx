@@ -3,7 +3,7 @@ import { generateRandomUserId, getCurrentDateTime , addReview } from '../../util
 import { useSelector, useDispatch } from "react-redux";
 import Review from './Review';
 
-export default function Reviews({reviews , productId}) {
+export default function Reviews({ reviews, productId, collectionString }) {
   const [review, setReview] = useState('')
   const [isFocused, setIsFocused] = useState(false);
   const userID = useSelector((state) => state.user.userID);
@@ -22,7 +22,7 @@ export default function Reviews({reviews , productId}) {
       if (!review || isFocused){
       return;
     }
-      addReview(userID, productId, review, setReview)
+      addReview(userID, productId, review, setReview, collectionString)
     }
 
 
@@ -64,7 +64,7 @@ export default function Reviews({reviews , productId}) {
       </div>
       <div id="existingReviews" className='border  border-black flex flex-col gap-4 w-full'>
         {
-          reviews?.map((review) => <Review date={review?.date} review={review?.review} userID={review?.userId} reviewID={review?.reviewId} productId={productId}/> )
+          reviews?.map((review) => <Review date={review?.date} review={review?.review} userID={review?.userId} reviewID={review?.reviewId} productId={productId} collectionString={collectionString}/> )
         }
       </div>
       <h2 className='text-sm  text-center'>{reviews?.length} reviews of this product fo far</h2>

@@ -18,7 +18,6 @@ const page = () => {
         {/* <BrandOptions /> */}
         <ImageSlider />
         <PopularIems />
-        <PopularIems />
     </div>
 
     <Nav/>

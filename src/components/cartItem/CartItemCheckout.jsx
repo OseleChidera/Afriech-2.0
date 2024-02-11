@@ -2,7 +2,6 @@ import React, { useState , useEffect } from 'react';
 import Image from 'next/image';
 import CartItemProductComponent from './CartItemProductComponent';
 import { getUserData } from '@/utils/helperFunctions';
-import { UseSelector } from 'react-redux';
 import { usePathname } from "next/navigation";
 import { formatNumberWithCommas, removeItemFromCart } from '@/utils/helperFunctions';
 import trashIcons from '../../../public/icons/trashIcon.svg'
@@ -14,13 +13,13 @@ import { database } from '../../../firebaseConfig'; // Import your Firebase conf
 import { toast } from "react-toastify";
 
 
-const CartItemCheckout = ({ id, selectCartItems, cartItemData }) => {
+const CartItemCheckout = ({ id, selectCartItems, cartItemData, itemsToCheckout, cart, collectionString }) => {
     const [isSelected, setIsSelected] = useState(false);
     const pathName = usePathname();
     const userID = useSelector((state) => state.user.userID);
     const [isPathNameActive, setIsPathNameActive] = useState(pathName.includes(`/main/payment`))
 
-    const handleRadioChange = () => {
+    const handleCheckboxChange = () => {
         setIsSelected(!isSelected);
         // Call a function here to handle the ID retrieval when the radio button is selected
         if (!isSelected) {
@@ -30,13 +29,18 @@ const CartItemCheckout = ({ id, selectCartItems, cartItemData }) => {
         }
     };
 
-    const handleSelectedId = (selectedId) => {
+    async function  handleSelectedId(selectedId){
         // Implement logic to handle the selected ID
         console.log('Selected ID:', selectedId);
+        // let selectedItem = cart.find(item => item.cartItemID == selectedId ? item : null)
+        
+        itemsToCheckout.push(selectedId)
+       
+        // console.log("basket: ",  itemsToCheckout)
     };
 
     function deleteItemFromCart(){
-        removeItemFromCart(cartItemData.productID, cartItemData.cartItemID, userID)
+        removeItemFromCart(collectionString,cartItemData.productID, cartItemData.cartItemID, userID)
     }
  
     const price = formatNumberWithCommas(cartItemData?.price) 
@@ -46,23 +50,23 @@ const CartItemCheckout = ({ id, selectCartItems, cartItemData }) => {
                 <input
                     type="checkbox"
                     id={id}
-                    onChange={handleRadioChange}
+                    onChange={handleCheckboxChange}
                     checked={isSelected}
                     className='hidden'
                 />
             )}
-            <label htmlFor={id} className='flex-auto rounded-md'>
+            <label htmlFor={id} className='flex-auto rounded-md h-fit'>
                 <div className=" cart-item rounded-md relative  flex flex-1 gap-2 bg-white overflow-hidden p-2">
                     <div className=" w-fit  h-fit rounded-xl  shadow-2xl bg-whie overflow-hidden cart-item-image">
                         <Image src={cartItemData?.imageGalleryImages[0].imageURL} className="aspect-auto object-cover " width={70} height={70}/>
                     </div>
                     <div className="info p-2 text-black">
                         <h2 className="text-xs font-semibold">
-                            <Link href={`/product/${cartItemData?.productID}`}>{cartItemData?.name}</Link>
+                            {selectCartItems ? (<h2 >{cartItemData?.name}</h2>) : (<Link href={`/${collectionString.toLowerCase() }/${cartItemData?.productID}`}>{cartItemData?.name}</Link>)}
                         </h2>
                         {/* <h2 className="text-xs font-semibold">efssdfserwedwqed</h2> */}
                         {/* <h3 className="text-xs ">$10000000</h3> */}
-                        <h3 className="text-xs ">${price}</h3>
+                        <h3 className="text-xs ">₦{price}</h3>
                     </div>
                     <div className="absolute bg-[#695acde4] bottom-0 right-0 rounded-t-md rounded-b-md rounded-bl-none  rounded-tr-none p-[0.3rem]" onClick={() => deleteItemFromCart()}>
                         <Image src={trashIcons} width={20} height={20}/>

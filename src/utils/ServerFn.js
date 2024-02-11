@@ -43,7 +43,7 @@ export async function fetchUserServerFn(userID) {
         const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
             const fetchedUserData = snapshot.data();
 
-            console.log("user id from dynamic: ", fetchedUserData)
+            // console.log("user id from dynamic: ", fetchedUserData)
             userData = fetchedUserData
             return userData;
         });

@@ -9,7 +9,7 @@ import { formatNumberWithCommas , addItemsToCart } from '@/utils/helperFunctions
 
 
 
-export default function AddToCartBtn({productID,  price  , qty }) {
+export default function AddToCartBtn({ productID, price, qty, collectionString }) {
     const [itemQtyToAddToCart, setItemQtyToAddToCart] = useState(1)
 
     const userID = useSelector((state) => state.user.userID);
@@ -58,7 +58,7 @@ export default function AddToCartBtn({productID,  price  , qty }) {
                       <Image src={addICON} width={20} height={20} className="" />
                   </button>
               </div>
-              <button className="font-bold bg-[#695acd] text-white rounded-xl text-xl capitalize px-4 py-[0.55rem] relative float-right" onClick={() => addItemsToCart(productID, itemQtyToAddToCart, userID, setItemQtyToAddToCart)}>
+              <button className="font-bold bg-[#695acd] text-white rounded-xl text-xl capitalize px-4 py-[0.55rem] relative float-right" onClick={() => addItemsToCart(productID, itemQtyToAddToCart, userID, setItemQtyToAddToCart, collectionString)}>
                   Add To Cart
               </button>
           </div>

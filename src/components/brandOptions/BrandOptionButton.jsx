@@ -1,9 +1,9 @@
 'use client'
 import React from 'react'
 
-const BrandOptionButton = () => {
+const BrandOptionButton = ({brandID}) => {
   return (
-    <div className='rounded-2xl px-2 py-1 border bg-[#695acde4] text-white border-white'>BrandOption</div>
+    <div className='rounded-2xl px-3 py-1 border bg-[#695acde4] text-white border-white capitalize text-xl'>{brandID}</div>
   )
 }
 

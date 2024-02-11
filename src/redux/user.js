@@ -33,22 +33,26 @@ export const userSlice = createSlice({
         hasStorageAccessPermission: true,
         userAge: null,
         firebaseUserInfo: {},
+        userCartData: [],
+        userFavourites: [],
         showModal: true,
         modalToshow: "",
         authCallbackUser: null,
-        productsData: null
+        productsData: null,
+        PopularProducts: [],
+        userFinancingData: []
     },
     reducers: {
         setUserId: (state, action) => {
-            console.log("setUserId setUserId", action.payload)
+            // console.log("setUserId setUserId", action.payload)
             state.userID = action.payload
-            console.log("setUserId setUserId", action.payload)
+            // console.log("setUserId setUserId", action.payload)
 
         },
         removeUserId: (state, action) => {
-            console.log('loading true', action.payload)
+            // console.log('loading true', action.payload)
             state.userID = action.payload
-            console.log('loading true', action.payload)
+            // console.log('loading true', action.payload)
         },
         setLoading: (state, action) => {
             state.loading = action.payload
@@ -94,7 +98,7 @@ export const userSlice = createSlice({
             state.signinIndex = action.payload
         },
         updateUserFormEntries: (state, action) => {
-            console.log("updateUserFormEntriesssssssssssssssssssssssssssssssssssssssssssssssss ", action.payload)
+            // console.log("updateUserFormEntriesssssssssssssssssssssssssssssssssssssssssssssssss ", action.payload)
             state.userFormEntries = action.payload
         },
         grantStorageAccess: (state, action) => {
@@ -128,24 +132,44 @@ export const userSlice = createSlice({
             // console.log("wswawswswswswswsws state: ", JSON.stringify(state.modalToshow , null , 2))
             // console.log("wswawswswswswswsws: action.payload", action.payload)
             state.modalToshow = action.payload
-            console.log("wswawswswswswswsws state: ", JSON.stringify(state.modalToshow, null, 2))
+            // console.log("wswawswswswswswsws state: ", JSON.stringify(state.modalToshow, null, 2))
 
         },
         setAuthCallbackUser: (state, action) => {
-            console.log("setAuthCallbackUser state: ", JSON.stringify(state.modalToshow, null, 2))
-            console.log("setAuthCallbackUser: action.payload", action.payload)
+            // console.log("setAuthCallbackUser state: ", JSON.stringify(state.modalToshow, null, 2))
+            // console.log("setAuthCallbackUser: action.payload", action.payload)
             state.authCallbackUser = action.payload
-            console.log("setAuthCallbackUser state: ", JSON.stringify(state.modalToshow, null, 2))
+            // console.log("setAuthCallbackUser state: ", JSON.stringify(state.modalToshow, null, 2))
 
         },
-        seProductsData: (state, action) => {
+        setProductsData: (state, action) => {
             // console.log("ACTION PAYLOAD:" + action.payload)
-            // console.log("seProductsData" + JSON.stringify(action.payload, null, 2))
+            // console.log("setProductsData" + JSON.stringify(action.payload, null, 2))
             state.productsData = action.payload
         },
+        setPopularProductsData: (state, action) => {
+            // console.log("ACTION PAYLOAD:" + action.payload)
+            // console.log("this data was dispatched to setPopularProductsData" + JSON.stringify(action.payload, null, 2))
+            state.PopularProducts = action.payload
+        },
+        setuserCartData: (state, action) => {
+            // console.log("ACTION PAYLOAD:" + action.payload)
+            // console.log("this data was dispatched to setuserCartDataData" + JSON.stringify(action.payload, null, 2))
+            state.userCartData = action.payload
+        },
+        setuserFavouritesData: (state, action) => {
+            // console.log("ACTION PAYLOAD:" + action.payload)
+            // console.log("this data was dispatched to setuserFavouritesData" + JSON.stringify(action.payload, null, 2))
+            state.userFavourites = action.payload
+        },
+        setuserFinancingData: (state, action) => {
+            // console.log("ACTION PAYLOAD:" + action.payload)
+            // console.log("this data was dispatched to setuserFavouritesData" + JSON.stringify(action.payload, null, 2))
+            state.userFinancingData = action.payload
+        }
     }
 })
-export const { setUserId, setUserData, removeUserData, setLoading, incrementSignup, decrementSignup, incrementSignin, decrementSignin, incrementSigninToStartMultistep, incrementSigninByAmmount, updateUserFormEntries, grantStorageAccess, sethomePageNavIndex, setCurrentUserData, setSignupIndex, setCurrentfirebaseUserInfo, incrementAnimationCounter, decrementAnimationCounter, showModalDispachFn, hideModalDispachFn, setModalToshow, setAuthCallbackUser, seProductsData } = userSlice.actions;
+export const { setUserId, setUserData, removeUserData, setLoading, incrementSignup, decrementSignup, incrementSignin, decrementSignin, incrementSigninToStartMultistep, incrementSigninByAmmount, updateUserFormEntries, grantStorageAccess, sethomePageNavIndex, setCurrentUserData, setSignupIndex, setCurrentfirebaseUserInfo, incrementAnimationCounter, decrementAnimationCounter, showModalDispachFn, hideModalDispachFn, setModalToshow, setAuthCallbackUser, setProductsData, setPopularProductsData, setuserCartData, setuserFavouritesData, setuserFinancingData } = userSlice.actions;
 // export const userData = (state) => state.user.userData;
 export default userSlice.reducer;
 

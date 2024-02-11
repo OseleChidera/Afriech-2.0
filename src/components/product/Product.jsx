@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import phone from "../../../public/images/samsung-galaxy-s21-ultra-5g-4.jpg";
 import addIcon from "../../../public/icons/add.svg";
 import favourite from "../../../public/icons/favourite.svg";
@@ -13,16 +13,17 @@ import {
   addItemsToCart,
   removeItemFromCart,
   addItemsToFavourites,
-  removeItemFromFavourites
+  removeItemFromFavourites,
 } from "../../utils/helperFunctions";
 import { useSelector } from "react-redux";
 // import { toast } from "react-toastify";
 
-const Product = ({ name, price, id }) => {
+const Product = ({ id, name, price, productID, favouriteItemID, image, productObj, collectionString }) => {
   const pathName = usePathname();
   const [isFavouriteClicked, setIsFavouriteClicked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
-  const [isFavourited, setIsFavourited] = useState(false);
+  const [productFavouritedArray, setProductFavouritedArray] = useState(productObj?.
+    userFavourited);
   const [productCartID, setProductCarTID] = useState("");
   const [productFavouriteID, setProductFavouriteID] = useState("");
 
@@ -31,24 +32,39 @@ const Product = ({ name, price, id }) => {
     pathName.includes(`/main/favourite`)
   );
   const userID = useSelector((state) => state.user.userID);
-  // function addtoFavourites(){
-  //   setIsFavouriteClicked(!isClicked)
-  // }
+  const userFavourites = useSelector((state) => state.user.userFavourites);
+  // const userFavourites = useSelector((state) => state.user.userFavourites);
+
+  function checkIfUserAddedToFavourite(userFavourites , id){
+    console.log("userFavourites  , id", userFavourites, id)
+    // let userFavourites = firebaseUserInfo?.favourites
+    if (userFavourites) {
+      let arrayItem = userFavourites.find(product => product.productID == id)
+      console.log("check ", arrayItem)
+      if (!arrayItem) {
+        return false
+      }
+      return true
+    }
+}
+  checkIfUserAddedToFavourite(userFavourites, id)
 
   function addItemToCartFromProduct() {
     setIsInCart(!isInCart);
-    addItemsToCart(id, 1, userID, setProductCarTID);
+    
+    addItemsToCart(id, 1, userID, setProductCarTID,"Products");
     console.log("productCartIDDDDDDDDD" + productCartID);
   }
 
   function removeFromFavourites() {
-    console.log("ProductFavouriteID" + setProductFavouriteID);
-    removeItemFromFavourites(id, userID, productFavouriteID)
+    console.log("removeFromFavourites got called" );
+    removeItemFromFavourites(id, userID, collectionString)
   }
 
   function addtoFavourites() {
-    setIsFavourited(!isFavourited);
-    addItemsToFavourites(id, userID, setProductFavouriteID);
+    // setIsFavourited(!isFavourited);
+    console.log("productID", id)
+    addItemsToFavourites(id, userID, setProductFavouriteID, collectionString);
     console.log("ProductFavouriteID" + setProductFavouriteID);
   }
 
@@ -56,16 +72,25 @@ const Product = ({ name, price, id }) => {
     if (productCartID == "") {
       return;
     }
-    removeItemFromCart(id, productCartID, userID);
+    removeItemFromCart('Products' ,id, favouriteItemID, userID);
     setIsInCart(!isInCart);
   }
 
-  // console.log("productCartIDDDDDDDDD" + productCartID)
 
+  console.log('favouritedArray ', productObj?.userFavourited)
+
+  let isFavourited = productObj?.userFavourited.includes(userID);
+  console.log("check if the user favourited the product", isFavourited)
+
+
+  useEffect(()=>{
+     
+  },[])
+  
   return (
-    <div className="product  relative rounded-xl  bg-white overflow-hidden ">
-      <div className=" w-fit  max-h-fit rounded-xl  shadow-2xl bg-whie border border-black overflow-hidden">
-        <Image src={phone} className="aspect-auto object-cover " width={180} />
+    <div className="product  relative rounded-xl  bg-white overflow-hidden max-w-fit">
+      <div className=" w-fit  max-h-fit rounded-xl  shadow-2xl bg-whie border border-black overflow-hidden mx-auto">
+        <Image src={image} className="object-cover aspect-square " width={180} height={180} />
       </div>
       <Link href="/product/[id]" as={`/product/${id}`}>
         <div className="info p-2">
@@ -86,24 +111,43 @@ const Product = ({ name, price, id }) => {
       ) : (
         <div
           className="absolute bg-[#695acde4] bottom-0 right-0 rounded-t-xl rounded-b-xl rounded-bl-none runded rounded-tr-none p-[0.3rem]"
-          onClick={() => removeProductFromCart(productCartID)}
+          onClick={() => isPathNameActive ?  removeFromFavourites() : removeProductFromCart(productCartID)}
         >
           <Image src={trashIcon} width={20} />
         </div>
       )}
 
-      {!isPathNameActive && ( !isFavourited ? 
-      (<div onClick={() => addtoFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
-          <Image src={favourite} width={20} className={``} />
-        </div>) 
+      {isFavourited && checkIfUserAddedToFavourite(userFavourites, id) ? 
+        (<div onClick={() => removeFromFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
+          <Image src={favouriteClicked} width={20} className={`scaleLikeIcon`} />
+        </div>)
         : 
-      (<div onClick={() => removeFromFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
-        <Image src={favouriteClicked} width={20} className={`scaleLikeIcon`}/>
-      </div>)
-        )
+        (<div onClick={() => addtoFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
+          <Image src={favourite} width={20} className={``} />
+        </div>)
+        
       }
     </div>
   );
 };
 
 export default Product;
+
+
+
+
+
+
+
+
+// {
+//   !isPathNameActive && (!isFavourited ?
+//     (<div onClick={() => addtoFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
+//       <Image src={favourite} width={20} className={``} />
+//     </div>)
+//     :
+//     (<div onClick={() => removeFromFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
+//       <Image src={favouriteClicked} width={20} className={`scaleLikeIcon`} />
+//     </div>)
+//   )
+// }

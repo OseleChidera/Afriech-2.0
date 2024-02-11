@@ -56,8 +56,9 @@ input[type="text"] {
   /* box-shadow: 40px 0px 80px white; */
 }
 .product{
-   box-shadow: inset  1px 1px 1px 1.2px #695acde4;
-   box-shadow:black ;
+   /* box-shadow: inset  1px 1px 1px 1.2px #695acde4;
+   box-shadow:black ; */
+   border: 0.05px solid black;
 }
 .shadow-inner{
   box-shadow: inset 1px 0px 2px #f9f9f5;
@@ -129,7 +130,7 @@ display: none;
   grid-template-columns: repeat(auto-fit, minmax(150px,0.5fr));
   gap: 20px;
   /* padding: 20px; */
-  justify-content: center;
+  justify-content: start;
 }
 @keyframes likeProd {
   from {

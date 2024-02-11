@@ -37,9 +37,12 @@ export default function Page({ params }) {
 
 
     useEffect(()=>{
-        fetchProductDataById(productID, setProduct, setMainImage)
+        fetchProductDataById(productID, setProduct, setMainImage, "Products")
     },[])
    
+
+  console.log('main image', mainImage)
+  console.log('product', product)
     return (
       <>
         {/* <Location /> */}
@@ -72,7 +75,7 @@ export default function Page({ params }) {
                 <div className="flex items-center relative bottom-0 ">
                   <Link href="/main/home">
                     <button className="font-bold bg-[#695acd] text-white rounded-xl text-xl capitalize px-4 py-[0.55rem] relative float-right self">
-                      Go Home
+                      Home
                     </button>
                   </Link>
                 </div>
@@ -92,6 +95,8 @@ export default function Page({ params }) {
                     selected={index === selectedImageIndex}
                   />
                 ))}
+
+                
               </div>
             </div>
             <div>
@@ -99,9 +104,9 @@ export default function Page({ params }) {
                             <button className='font-bold bg-[#695acd] text-white rounded-xl text-xl capitalize px-4 py-[0.55rem] relative '>find out more </button>
                 </Link>
             </div>
-                    <Reviews productId={productId} reviews={product?.reviews} />
+            <Reviews productId={productId} reviews={product?.reviews} collectionString ={'Products'}/>
           </div>
-          {product?.qty !== 0 && ( <AddToCartBtn productID={productId} qty={product?.qty} price={product?.price}/>)}
+          {product?.qty !== 0 && (<AddToCartBtn productID={productId} qty={product?.qty} price={product?.price} collectionString={"Products"} />)}
         </div>
       </>
     );
