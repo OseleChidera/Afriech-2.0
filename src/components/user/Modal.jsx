@@ -9,6 +9,8 @@ import ChangePfpModal from '../modals/ChangePfpModal';
 import NinSlipModal from '../modals/NinSlipModal';
 import ChangePasswordModal from '../modals/ChangePasswordModal';
 import ChangeEmailModal from '../modals/ChangeEmailModal';
+import ChangeLocationModal from '../modals/ChangeLocationModal';
+import ChangeDobModal from '../modals/ChangeDobModal';
 
 
 export default function Modal() {
@@ -33,6 +35,10 @@ export default function Modal() {
                 return <NinSlipModal />;
             case 'changeEmail':
                 return <ChangeEmailModal />;
+            case 'changeDob':
+                return <ChangeDobModal />;
+            case 'changeLocation':
+                return <ChangeLocationModal />;
             default: null;
         }
     }

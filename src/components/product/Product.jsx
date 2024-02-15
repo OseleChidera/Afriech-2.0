@@ -26,7 +26,7 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
     userFavourited);
   const [productCartID, setProductCarTID] = useState("");
   const [productFavouriteID, setProductFavouriteID] = useState("");
-
+  const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
   //When a product is added to the car, some properties are removed from the product object and some properties are added like isCkecked
   const [isPathNameActive, setIsPathNameActive] = useState(
     pathName.includes(`/main/favourite`)
@@ -92,14 +92,19 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
       <div className=" w-fit  max-h-fit rounded-xl  shadow-2xl bg-whie border border-black overflow-hidden mx-auto">
         <Image src={image} className="object-cover aspect-square " width={180} height={180} />
       </div>
-      <Link href="/product/[id]" as={`/product/${id}`}>
+      {collectionString == "Products" ? (<Link href="/product/[id]" as={`/product/${id}`}>
         <div className="info p-2">
           <h2 className="text-base font-semibold ">{name}</h2>
           <h3 className="text-sm">₦{formatNumberWithCommas(price)}</h3>
         </div>
-      </Link>
+      </Link>) : (<Link href="/popularProduct/[id]" as={`/popularProduct/${id}`}>
+        <div className="info p-2">
+          <h2 className="text-base font-semibold ">{name}</h2>
+          <h3 className="text-sm">₦{formatNumberWithCommas(price)}</h3>
+        </div>
+      </Link>)}
 
-      {!isPathNameActive ? (
+      {!isPathNameActive && firebaseUserInfo?.accountVerified ? (
         !isInCart && (
           <div
             className="absolute bg-[#695acde4] bottom-0 right-0 rounded-t-xl rounded-b-xl rounded-bl-none runded rounded-tr-none p-[0.3rem]"
@@ -117,7 +122,7 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
         </div>
       )}
 
-      {isFavourited && checkIfUserAddedToFavourite(userFavourites, id) ? 
+      {(isFavourited && checkIfUserAddedToFavourite(userFavourites, id)) && firebaseUserInfo?.accountVerified ? 
         (<div onClick={() => removeFromFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
           <Image src={favouriteClicked} width={20} className={`scaleLikeIcon`} />
         </div>)

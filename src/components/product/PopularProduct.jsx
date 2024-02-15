@@ -60,7 +60,7 @@ const PopularProduct = ({ id, name, price, productID, favouriteItemID, image, pr
         // console.log("removeFromFavourites got called");
         removeItemFromFavourites(id, userID, collectionString)
     }
-
+const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
     function addtoFavourites() {
         // setIsFavourited(!isFavourited);
         // console.log("productID", id)
@@ -92,14 +92,14 @@ const PopularProduct = ({ id, name, price, productID, favouriteItemID, image, pr
             <div className=" w-fit  max-h-fit rounded-xl  shadow-2xl bg-whie border border-black overflow-hidden mx-auto">
                 <Image src={image} className="object-cover aspect-square " width={180} height={180} />
             </div>
-            <Link href="/product/[id]" as={`/${collectionString.toLowerCase() }/${id}`}>
+            <Link href="/product/[id]" as={`/popularProduct/${id}`}>
                 <div className="info p-2">
                     <h2 className="text-base font-semibold ">{name}</h2>
                     <h3 className="text-sm">₦{formatNumberWithCommas(price)}</h3>
                 </div>
             </Link>
 
-            {!isPathNameActive ? (
+            {!isPathNameActive && firebaseUserInfo?.accountVerified ? (
                 !isInCart && (
                     <div
                         className="absolute bg-[#695acde4] bottom-0 right-0 rounded-t-xl rounded-b-xl rounded-bl-none runded rounded-tr-none p-[0.3rem]"
@@ -117,7 +117,7 @@ const PopularProduct = ({ id, name, price, productID, favouriteItemID, image, pr
                 </div>
             )}
 
-            {isFavourited && checkIfUserAddedToFavourite(userFavourites, id) ?
+            {(isFavourited && checkIfUserAddedToFavourite(userFavourites, id)) && firebaseUserInfo?.accountVerified ?
                 (<div onClick={() => removeFromFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
                     <Image src={favouriteClicked} width={20} className={`scaleLikeIcon`} />
                 </div>)

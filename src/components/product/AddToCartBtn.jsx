@@ -1,67 +1,77 @@
-import React , {useEffect,useState} from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-
-import addICON from '../../../public/icons/add-01.svg'
-import minus from '../../../public/icons/minus-sign.svg'
-import { useSelector } from 'react-redux'
-import { formatNumberWithCommas , addItemsToCart } from '@/utils/helperFunctions'
-
-
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import addICON from '../../../public/icons/add-01.svg';
+import minus from '../../../public/icons/minus-sign.svg';
+import { useSelector } from 'react-redux';
+import { formatNumberWithCommas, addItemsToCart } from '@/utils/helperFunctions';
 
 export default function AddToCartBtn({ productID, price, qty, collectionString }) {
-    const [itemQtyToAddToCart, setItemQtyToAddToCart] = useState(1)
+    // State to manage the quantity of items to add to cart
+    const [itemQtyToAddToCart, setItemQtyToAddToCart] = useState(1);
 
+    // Get user ID from Redux store
     const userID = useSelector((state) => state.user.userID);
 
+    // Function to increment the item quantity
     function incrementCounter() {
-        if (itemQtyToAddToCart == qty) {
-            return
+        // Check if quantity is already maximum
+        if (itemQtyToAddToCart === qty) {
+            return;
         }
-        setItemQtyToAddToCart(itemQtyToAddToCart + 1)
+        // Increment item quantity
+        setItemQtyToAddToCart(itemQtyToAddToCart + 1);
     }
+
+    // Function to decrement the item quantity
     function decrementCounter() {
-        if (itemQtyToAddToCart == 1) {
-            return
+        // Check if quantity is already minimum
+        if (itemQtyToAddToCart === 1) {
+            return;
         }
-        setItemQtyToAddToCart(itemQtyToAddToCart - 1)
+        // Decrement item quantity
+        setItemQtyToAddToCart(itemQtyToAddToCart - 1);
     }
 
-
-   
-  return (
-      <div className="flex justify-between items-baseline fixed  bottom-0 left-0 w-full p-6 pb-2 bg-white shadow-2xl  border-[0.2px] border-black ">
-          <div className="flex flex-col">
-              <h2 className="capitalize font-bold text-xl ">
-                  ₦{formatNumberWithCommas(price)}
-              </h2>
-              <h2 className="capitalize font-regular text-lg ">
-                  {qty}<span className='font-light lowercase text-sm'> pcs</span>
-              </h2>
-          </div>
-          <div className="flex flex-col gap-4 items-center">
-              <div className="flex gap-1 ">
-                  <button className="flex items-center justify-centerc border-none px-3 py-2 rounded-xl bg-[#695acd]"
-                      onClick={decrementCounter}>
-                      <Image src={minus} width={20} height={20} className="" />
-                  </button>
-                  <input
-                      type="number"
-                      className="text-center border border-black py-1 rounded-xl"
-                      max={`${qty}`}
-                      min="1"
-                      placeholder="1"
-                      value={itemQtyToAddToCart}
-                  />
-                  <button className="flex items-center justify-centerc border-none px-3 py-2 rounded-xl bg-[#695acd]"
-                      onClick={incrementCounter}>
-                      <Image src={addICON} width={20} height={20} className="" />
-                  </button>
-              </div>
-              <button className="font-bold bg-[#695acd] text-white rounded-xl text-xl capitalize px-4 py-[0.55rem] relative float-right" onClick={() => addItemsToCart(productID, itemQtyToAddToCart, userID, setItemQtyToAddToCart, collectionString)}>
-                  Add To Cart
-              </button>
-          </div>
-      </div>
-  )
+    return (
+        <div className="flex justify-between items-baseline fixed bottom-0 left-0 w-full p-6 pb-2 bg-white shadow-2xl border-[0.2px] border-black">
+            {/* Display product price and quantity */}
+            <div className="flex flex-col">
+                <h2 className="capitalize font-bold text-xl">
+                    ₦{formatNumberWithCommas(price)}
+                </h2>
+                <h2 className="capitalize font-regular text-lg">
+                    {qty}<span className='font-light lowercase text-sm'> pcs</span>
+                </h2>
+            </div>
+            {/* Add/Remove quantity buttons and input field */}
+            <div className="flex flex-col gap-4 items-center">
+                <div className="flex gap-1">
+                    {/* Button to decrement quantity */}
+                    <button className="flex items-center justify-centerc border-none px-3 py-2 rounded-xl bg-[#695acd]"
+                        onClick={decrementCounter}>
+                        <Image src={minus} width={20} height={20} className="" />
+                    </button>
+                    {/* Input field for quantity */}
+                    <input
+                        type="number"
+                        className="text-center border border-black py-1 rounded-xl"
+                        max={`${qty}`}
+                        min="1"
+                        placeholder="1"
+                        value={itemQtyToAddToCart}
+                    />
+                    {/* Button to increment quantity */}
+                    <button className="flex items-center justify-centerc border-none px-3 py-2 rounded-xl bg-[#695acd]"
+                        onClick={incrementCounter}>
+                        <Image src={addICON} width={20} height={20} className="" />
+                    </button>
+                </div>
+                {/* Button to add items to cart */}
+                <button className="font-bold bg-[#695acd] text-white rounded-xl text-xl capitalize px-4 py-[0.55rem] relative float-right" onClick={() => addItemsToCart(productID, itemQtyToAddToCart, userID, setItemQtyToAddToCart, collectionString)}>
+                    Add To Cart
+                </button>
+            </div>
+        </div>
+    );
 }

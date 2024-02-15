@@ -62,7 +62,7 @@ const CartItemCheckout = ({ id, selectCartItems, cartItemData, itemsToCheckout, 
                     </div>
                     <div className="info p-2 text-black">
                         <h2 className="text-xs font-semibold">
-                            {selectCartItems ? (<h2 >{cartItemData?.name}</h2>) : (<Link href={`/${collectionString.toLowerCase() }/${cartItemData?.productID}`}>{cartItemData?.name}</Link>)}
+                            {selectCartItems ? (<h2 >{cartItemData?.name}</h2>) : (collectionString == "product" ? <Link href={`/product/${cartItemData?.productID}`}>{cartItemData?.name}</Link> : <Link href={`/popularProduct/${cartItemData?.productID}`}>{cartItemData?.name}</Link>)}
                         </h2>
                         {/* <h2 className="text-xs font-semibold">efssdfserwedwqed</h2> */}
                         {/* <h3 className="text-xs ">$10000000</h3> */}

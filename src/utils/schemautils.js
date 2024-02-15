@@ -95,8 +95,8 @@ export const step3ValidationSchema = Yup.object().shape({
         .test('fileType', 'Invalid file type. Only JPG and PNG are allowed.', (value) =>
             value && (value.type === 'image/jpeg' || value.type === 'image/png')
         ),
-    genderOptions: Yup.string().required('Please select an option'),
-    sectorOption: Yup.string().required('Please select an option'),
+    genderOption: Yup.string().required('Please select an option'),
+    locationOption: Yup.string().required('Please select an option'),
 })
 
 

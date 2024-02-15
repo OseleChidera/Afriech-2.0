@@ -19,6 +19,7 @@ const Location = () => {
     const [showCart, setShowCart] = useState(false)
     const [userData , setUserData] = useState(null)
   const userID = useSelector((state) => state.user.userID);
+  const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
     function showLocationSearchBar (){
         setLocationSearchIsShown(!locationSearchIsShown)
         setShowCart(false)
@@ -43,12 +44,11 @@ const Location = () => {
 
 
 
-  // console.log("userData yyyyyyyyyyyyyyyyyyyyy ", userData)
 
   return (
     <div className='flex items-center justify-between border border-black w-full p-2 py-4 sticky z-10 top-0 bg-[#695acd] text-white'>
         <div className="location flex items-center gap-1 relative border border-black ">
-            <span className='capitalize underline underline-offset-1'>lagos</span>
+        <span className='capitalize underline underline-offset-1'>{firebaseUserInfo?.locationOption}</span>
         </div>
           
       <Cart showCartFn={showCartFn} showCart={showCart} userData={userData} userIDString={userID}/>

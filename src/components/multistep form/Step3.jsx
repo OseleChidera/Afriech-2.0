@@ -34,16 +34,8 @@ const Step3 = ({ data, next, prev }) => {
         { value: 'female', label: 'Female' },
         { value: 'prefer not to say', label: 'Prefer not to say' },
     ];
-    const sectorOption = [
-        { value: 'Student', label: 'Student' },
-        { value: 'Service', label: 'Service' },
-        { value: 'Engineering', label: 'Engineering' },
-        { value: 'Business', label: 'Business' },
-        { value: 'Management', label: 'Management' },
-        { value: 'Maintainance', label: 'Maintainance' },
-        { value: 'Banking & Finance', label: 'Banking & Finance' },
-        { value: 'Education', label: 'Education' },
-        { value: 'Entertainment', label: 'Entertainment' },
+    const locationOptions = [
+        { value: 'Nigeria', label: 'Nigeria' },
     ];
     return (
         <Formik
@@ -65,7 +57,9 @@ const Step3 = ({ data, next, prev }) => {
                                 selected={values.dateOfBirth}
                                 onChange={(date) => setFieldValue('dateOfBirth', date)}
                                 dateFormat="dd/MM/yyyy"
+                                isClearable
                                 showYearDropdown
+                                scrollableYearDropdown 
                                 placeholderText="Select date of birth"
                                 className="w-full p-2 px-5 rounded-xl"
                             />
@@ -73,7 +67,7 @@ const Step3 = ({ data, next, prev }) => {
                         </div>
                         <div className="flex gap-2 ">
                             <div className="  text-[0.65rem] font-bold w-full flex flex-col mb-3 ">
-                                <Field as="select" id="genderOptions" name="genderOptions" className="border-none items-center p-3 px-5 rounded-xl">
+                                <Field as="select" id="genderOption" name="genderOption" className="border-none items-center p-3 px-5 rounded-xl">
                                     <option value={values.gender} label="Select Your Gender" />
                                     {genderOptions.map((option) => (
                                         <option key={option.value} value={option.value} className="text-center">
@@ -81,18 +75,18 @@ const Step3 = ({ data, next, prev }) => {
                                         </option>
                                     ))}
                                 </Field>
-                                {errors.genderOptions && <span className='text-[0.7rem] text-red-600 font-semibold'>{errors.genderOptions}</span>}
+                                {errors.genderOption && <span className='text-[0.7rem] text-red-600 font-semibold'>{errors.genderOption}</span>}
                             </div>
                             <div className="  text-[0.65rem] font-bold w-full flex flex-col mb-3 ">
-                                <Field as="select" id="sectorOption" name="sectorOption" className="border-none p-3 px-5 rounded-xl">
-                                    <option value={values.sector} label="Select Your Field" />
-                                    {sectorOption.map((option) => (
+                                <Field as="select" id="locationOption" name="locationOption" className="border-none p-3 px-5 rounded-xl">
+                                    <option value={values.sector} label="Select Your location" />
+                                    {locationOptions.map((option) => (
                                         <option key={option.value} value={option.value} className="text-center">
                                             {option.label}
                                         </option>
                                     ))}
                                 </Field>
-                                {errors.sectorOption && <span className='text-[0.7rem] text-red-600 font-semibold'>{errors.sectorOption}</span>}
+                                {errors.locationOption && <span className='text-[0.7rem] text-red-600 font-semibold'>{errors.locationOption}</span>}
                             </div>
                         </div>
                         <div className="flex items-center justify-between gap-2 ">

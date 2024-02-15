@@ -8,6 +8,7 @@ import SyncLoader from "react-spinners/ClipLoader";
 import UserInfoModal from '@/components/user/UserInfoModal';
 // ... (import statements)
 import Modal from '@/components/user/Modal';
+import UserDateOfBirthDetail from '@/components/user/UserDateOfBirthDetail';
 
 export default function Page() {
   const dispatch = useDispatch();
@@ -43,6 +44,12 @@ export default function Page() {
             action: 'changeEmail',
             actionToPerfom: authCallbackUser?.emailVerified
         },
+        {
+            index: 5,
+            title: "Change your Location",
+            action: 'changeLocation',
+            actionToPerfom: true
+        }
       
     ]
 
@@ -81,7 +88,7 @@ export default function Page() {
                       ].map((userDetail, index) => (
                           <UserDetail name={userDetail.name} value={userDetail.value} index={index} />
                       )))}
-
+                      <UserDateOfBirthDetail name={"Date Of Birth"} value={userInfo?.dateOfBirth}/>
                       {
                           userInfoArray.map((info, index) => {
                               if (info.actionToPerfom == false) {

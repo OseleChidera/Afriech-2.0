@@ -15,6 +15,7 @@ const Cart = ({ showCartFn, showCart, userData, userIDString }) => {
     const [itemsToCheckout, setItemsToCheckout] = useState([])
     const [basketTotalCost, setBasketTotalCost] = useState(null)
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
     // const userID = useSelector((state) => state.user.userID);
 
     function setSelectCartItemsFn() {
@@ -83,9 +84,9 @@ const Cart = ({ showCartFn, showCart, userData, userIDString }) => {
                     }
                    
                 </div>
-                <button onClick={() => handleCheckAll(userIDString)} className={`px-5 border border-black bg-[#695acd] text-white capitalize text-center py-1 rounded-md ${''}`} >
+                {firebaseUserInfo?.accountVerified && (<button onClick={() => handleCheckAll(userIDString)} className={`px-5 border border-black bg-[#695acd] text-white capitalize text-center py-1 rounded-md ${''}`} >
                     chechout All items
-                </button>
+                </button>)}
             </div>
         </div>
     )
