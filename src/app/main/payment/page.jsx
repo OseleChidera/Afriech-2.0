@@ -1,5 +1,6 @@
 'use client'
 import Nav from '@/components/Nav'
+import UnauthorizedAccess from '@/components/UnauthorizedAccess/UnauthorizedAccess';
 import OrderPaymentComponent from '@/components/payment/OrderPaymentComponent';
 import React , {useState} from 'react'
 import { usePaystackPayment } from 'react-paystack';
@@ -15,12 +16,12 @@ export default function page() {
   return (
     <>
       <div>
-        <div className="p-[20px] flex flex-col gap-4 pb-[120px]">
+        {firebaseUserInfo?.accountVerified ? (<div className="p-[20px] flex flex-col gap-4 pb-[120px]">
           {
             userFinancingData?.map(item => <OrderPaymentComponent orderID={item.orderId} productsArray={item.orderProducts} financingTotal={item.financingTotal} leftToPay={item.leftToPay} />)
           }
-        </div>
-        <Nav />
+        </div>) : <UnauthorizedAccess/>}
+        {firebaseUserInfo?.accountVerified && (<Nav />)}
       </div>
     </>
   )

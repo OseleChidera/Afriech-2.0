@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { setupAuthObserver } from "../../../firebaseAuth";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserId, setAuthCallbackUser } from '../../redux/user'
+import Nav from '@/components/Nav';
 
 
 const layout = ({ children }) => {

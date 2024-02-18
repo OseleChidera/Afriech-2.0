@@ -26,13 +26,14 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
     userFavourited);
   const [productCartID, setProductCarTID] = useState("");
   const [productFavouriteID, setProductFavouriteID] = useState("");
-  const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
+
   //When a product is added to the car, some properties are removed from the product object and some properties are added like isCkecked
   const [isPathNameActive, setIsPathNameActive] = useState(
     pathName.includes(`/main/favourite`)
   );
   const userID = useSelector((state) => state.user.userID);
   const userFavourites = useSelector((state) => state.user.userFavourites);
+  const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
   // const userFavourites = useSelector((state) => state.user.userFavourites);
 
   function checkIfUserAddedToFavourite(userFavourites , id){
@@ -104,7 +105,7 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
         </div>
       </Link>)}
 
-      {!isPathNameActive && firebaseUserInfo?.accountVerified ? (
+      {firebaseUserInfo?.accountVerified && (!isPathNameActive ? (
         !isInCart && (
           <div
             className="absolute bg-[#695acde4] bottom-0 right-0 rounded-t-xl rounded-b-xl rounded-bl-none runded rounded-tr-none p-[0.3rem]"
@@ -120,18 +121,17 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
         >
           <Image src={trashIcon} width={20} />
         </div>
-      )}
+      ))}
 
-      {(isFavourited && checkIfUserAddedToFavourite(userFavourites, id)) && firebaseUserInfo?.accountVerified ? 
+      {firebaseUserInfo?.accountVerified &&
+        (isFavourited && checkIfUserAddedToFavourite(userFavourites, id) ? 
         (<div onClick={() => removeFromFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
           <Image src={favouriteClicked} width={20} className={`scaleLikeIcon`} />
         </div>)
         : 
         (<div onClick={() => addtoFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
           <Image src={favourite} width={20} className={``} />
-        </div>)
-        
-      }
+        </div>))}
     </div>
   );
 };

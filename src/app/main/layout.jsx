@@ -8,6 +8,7 @@ import {database} from '../../../firebaseConfig';
 import { collection, getDocs, getDoc, getFirestore, doc, onSnapshot } from "firebase/firestore";
 
 import { getUserData, fetchPopularProductsData, getUserFinancingData } from '@/utils/helperFunctions';
+import Nav from '@/components/Nav';
 
 
 

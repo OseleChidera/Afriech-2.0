@@ -58,7 +58,10 @@ export default function page() {
 
     // Feedback options array
     const feedbackOptions = [
-        { value: 'FEEDBACK', label: 'FEEDBACK' },
+        { value: 'GENERAL FEEDBACK', label: 'GENERAL FEEDBACK' },
+        { value: 'FEATURE REQUEST', label: 'FEATURE REQUEST' },
+        { value: 'COMPLIMENT', label: 'COMPLIMENT' },
+        { value: 'BUG REPORT', label: 'BUG REPORT' },
         { value: 'COMPLAINT', label: 'COMPLAINT' },
         { value: 'PAYMENT ISSUE', label: 'PAYMENT ISSUE' },
     ];

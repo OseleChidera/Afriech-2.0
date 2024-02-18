@@ -132,12 +132,14 @@ display: none;
 }
 
 .grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px,0.5fr));
-  gap: 20px;
-  /* padding: 20px; */
-  justify-content: start;
+  display: grid; /* Set the display property to grid */
+  grid-template-columns: repeat(auto-fit, minmax(150px, 0.5fr)); /* Define the grid columns to auto-fit with a minimum width of 150px and a maximum of 0.5 fractional units */
+  grid-gap: 20px; /* Set the gap between grid items to 20px */
+  /* padding: 20px; */ /* Commented out padding to remove padding */
+  justify-content: start; /* Align grid items along the main axis (horizontal) to start (left) */
+  align-items: start; /* Align grid items along the cross axis (vertical) to start (top) */
 }
+
 @keyframes likeProd {
   from {
     opacity: 0;
@@ -196,4 +198,22 @@ border: 2px solid green;
 }
 .cart-item-image{
   box-shadow:  -5px -5px 150px rgba(0, 0, 0, 0.17)
+}
+
+
+@keyframes paymentScaleAnimation {
+ 0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50%{
+    transform: scale(0.5);
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+.payment-complete{
+  animation: paymentScaleAnimation 0.6s ease-in-out; /* Adjust duration and timing function as needed */
 }

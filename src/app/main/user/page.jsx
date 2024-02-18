@@ -67,7 +67,7 @@ export default function page() {
             />
           ))}
         </div>
-        <Nav />
+        {/* <Nav /> */}
       </div>
     </>
   );

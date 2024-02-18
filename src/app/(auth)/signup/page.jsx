@@ -15,28 +15,29 @@ import Step3 from "../../../components/multistep form/Step3.jsx";
 import Step4 from "../../../components/multistep form/Step4.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import { setLoading, incrementSignup, decrementSignup, incrementSignin, decrementSignin, updateUserFormEntries, fetchDataByUserId, userData, setUserData, incrementAnimationCounter, decrementAnimationCounter } from '../../../redux/user'
-import { useRouter } from 'next/navigation' 
-
+import { useRouter } from 'next/navigation'
 
 export default function Multistep() {
+  // Redux state management
   const pageindex = useSelector((state) => state.user.signupIndex);
   const userFormEntries = useSelector((state) => state.user.userFormEntries);
   const userIdFromLocalStorage = localStorage.getItem('afriTechUserID') ? JSON.parse(localStorage.getItem('afriTechUserID')) : null;
   const userDataVariable = useSelector((state) => state.user.userData);
   const dispatch = useDispatch();
-  const [data, setData] = useState(userFormEntries)
-  const [animationCounter,setAnimationCounter] = useState(0)
 
+  // Local state
+  const [data, setData] = useState(userFormEntries);
+  const [animationCounter, setAnimationCounter] = useState(0);
 
+  // Function to upload NIN image to Firebase storage
   async function uploadNinImage(image) {
-    console.log("IMAGE ID INSIDE uploadProfilePicture" + "" + image)
-    console.log("USER ID INSIDE uploadProfilePicture" + "" + userIdFromLocalStorage)
-
+    // Construct the image path
+    const imagePath = `${userIdFromLocalStorage}/ninImage`;
     try {
-      const imagePath = `${userIdFromLocalStorage}/ninImage`
-      console.log(imagePath)
+      // Upload image to Firebase storage
       const storageRef = ref(storage, imagePath);
       await uploadBytes(storageRef, image);
+      // Return the download URL
       return getDownloadURL(storageRef);
     } catch (error) {
       console.log(error.message)
@@ -44,117 +45,86 @@ export default function Multistep() {
     }
   }
 
+  // Function to upload profile picture to Firebase storage
   async function uploadProfilePicture(image) {
-    console.log("IMAGE ID INSIDE uploadProfilePicture" + "" + image)
-    console.log("USER ID INSIDE uploadProfilePicture" + "" + userIdFromLocalStorage)
+    // Construct the image path
+    const imagePath = `${userIdFromLocalStorage}/profilePicture`;
     try {
-      const imagePath = `${userIdFromLocalStorage}/profilePicture`
-      console.log(imagePath)
+      // Upload image to Firebase storage
       const storageRef = ref(storage, imagePath);
       await uploadBytes(storageRef, image);
+      // Return the download URL
       return getDownloadURL(storageRef);
     } catch (error) {
       console.log(error.message)
       toast.error('profilePicture image couldnt upload')
-
     }
   }
 
+  // Function to redirect to a different page
   const router = useRouter()
-
   function redirect(path) {
     router.push(path);
   }
 
-
+  // Array of steps for the multi-step form
   const steps = [
     <Step1 data={data} next={handleNextStep} setData={setData} />,
     <Step2 data={data} next={handleNextStep} prev={handlePrevStep} />,
     <Step3 data={data} next={handleNextStep} prev={handlePrevStep} />,
-    <Step4 data={data} next={handleNextStep} prev={handlePrevStep} />]
+    <Step4 data={data} next={handleNextStep} prev={handlePrevStep} />
+  ];
 
+  // Function to create a new firestore document for the user
   async function ApiReq(newData) {
-    console.log("RUNNING API REQ" + " " + newData.agreeToTerms)
-
     const docRef = doc(database, "Users", `${userIdFromLocalStorage}`);
-    console.log("RUNNING API REQ")
     if (newData.agreeToTerms) {
       try {
-        console.log("RUNNING TRY IN API REQ")
-
-        const [image1Url, image2Url] = await Promise.all([uploadProfilePicture(newData.profilePicture), uploadNinImage(newData.ninSlipPicture)])
-        newData.profilePicture = image1Url
-        newData.ninSlipPicture = image2Url
+        const [image1Url, image2Url] = await Promise.all([uploadProfilePicture(newData.profilePicture), uploadNinImage(newData.ninSlipPicture)]);
+        newData.profilePicture = image1Url;
+        newData.ninSlipPicture = image2Url;
         delete newData.confirm_password;
         delete newData.password;
-        newData.dateOfBirth = newData.dateOfBirth.getTime()
-        console.log(image1Url)
-        console.log(image2Url)
-        console.log(newData)
-        dispatch(updateUserFormEntries(JSON.stringify(newData, null, 2)))
+        newData.dateOfBirth = newData.dateOfBirth.getTime();
+        dispatch(updateUserFormEntries(JSON.stringify(newData, null, 2)));
 
-        await updateDoc(docRef, newData)
-        try {
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            console.log('USER DATABASE INFO ', JSON.stringify(docSnap.data(), null, 2))
-            dispatch(setUserData(docSnap.data()))
-            console.log("userDataVariable: " + JSON.stringify(userDataVariable, null, 2))
-
-            toast.success('User SignUp complete')
-            redirect("/signin");
-          } else {
-            console.log('No such document!');
-          }
-        } catch (error) {
-          console.log(error)
-          toast.error(error.message)
+        await updateDoc(docRef, newData);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          dispatch(setUserData(docSnap.data()));
+          toast.success('User SignUp complete');
+          redirect("/signin");
+        } else {
+          console.log('No such document!');
         }
-
       } catch (error) {
-        console.log(error)
-        toast.error(error.message)
+        console.log(error);
+        toast.error(error.message);
       }
-
-
     }
   }
 
+  // Function to handle moving to the next step in the form
   function handleNextStep(newData, final = false) {
-
-    setData(prev => ({ ...prev, ...newData }))
-    console.log(newData)
-
+    setData(prev => ({ ...prev, ...newData }));
     if (final) {
-      ApiReq(newData)
+      ApiReq(newData);
       return;
     }
-    dispatch(incrementAnimationCounter())
-    dispatch(incrementSignup(final))
+    dispatch(incrementAnimationCounter());
+    dispatch(incrementSignup(final));
   }
 
+  // Function to handle moving to the previous step in the form
   function handlePrevStep(newData) {
-    setData(prev => ({ ...prev, ...newData }))
-    dispatch(decrementAnimationCounter())
-    dispatch(decrementSignup())
+    setData(prev => ({ ...prev, ...newData }));
+    dispatch(decrementAnimationCounter());
+    dispatch(decrementSignup());
   }
-
 
   return (
-    <div className="flex min-h-screen max-h-fit  max-w-full flex-col items-center justify-center  bg-[#695acd]  border">
+    <div className="flex min-h-screen max-h-fit max-w-full flex-col items-center justify-center bg-[#695acd] border">
       {steps[pageindex]}
     </div>
-  )
+  );
 };
-
-
-
-
-
-
-
-
-
-
-
-

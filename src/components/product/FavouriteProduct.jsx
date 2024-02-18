@@ -45,8 +45,8 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
     }, [])
 
     return (
-        <div className="product  relative rounded-xl  bg-white overflow-hidden ">
-            <div className=" w-fit  max-h-fit rounded-xl  shadow-2xl bg-whie overflow-hidden mx-auto  ">
+        <div className="product  relative rounded-xl  bg-white overflow-hidden max-w-fit">
+            <div className="w-fit  max-h-fit rounded-xl  shadow-2xl bg-whie border border-black overflow-hidden mx-auto">
                 <Image src={image} className="object-cover aspect-square" width={180} height={180} />
             </div>
             <Link href="/product/[id]" as={`/product/${id}`}>

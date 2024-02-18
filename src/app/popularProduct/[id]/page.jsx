@@ -48,7 +48,7 @@ export default function Page({ params }) {
         <>
             {firebaseUserInfo && <Location />}
             <div className="w-full relative min-h-screen max-h-fit border border-red-600 overflow-y-auto p-6">
-                <div className="flex flex-col gap-4 mb-[150px] ">
+                <div className={`flex flex-col gap-4  ${firebaseUserInfo?.accountVerified ? '' : `mb - [150px]`}`}>
                     <div
                         id="product-image-tag"
                         className="w-full h-[20%] border border-black shadow-2xl overflow-hidden rounded-md p-2 product-hero-image"

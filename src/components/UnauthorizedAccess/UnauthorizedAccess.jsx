@@ -2,9 +2,9 @@ import Link from "next/link";
 
 export default function UnauthorizedAccess() {
     return (
-        <div className="flex  svh-minHeight  w-full flex-col items-center justify-center bg-[#695acd] border py-4 px-5 border-1 border-red-800 gap-10 error-page">
+        <div className="flex min-h-screen w-full flex-col items-center justify-center bg-[#695acd] border py-4 px-5 border-1 border-red-800 gap-10">
             <div className="text-white mx-auto text-center">
-                <h1 className=" font-bold notfound text-shadow cursor-pointer">Oops</h1>
+                <h1 className=" font-bold notfound text-shadow cursor-pointer text-[7rem]">Oops</h1>
                 <p>You cannot access this page yet. Your profile is pending verification.</p>
                 <p>Await further instruction</p>
             </div>

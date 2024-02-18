@@ -73,7 +73,7 @@ export default function OrderPaymentComponent({ orderID, productsArray, leftToPa
 
   return (
     <>
-      <div>
+      <div className="payment-complete">
         <details className="relative border border-black w-full p-2 rounded-lg  text-white bg-[#695acd] text-balance ">
           <summary className=" flex justify-between">
             <div className=" text-lg font-semibold capitalize">
