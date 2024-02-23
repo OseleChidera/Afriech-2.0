@@ -26,7 +26,7 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
     userFavourited);
   const [productCartID, setProductCarTID] = useState("");
   const [productFavouriteID, setProductFavouriteID] = useState("");
-
+  const data = useSelector((state) => state.user.data);
   //When a product is added to the car, some properties are removed from the product object and some properties are added like isCkecked
   const [isPathNameActive, setIsPathNameActive] = useState(
     pathName.includes(`/main/favourite`)
@@ -40,7 +40,7 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
     console.log("userFavourites  , id", userFavourites, id)
     // let userFavourites = firebaseUserInfo?.favourites
     if (userFavourites) {
-      let arrayItem = userFavourites.find(product => product.productID == id)
+      let arrayItem = data?.favouritesArray?.find(product => product.productID == id)
       console.log("check ", arrayItem)
       if (!arrayItem) {
         return false
@@ -53,7 +53,7 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
   function addItemToCartFromProduct() {
     setIsInCart(!isInCart);
     
-    addItemsToCart(id, 1, userID, setProductCarTID,"Products");
+    addItemsToCart(id, 1, userID, setProductCarTID, collectionString);
     console.log("productCartIDDDDDDDDD" + productCartID);
   }
 
@@ -90,7 +90,7 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
   
   return (
     <div className="product  relative rounded-xl  bg-white overflow-hidden max-w-fit">
-      <div className=" w-fit  max-h-fit rounded-xl  shadow-2xl bg-whie border border-black overflow-hidden mx-auto">
+      <div className=" w-fit  max-h-fit rounded-xl  shadow-2xl bg-whie border-[0.2px] border-black overflow-hidden mx-auto">
         <Image src={image} className="object-cover aspect-square " width={180} height={180} />
       </div>
       {collectionString == "Products" ? (<Link href="/product/[id]" as={`/product/${id}`}>
@@ -105,24 +105,14 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
         </div>
       </Link>)}
 
-      {firebaseUserInfo?.accountVerified && (!isPathNameActive ? (
-        !isInCart && (
-          <div
-            className="absolute bg-[#695acde4] bottom-0 right-0 rounded-t-xl rounded-b-xl rounded-bl-none runded rounded-tr-none p-[0.3rem]"
-            onClick={addItemToCartFromProduct}
-          >
-            <Image src={addIcon} width={20} />
-          </div>
-        )
-      ) : (
-        <div
-          className="absolute bg-[#695acde4] bottom-0 right-0 rounded-t-xl rounded-b-xl rounded-bl-none runded rounded-tr-none p-[0.3rem]"
-          onClick={() => isPathNameActive ?  removeFromFavourites() : removeProductFromCart(productCartID)}
-        >
-          <Image src={trashIcon} width={20} />
-        </div>
-      ))}
-
+      
+      {(firebaseUserInfo?.accountVerified) && (<div
+        className="absolute bg-[#695acde4] bottom-0 right-0 rounded-t-xl rounded-b-xl rounded-bl-none runded rounded-tr-none p-[0.3rem]"
+        onClick={addItemToCartFromProduct}
+      >
+        <Image src={addIcon} width={20} />
+      </div>)}
+      
       {firebaseUserInfo?.accountVerified &&
         (isFavourited && checkIfUserAddedToFavourite(userFavourites, id) ? 
         (<div onClick={() => removeFromFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>

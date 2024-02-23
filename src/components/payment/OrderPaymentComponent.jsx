@@ -15,12 +15,7 @@ export default function OrderPaymentComponent({ orderID, productsArray, leftToPa
     
   const [amount, setAmount] = useState("");
 
-    // const totalPrice = productsArray?.reduce((accumulator, currentValue) => {
-    //     // Add the price of the current object to the accumulator
-    //     // console.log("total price ", accumulator + currentValue.price);
-    //     return accumulator + currentValue.price;
-    // }, 0);
-
+ 
 
 
   const config = {
@@ -45,8 +40,7 @@ export default function OrderPaymentComponent({ orderID, productsArray, leftToPa
   const initializePayment = usePaystackPayment(config);
 
   function configurePayment(orderNumber) {
-    // config.amount = ammount;
-    // config.reference = `${(new Date()).getTime().toString() }_#${orderNumber}`
+    
     config.metadata.custom_fields[0].display_name = `${firebaseUserInfo.fullname}`;
     config.metadata.custom_fields[0].variable_name = `Part payment for order #${orderNumber}`;
     config.metadata.custom_fields[0].value = `Order #${orderNumber} payment`;
@@ -73,7 +67,7 @@ export default function OrderPaymentComponent({ orderID, productsArray, leftToPa
 
   return (
     <>
-      <div className="payment-complete">
+      <div className="">
         <details className="relative border border-black w-full p-2 rounded-lg  text-white bg-[#695acd] text-balance ">
           <summary className=" flex justify-between">
             <div className=" text-lg font-semibold capitalize">
@@ -82,7 +76,7 @@ export default function OrderPaymentComponent({ orderID, productsArray, leftToPa
             <div className="  text-white">
                           ₦{formatNumberWithCommas(leftToPay)}
             </div>
-            <div className="  bg-[#695acd] text-white font-bold font-lg">
+            <div className="  text-white font-bold font-lg">
               {productsArray?.length}
             </div>
           </summary>
@@ -126,3 +120,5 @@ export default function OrderPaymentComponent({ orderID, productsArray, leftToPa
     </>
   );
 }
+
+

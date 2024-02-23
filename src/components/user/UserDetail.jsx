@@ -48,14 +48,14 @@ export default function UserDetail({ name, value, index }) {
     }
 
   return (
-      <div className="flex justify-between items-center  w-full p-2 rounded-lg  bg-[#695acd]" key={index}>
+      <div className="flex justify-between items-end  w-full p-2 rounded-lg  bg-[#695acd] gap-8" key={index}>
           {
               <div id="left" className='flex flex-col  w-full  gap-1'>
                   <h5 className="text-bold capitalize text-white text-sm">{name}:</h5>
                   <input
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
-                      className=" min-w-1/2 text-black max-w-fit rounded-xl bg-white p-[0.1rem] indent-2"
+                      className="w-full p-2 px-5 rounded-xl text-black indent-2"
                       disabled={!isEditing}
                   />
               </div>

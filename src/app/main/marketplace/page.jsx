@@ -5,6 +5,7 @@ import Product from '@/components/product/Product'
 import SearchBar from '@/components/searchbar/SearchBar'
 import { useSelector, useDispatch } from "react-redux";
 import BrandOptions from '@/components/brandOptions/BrandOptions'
+import ProductLoadingSleleton from '@/components/loading skeleton/ProductLoadingSleleton'
 import { array } from 'yup'
 import { getUserData } from '@/utils/helperFunctions'
 import { setPopularProductsData, setCurrentfirebaseUserInfo, setuserFavouritesData, setuserCartData, setuserFinancingData } from '@/redux/user'
@@ -13,30 +14,29 @@ import UnauthorizedAccess from '@/components/UnauthorizedAccess/UnauthorizedAcce
 
 const page = () => {
     // const dispatch = useDispatch();
+    const data = useSelector((state) => state.user.data);
     const productsData = useSelector((state) => state.user.productsData);
     const PopularProducts = useSelector((state) => state.user.PopularProducts);
     const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
     const [productsArray, setProductsArray] = useState([])
-    // const [userData, setUserData] = useState(null);
-    // const [cart, setCart] = useState(null);
-    // const [favourites, setFavourites] = useState(null);
-    // const [financingData, setFinancingData] = useState(null);
-    // const [popularProducts, setPopularProducts] = useState([])
-    // console.table(productsData)
+    
     const userID = useSelector((state) => state.user.userID);
 
 
+    function filterProducts(value) {
+        const results = value === "all" ? productsArray : productsArray.filter((product) => {
+            return product.name === value || product.brandID === value;
+        });
+        console.log("results: " + results);
+        console.log("results: " + JSON.stringify(results));
+        setProductsArray(results);
+        console.log("productsArray: " + productsArray);
+    }
 
-
-    // dispatch(setPopularProductsData(popularProducts));
-    // dispatch(setCurrentfirebaseUserInfo(userData));
-    // dispatch(setuserFavouritesData(favourites));
-    // dispatch(setuserCartData(cart));
-    // dispatch(setuserFinancingData(financingData));
+    
 
     useEffect(()=>{
-        // getUserData(userID, setUserData, setCart, setFavourites, setFinancingData)
-        const newProductsArray = productsData?.concat(PopularProducts)
+        const newProductsArray = data?.productsArray?.concat(data?.popularProductsArray)
         setProductsArray(newProductsArray)
     }, [])
     return (
@@ -44,10 +44,12 @@ const page = () => {
             <div className='w-full relative min-h-screen max-h-fit border border-red-600 overflow-y-auto'>
                 <div className="p-[20px] flex flex-col gap-4 pb-[120px]">
                     <SearchBar />
-                    <BrandOptions />
+                    <BrandOptions filterProducts={filterProducts}/>
                     <div className="grid-container ">
                         {
-                            productsArray?.map((product) => (<Product name={product.name} price={product.price} id={product.id} image={product?.imageGalleryImages[0].imageURL} collectionString={product.collectionString} productObj={product} />))
+                            data?.productsArray ?
+                            (data?.productsArray?.concat(data?.popularProductsArray)?.map((product) => (<Product name={product.name} price={product.price} id={product.id} image={product?.imageGalleryImages[0].imageURL} collectionString={product.collectionString} productObj={product} />))) : 
+                            ([...new Array(10)].map((product) => (<ProductLoadingSleleton />)))
                         }
                     </div>
                 </div>

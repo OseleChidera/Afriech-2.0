@@ -23,6 +23,7 @@ export default function Page({ params }) {
 
 
     const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
+    const data = useSelector((state) => state.user.data);
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
     const selectGalleryImage = (index) => {
@@ -46,7 +47,7 @@ export default function Page({ params }) {
     console.log('product', product)
     return (
         <>
-            {firebaseUserInfo && <Location />}
+            {data?.userData?.accountVerified && <Location />}
             <div className="w-full relative min-h-screen max-h-fit border border-red-600 overflow-y-auto p-6">
                 <div className={`flex flex-col gap-4  ${firebaseUserInfo?.accountVerified ? '' : `mb - [150px]`}`}>
                     <div
@@ -106,9 +107,9 @@ export default function Page({ params }) {
                             <button className='font-bold bg-[#695acd] text-white rounded-xl text-xl capitalize px-4 py-[0.55rem] relative '>find out more </button>
                         </Link>
                     </div>
-                    {firebaseUserInfo?.accountVerified &&(<Reviews productId={productId} reviews={product?.reviews} collectionString={"PopularProducts"}/>)}
+                    {data?.userData?.accountVerified &&(<Reviews productId={productId} reviews={product?.reviews} collectionString={"PopularProducts"}/>)}
                 </div>
-                {(product?.qty !== 0 && firebaseUserInfo?.accountVerified) && (<AddToCartBtn productID={productId} qty={product?.qty} price={product?.price} collectionString={"PopularProducts"}/>)}
+                {(product?.qty !== 0 && data?.userData?.accountVerified) && (<AddToCartBtn productID={productId} qty={product?.qty} price={product?.price} collectionString={"PopularProducts"}/>)}
             </div>
         </>
     );

@@ -19,13 +19,27 @@ export default function UserDateOfBirthDetail({ name, value }) {
     // console.log(userID)
 
     async function handleInputChange(name) {
-        console.log(name)
-        const propertyToUpdate = name
-        console.log(propertyToUpdate)
+      
 
+       
+    }
+
+
+    function selectEditing() {
+        setIsEditing(true);
+    }
+
+    async function handleSave() {
+        if (value == " ") {
+            return;
+        }
+        setIsEditing(false);
+        const date = new Date(dateOfBirthValue);
+        const dateOfBirthTimestamp = date.getTime();
+        
         const docRef = doc(database, "Users", userID);
         try {
-            await updateDoc(docRef, { dateOfBirth: dateOfBirthValue })
+            await updateDoc(docRef, { dateOfBirth: dateOfBirthTimestamp })
             toast.success(`${name} data has updated successfully`);
             console.log('Document Update completed successfully')
 
@@ -36,36 +50,25 @@ export default function UserDateOfBirthDetail({ name, value }) {
         }
     }
 
-
-    function selectEditing() {
-        setIsEditing(true);
-    }
-
-    function handleSave(name) {
-        if (value == " ") {
-            return;
-        }
-        setIsEditing(false);
-        handleInputChange(name)
-    }
+    
     const handleChange = (date) => {
-        setdateOfBirthValue(date);
+        ;
     };
     return (
-        <div className="flex justify-between items-end  w-full p-2 rounded-lg border border-black bg-[#695acd]">
+        <div className={`flex justify-between items-end  w-full p-2 rounded-lg  bg-[#695acd] `}>
             {
-                <div id="left" className='flex flex-col  w-3/4  gap-1 border border-black'>
+                <div id="left" className='flex flex-col  w-3/4  gap-1 '>
                     <h5 className="text-bold capitalize text-white text-sm">{name}:</h5>
                     <DatePicker
                         name="dateOfBirth"
                         selected={dateOfBirthValue}
-                        onChange={(date) => handleChange(date)}
+                        onChange={(date) => setdateOfBirthValue(date)}
                         dateFormat="dd/MM/yyyy"
                         isClearable
                         showYearDropdown
                         scrollableYearDropdown
                         placeholderText="Select date of birth 01/01/2001"
-                        className="w-full p-2 px-5 rounded-xl text-black"
+                        className={`w-full p-2 px-5 rounded-xl text-black ${isEditing ? "text-black" : "text-white"}`}
                         disabled={!isEditing}
                     />
                 </div>

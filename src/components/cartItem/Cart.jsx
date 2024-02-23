@@ -12,6 +12,7 @@ const Cart = ({ showCartFn, showCart, userData, userIDString }) => {
     const [itemsToCheckout, setItemsToCheckout] = useState([]);
     const [basketTotalCost, setBasketTotalCost] = useState(null);
     const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
+    const data = useSelector((state) => state.user.data);
 
     // Function to toggle selecting cart items
     function setSelectCartItemsFn() {
@@ -70,13 +71,13 @@ const Cart = ({ showCartFn, showCart, userData, userIDString }) => {
                     </button>
                 )}
                 <div className={`border border-black bg-[#f9f9f5]  flex flex-col gap-2 min-h-fit max-h-[15rem]  overflow-y-auto pt-2 pb-2`}>
-                    {userData?.cart.map((cartItemData) => (
-                        <CartItemCheckout key={cartItemData.cartItemID} selectCartItems={selectCartItems} id={cartItemData.cartItemID} cartItemData={cartItemData} itemsToCheckout={itemsToCheckout} cart={userData.cart} collectionString={cartItemData.collectionString} />
+                    {data?.cartArray?.map((cartItemData) => (
+                        <CartItemCheckout key={cartItemData.cartItemID} selectCartItems={selectCartItems} id={cartItemData.cartItemID} cartItemData={cartItemData} itemsToCheckout={itemsToCheckout} cart={data.cartArray} collectionString={cartItemData.collectionString} />
                     ))}
                 </div>
                 
                     <button onClick={() => handleCheckAll(userIDString)} className={`px-5 border border-black bg-[#695acd] text-white capitalize text-center py-1 rounded-md ${''}`}>
-                        Checkout All items
+                        Checkout Items
                     </button>
                 
             </div>

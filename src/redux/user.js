@@ -40,7 +40,8 @@ export const userSlice = createSlice({
         authCallbackUser: null,
         productsData: null,
         PopularProducts: [],
-        userFinancingData: []
+        userFinancingData: [],
+        data: {}
     },
     reducers: {
         setUserId: (state, action) => {
@@ -166,10 +167,15 @@ export const userSlice = createSlice({
             // console.log("ACTION PAYLOAD:" + action.payload)
             // console.log("this data was dispatched to setuserFavouritesData" + JSON.stringify(action.payload, null, 2))
             state.userFinancingData = action.payload
+        },
+        setData: (state, action) => {
+            // console.log("ACTION PAYLOAD:" + action.payload)
+            // console.log("this data was dispatched to setData" + JSON.stringify(action.payload, null, 2))
+            state.data = action.payload
         }
     }
 })
-export const { setUserId, setUserData, removeUserData, setLoading, incrementSignup, decrementSignup, incrementSignin, decrementSignin, incrementSigninToStartMultistep, incrementSigninByAmmount, updateUserFormEntries, grantStorageAccess, sethomePageNavIndex, setCurrentUserData, setSignupIndex, setCurrentfirebaseUserInfo, incrementAnimationCounter, decrementAnimationCounter, showModalDispachFn, hideModalDispachFn, setModalToshow, setAuthCallbackUser, setProductsData, setPopularProductsData, setuserCartData, setuserFavouritesData, setuserFinancingData } = userSlice.actions;
+export const { setUserId, setUserData, removeUserData, setLoading, incrementSignup, decrementSignup, incrementSignin, decrementSignin, incrementSigninToStartMultistep, incrementSigninByAmmount, updateUserFormEntries, grantStorageAccess, sethomePageNavIndex, setCurrentUserData, setSignupIndex, setCurrentfirebaseUserInfo, incrementAnimationCounter, decrementAnimationCounter, showModalDispachFn, hideModalDispachFn, setModalToshow, setAuthCallbackUser, setProductsData, setPopularProductsData, setuserCartData, setuserFavouritesData, setuserFinancingData, setData } = userSlice.actions;
 // export const userData = (state) => state.user.userData;
 export default userSlice.reducer;
 

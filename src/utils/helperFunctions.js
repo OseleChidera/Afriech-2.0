@@ -4,32 +4,52 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { setPopularProductsData } from '@/redux/user';
 
-export async function getUserData(userID, userDataSetterFn, cartDataSetterFn = null, favouritesSetterFn = null, setFinancingData = null) {
-    console.log("userID: ", userID)
+export async function getUserData(userID, userDataSetterFn,setFetchedData) {
+
 
 
     try {
         const userDocRef = doc(database, 'Users', userID);
-        // Fetch initial data
         const initialSnapshot = await getDoc(userDocRef);
         const initialUserData = initialSnapshot.data();
-        console.log("initialUserData ", initialUserData)
+
         // Set initial data
         userDataSetterFn(initialUserData);
+        setFetchedData((prevData) => ({
+            ...prevData,
+            ['userData']: initialUserData,
+        }));
         // Set up real-time listener for changes
-        const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
+        const unsubscribeUserInfo = onSnapshot(userDocRef, (snapshot) => {
             const fetchedUserData = snapshot.data();
-            // console.log("fetchedUserData   fetchedUserData", JSON.stringify(fetchedUserData,null,2))
             userDataSetterFn(fetchedUserData);
-            if (cartDataSetterFn !== null && favouritesSetterFn !== null) {
-                cartDataSetterFn(fetchedUserData.cart)
-                favouritesSetterFn(fetchedUserData.favourites)
-                console.log("fetchedUserData.financing ", fetchedUserData.financing)
-                setFinancingData(fetchedUserData.financing)
-            }
-        });
+
+            // console.log("fetchedUserData   fetchedUserData", JSON.stringify(fetchedUserData,null,2))
+            setFetchedData((prevData) => ({
+                ...prevData,
+                ['userData']: fetchedUserData,
+            }));
+            // if (fetchedData.cartArray !== null && fetchedData.favouritesArray !== null) {
+                // cartDataSetterFn(fetchedUserData.cart)
+                setFetchedData((prevData) => ({
+                    ...prevData,
+                    ['cartArray']: fetchedUserData.cart,
+                    ['favouritesArray']: fetchedUserData.favourites,
+                    ['paymentArray']: fetchedUserData.financing,
+                    ['paymentCompleteArray']: fetchedUserData.paymentCompletedArray,
+                }));
+               
+                // favouritesSetterFn(fetchedUserData.favourites)
+                // console.log("fetchedUserData.cart ", fetchedUserData.cart)
+                // console.log("fetchedUserData.favourites ", fetchedUserData.favourites)
+                // console.log("fetchedUserData.financing ", fetchedUserData.financing)
+                // setFinancingData(fetchedUserData.financing)
+               
+            // }
+        })
+
         // Cleanup the listener when the component unmounts or as needed
-        return () => unsubscribe();
+        return () => unsubscribeUserInfo();
     } catch (error) {
         console.log('Error fetching data:', error, error.code, error.message);
     }
@@ -212,7 +232,12 @@ export async function addItemsToCart(productId, productQuantity = 1, userID, set
                        delete cartItem.qty;
                        delete cartItem.link;
                        delete cartItem.reviews;
+                       delete cartItem.userFavourited;
                        delete cartItem.description;
+                       const imageGallerylength = cartItem?.imageGalleryImages?.length
+                       delete cartItem.imageGalleryImages[imageGallerylength - 1];
+                       delete cartItem.imageGalleryImages[imageGallerylength - 2];
+                       delete cartItem.imageGalleryImages[imageGallerylength - 3];
                        existingArray.push(cartItem);
 
 
@@ -306,11 +331,16 @@ export async function addItemsToFavourites(productId, userID, setProductFavourit
                         delete favouriteItem.link;
                         delete favouriteItem.reviews;
                         delete favouriteItem.description;
+                        delete favouriteItem.userFavourited;
+                        // const imageGallerylength = favouriteItem?.imageGalleryImages?.length
+                        // delete favouriteItem.imageGalleryImages[imageGallerylength - 1];
+                        // delete favouriteItem.imageGalleryImages[imageGallerylength - 2];
+                        // delete favouriteItem.imageGalleryImages[imageGallerylength - 3];
                         existingArray.push(favouriteItem);
-                productuserFavourites.push(userID)
+                        productuserFavourites.push(userID)
                         if (setProductFavouriteID) {
                             setProductFavouriteID(favouriteItemID) // or pass the cartitemId
-                        }setProductFavouriteID
+                        }
                     
 
                     // Update the document with the modified array
@@ -355,11 +385,16 @@ export async function addPopularItemsToFavourites(productId, userID, setProductF
                 delete favouriteItem.link;
                 delete favouriteItem.reviews;
                 delete favouriteItem.description;
+                delete favouriteItem.userFavourited;
+                // const imageGallerylength = favouriteItem?.imageGalleryImages?.length
+                // delete favouriteItem.imageGalleryImages[imageGallerylength - 1];
+                // delete favouriteItem.imageGalleryImages[imageGallerylength-2];
+                // delete favouriteItem.imageGalleryImages[imageGallerylength - 3];
                 existingArray.push(favouriteItem);
                 productuserFavourites.push(userID)
                 if (setProductFavouriteID) {
                     setProductFavouriteID(favouriteItemID) // or pass the cartitemId
-                } setProductFavouriteID
+                } 
 
 
                 // Update the document with the modified array
@@ -423,18 +458,12 @@ export async function removeItemFromFavourites(productId, userID, collectionStri
 }
 
 
-
-
-
-export async function fetchPopularProductsData(setPopularProducts) {
-    console.log('Function ran fetchPopularProductsData');
-
+export async function fetchProductsData(setData, collectionName,key) {
     try {
-        // Reference to your Firestore collection
-        const dataCollection = collection(database, 'PopularProducts');
+        const dataCollectionRef = collection(database, collectionName);
 
         // Fetch the data once using getDocs
-        const dataCollectionSnapshot = await getDocs(dataCollection);
+        const dataCollectionSnapshot = await getDocs(dataCollectionRef);
 
         // Extract data from the snapshot
         const dataArray = dataCollectionSnapshot.docs.map((doc) => {
@@ -442,12 +471,13 @@ export async function fetchPopularProductsData(setPopularProducts) {
         });
 
         // Set the initial value of the collection
-        setPopularProducts(dataArray);
+        setData((prevData) => ({
+            ...prevData,
+            [key]: dataArray,
+        }));
 
         // Using onSnapshot to listen for real-time updates
-        const unsubscribe = onSnapshot(dataCollection, (querySnapshot) => {
-            // This callback will be triggered whenever the data in the collection changes
-
+        const unsubscribe = onSnapshot(dataCollectionRef, (querySnapshot) => {
             // Extract data from each document in the collection
             const updatedDataArray = querySnapshot.docs.map((doc) => {
                 const data = doc.data();
@@ -456,7 +486,10 @@ export async function fetchPopularProductsData(setPopularProducts) {
             });
 
             // Dispatch the updated array of data to your state
-            setPopularProducts(updatedDataArray);
+            setData((prevData) => ({
+                ...prevData,
+                [key]: updatedDataArray,
+            }));
         });
 
         // Return the unsubscribe function for cleanup
@@ -511,16 +544,27 @@ export async function updateFinancingItemPrice(orderID, amountPayable, userID , 
             if (currentUserSnapshot.exists()) {
                 // Get the existing array from the document
                 let existingArray = currentUserSnapshot.data().financing || [];
+                let paymentCompletedArr = currentUserSnapshot.data().paymentCompletedArray || [];
 
                 // Find the item in the array with the matching orderID
                 const itemToUpdate = existingArray.find(order => order.orderId === orderID);
 
                 if (itemToUpdate) {
                     // Update the leftToPay value of the found item
-                    itemToUpdate.leftToPay -= amountPayable;
-
-                    // Update the document with the modified array
-                    await updateDoc(currentUserRef, { financing: existingArray });
+                    if(itemToUpdate.leftToPay - amountPayable === 0){
+                        console.log("paymentCompletedArr ", paymentCompletedArr)
+                        paymentCompletedArr.push(itemToUpdate)
+                        console.log("paymentCompletedArr after push", paymentCompletedArr)
+                        existingArray = existingArray.filter(order => order.orderId !== orderID)
+                        await updateDoc(currentUserRef, { paymentCompletedArray: paymentCompletedArr });
+                        await updateDoc(currentUserRef, { financing: existingArray });
+                        
+                    }
+                    else {
+                        itemToUpdate.leftToPay -= amountPayable;
+                        // Update the document with the modified array
+                        await updateDoc(currentUserRef, { financing: existingArray });
+                    }
 
                     // Check if the setter function was passed
                     // Note: You mentioned a toast notification, but didn't provide implementation details, assuming you have it somewhere

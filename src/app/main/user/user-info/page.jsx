@@ -14,6 +14,7 @@ export default function Page() {
   const dispatch = useDispatch();
 
     const userInfo = useSelector((state) => state.user.firebaseUserInfo);
+    const data = useSelector((state) => state.user.data);
     const loading = useSelector((state) => state.user.loading);
     const authCallbackUser = useSelector((state) => state.user.authCallbackUser);
 
@@ -28,7 +29,7 @@ export default function Page() {
             index: 1,
             title: "Change your NinSlip picture",
             action: 'changeNinSlip',
-            actionToPerfom: userInfo?.reuploadNin
+            actionToPerfom: data?.userData?.reuploadNin
         },
         ,
         {
@@ -52,43 +53,49 @@ export default function Page() {
         }
       
     ]
-
+const [settings , setSettings] = useState()
 
     // console.log(authCallbackUser)
     // console.table(userInfoArray)
     const showModal = useSelector((state) => state.user.showModal);
+
+    useEffect(() => {
+        setSettings([
+            {
+                name: "fullname",
+                value: data?.userData?.fullname,
+            },
+            {
+                name: "address",
+                value: data?.userData?.address,
+            },
+            {
+                name: "phone",
+                value: data?.userData?.phone,
+            },
+            {
+                name: "bvnnumber",
+                value: data?.userData?.bvnnumber,
+            },
+            {
+                name: "ninnumber",
+                value: data?.userData?.ninnumber,
+            },
+        ])
+        console.log("data from redux  " , data?.userData)
+    },[])
   return (
     <>
           {showModal && <Modal />}
-          <div className="w-full relative h-fit border border-red-600 overflow-y-auto">
+          <div className="w-full relative h-fit  overflow-y-auto">
               <div className="p-[20px] flex flex-col gap-4">
                   <UserProfile />
-                  <div className="flex flex-col gap-4 items-center border border-red-600 overflow-y-auto hide-scrollbar h-[55vh]">
-                      {userInfo && ([
-                          {
-                              name: "fullname",
-                              value: userInfo?.fullname,
-                          },
-                          {
-                              name: "address",
-                              value: userInfo?.address,
-                          },
-                          {
-                              name: "phone",
-                              value: userInfo?.phone,
-                          },
-                          {
-                              name: "bvnnumber",
-                              value: userInfo?.bvnnumber,
-                          },
-                          {
-                              name: "ninnumber",
-                              value: userInfo?.ninnumber,
-                          },
-                      ].map((userDetail, index) => (
+                  <div className="flex flex-col gap-4 items-center  overflow-y-auto hide-scrollbar h-[55vh]">
+                  <UserDateOfBirthDetail name={"Date Of Birth"} value={data?.userData?.dateOfBirth} />
+                      {settings?.map((userDetail, index) => (
                           <UserDetail name={userDetail.name} value={userDetail.value} index={index} />
-                      )))}
-                      <UserDateOfBirthDetail name={"Date Of Birth"} value={userInfo?.dateOfBirth}/>
+                      ))}
+                     
                       {
                           userInfoArray.map((info, index) => {
                               if (info.actionToPerfom == false) {

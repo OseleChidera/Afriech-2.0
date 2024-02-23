@@ -55,9 +55,9 @@ export default function page() {
   return (
     <>
       {showModal && <Modal/>}
-      <div className={`w-full relative h-fit  border border-red-600 p-[20px] pb-0 ${showModal ? " overflow-" : ''}`}>
+      <div className={`w-full relative h-fit p-[20px] pb-0 ${showModal ? " overflow-" : ''}`}>
         <UserProfile />
-        <div className="flex flex-col gap-3 h-fit  border border-black">
+        <div className="flex flex-col gap-3 h-fit  ">
           {settingOptions.map((settingOption) => (
             <Setting
               icon={settingOption.icon}
@@ -67,7 +67,7 @@ export default function page() {
             />
           ))}
         </div>
-        {/* <Nav /> */}
+        <Nav />
       </div>
     </>
   );

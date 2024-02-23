@@ -34,7 +34,7 @@ export default function Setting({ icon, title, description, action }) {
                         <h1 className='text-xs font-semibold '>{description}</h1>
                     </div>
                 </div>
-                <div className="w-fit  border border-black">
+                <div className="w-fit ">
                     <Image src={arrow} width={20} className='' />
                 </div>
             </div>

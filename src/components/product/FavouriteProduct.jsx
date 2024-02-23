@@ -25,7 +25,7 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
         userFavourited);
     const [productCartID, setProductCarTID] = useState("");
     const [productFavouriteID, setProductFavouriteID] = useState("");
-
+    const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
     //When a product is added to the car, some properties are removed from the product object and some properties are added like isCkecked
     const [isPathNameActive, setIsPathNameActive] = useState(
         pathName.includes(`/main/favourite`)
@@ -39,7 +39,12 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
         removeItemFromFavourites(id, userID, collectionString)
     }
 
+    function addItemToCartFromProduct() {
+        // setIsInCart(!isInCart);
 
+        addItemsToCart(id, 1, userID, setProductCarTID, collectionString);
+        // console.log("productCartIDDDDDDDDD" + productCartID);
+    }
     useEffect(() => {
 
     }, [])
@@ -55,9 +60,14 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
                     <h3 className="text-sm">₦{formatNumberWithCommas(price)}</h3>
                 </div>
             </Link>
-
-            <div
+            {firebaseUserInfo?.accountVerified && (<div
                 className="absolute bg-[#695acde4] bottom-0 right-0 rounded-t-xl rounded-b-xl rounded-bl-none runded rounded-tr-none p-[0.3rem]"
+                onClick={addItemToCartFromProduct}
+            >
+                <Image src={addIcon} width={20} />
+            </div>)}
+            <div
+                className="absolute bg-[#695acde4] top-0 right-0 rounded-tr-xl rounded-br-none rounded-bl-xl runded rounded-tl-none p-[0.3rem]"
                 onClick={() => removeFromFavourites()}
             >
                 <Image src={trashIcon} width={20} />

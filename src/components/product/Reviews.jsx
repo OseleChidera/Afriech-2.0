@@ -29,8 +29,8 @@ export default function Reviews({ reviews, productId, collectionString }) {
 
 
   return (
-    <div className="border border-black flex flex-col items-center gap-6">
-      <div className="border border-black w-[90%]">
+    <div className=" flex flex-col items-center gap-6 mb-[120px]">
+      <div className=" w-[90%]">
         <h1 className="capitalize font-bold text-2xl text-center mb-4">
           Product reviews
         </h1>
@@ -43,7 +43,7 @@ export default function Reviews({ reviews, productId, collectionString }) {
               rows="4"
               
               maxLength={100}
-              className="p-2 border border-black rounded-xl w-full text-sm"
+              className="p-2  border border-black rounded-xl w-full text-sm"
               placeholder="Enter your review of this product"
               value={review}
               onFocus={handleTextareaFocus}
@@ -67,7 +67,7 @@ export default function Reviews({ reviews, productId, collectionString }) {
           reviews?.map((review) => <Review date={review?.date} review={review?.review} userID={review?.userId} reviewID={review?.reviewId} productId={productId} collectionString={collectionString}/> )
         }
       </div>
-      <h2 className='text-sm  text-center'>{reviews?.length} reviews of this product fo far</h2>
+      {(reviews?.length == 0 && reviews[0] == "" | " ") ? (<h2 className='text-sm  text-center'>No reviews for this product fo far</h2>) : (<h2 className='text-sm  text-center'>{reviews?.length} reviews of this product fo far</h2>)}
     </div>
   );
 }

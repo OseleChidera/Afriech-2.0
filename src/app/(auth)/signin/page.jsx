@@ -1,4 +1,5 @@
 // Import necessary dependencies
+"use client"
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import SigninMain from "../../../components/signin/SigninMain.jsx";
