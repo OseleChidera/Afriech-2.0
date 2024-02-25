@@ -15,7 +15,7 @@ import {
     removeItemFromFavourites
 } from "../../utils/helperFunctions";
 import { useSelector } from "react-redux";
-// import { toast } from "react-toastify";
+
 
 const Product = ({ id, name, price, productID, favouriteItemID, image, productObj, collectionString }) => {
     const pathName = usePathname();
@@ -31,7 +31,6 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
         pathName.includes(`/main/favourite`)
     );
     const userID = useSelector((state) => state.user.userID);
-    const userFavourites = useSelector((state) => state.user.userFavourites);
   
 
     function removeFromFavourites() {

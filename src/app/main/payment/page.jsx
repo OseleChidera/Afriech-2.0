@@ -19,17 +19,47 @@ export default function page() {
 
   return (
     <>
-      <div className='pt-8'>
+      <div className="pt-8">
         <div className=" w-full flex flex-row justify-between p-[20px] gap-4 pb-0">
-          <button className={`relative  w-full p-2 rounded-lg rounded-br-none rounded-bl-none  ${buttonsState == 0 ? " text-[#695acd] bg-white border border-[#695acd] border-b-0" : " text-white bg-[#695acd] border-none"}`} onClick={()=>setButtonsState(0)}>Pending Payment</button>
-          <button className={`relative  w-full p-2 rounded-lg rounded-br-none rounded-bl-none  ${buttonsState == 1 ? " text-[#695acd] bg-white border border-[#695acd] border-b-0" : " text-white bg-[#695acd] border-none"}`} onClick={()=>setButtonsState(1)}>Payment Complete</button>
+          <button
+            className={`relative  w-full p-2 rounded-lg rounded-br-none rounded-bl-none  ${
+              buttonsState == 0
+                ? " text-[#695acd] bg-white border border-[#695acd] border-b-0"
+                : " text-white bg-[#695acd] border-none"
+            }`}
+            onClick={() => setButtonsState(0)}
+          >
+            Pending Payment(s)
+          </button>
+          <button
+            className={`relative  w-full p-2 rounded-lg rounded-br-none rounded-bl-none  ${
+              buttonsState == 1
+                ? " text-[#695acd] bg-white border border-[#695acd] border-b-0"
+                : " text-white bg-[#695acd] border-none"
+            }`}
+            onClick={() => setButtonsState(1)}
+          >
+            Completed Payment(s)
+          </button>
         </div>
-        
-        {buttonsState == 0 ? <PendingPayment/> : <PaymentComplete/> }
-        {firebaseUserInfo?.accountVerified && (<Nav />)}
+
+        {data?.userData?.financing && data?.userData?.paymentCompletedArray ? (
+          buttonsState == 0 ? (
+            <PendingPayment />
+          ) : (
+            <PaymentComplete />
+          )
+        ) : (
+          <div className="p-[20px] flex flex-col gap-4 pb-[120px]">
+            {[...new Array(5)].map((item, index) => (
+              <OrderPaymentComponentSkeleton key={index} />
+            ))}
+          </div>
+        )}
+        {firebaseUserInfo?.accountVerified && <Nav />}
       </div>
     </>
-  )
+  );
 }
 
 

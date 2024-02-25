@@ -67,7 +67,7 @@ export default function page() {
     ];
 
     return (
-        <div className={`w-full relative border border-red-600 p-2 ${feedbackSent ? 'flex flex-col items-center justify-center h-screen ' : "min-h-fit "}`}>
+        <div className={`w-full relative  p-2 ${feedbackSent ? 'flex flex-col items-center justify-center h-screen ' : "min-h-fit "}`}>
             {feedbackSent ? (
                 <span className='text-2xl font-semibold capitalize'>Feedback Sent</span>
             ) : (
@@ -97,7 +97,7 @@ export default function page() {
                         className={`min-h-[25vh] max-h-[30vh] w-5/6 border border-black p-2 rounded-xl break-normal`}
                     ></textarea>
                     {(selectedOption && textAreaText) && (
-                        <button className='flex-grow px-5 border border-black bg-[#695acd] text-white capitalize text-center py-1 rounded-xl' onClick={() => sendFeedback()} >
+                        <button className='w-full px-5 py-2 border border-black bg-[#695acd] text-white capitalize text-center  rounded-xl' onClick={() => sendFeedback()} >
                             send feedback
                         </button>
                     )}

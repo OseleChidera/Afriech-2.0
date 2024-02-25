@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+'use client'
+import React, { useState ,useEffect} from 'react'
 import { generateRandomUserId, getCurrentDateTime , addReview } from '../../utils/helperFunctions'
 import { useSelector, useDispatch } from "react-redux";
 import Review from './Review';
@@ -7,7 +8,8 @@ export default function Reviews({ reviews, productId, collectionString }) {
   const [review, setReview] = useState('')
   const [isFocused, setIsFocused] = useState(false);
   const userID = useSelector((state) => state.user.userID);
-
+  const data = useSelector((state) => state.user.data);
+  const [reviewsArrayWithoutEmptyStrings, setReviewsArrayWithoutEmptyStrings] = useState([]);
   // console.log(userID)
 
   const handleTextareaFocus = () => {
@@ -25,7 +27,10 @@ export default function Reviews({ reviews, productId, collectionString }) {
       addReview(userID, productId, review, setReview, collectionString)
     }
 
-
+  useEffect(() => {
+    // Fetch data or perform any side effects
+    setReviewsArrayWithoutEmptyStrings(reviews?.filter(arrayItem => typeof arrayItem === "object" && arrayItem !== null) || []);
+  }, [reviews]);
 
 
   return (
@@ -64,10 +69,10 @@ export default function Reviews({ reviews, productId, collectionString }) {
       </div>
       <div id="existingReviews" className='border  border-black flex flex-col gap-4 w-full'>
         {
-          reviews?.map((review) => <Review date={review?.date} review={review?.review} userID={review?.userId} reviewID={review?.reviewId} productId={productId} collectionString={collectionString}/> )
+          reviewsArrayWithoutEmptyStrings?.map((review) => <Review date={review?.date} review={review?.review} userID={review?.userId} reviewID={review?.reviewId} productId={productId} collectionString={collectionString}/> )
         }
       </div>
-      {(reviews?.length == 0 && reviews[0] == "" | " ") ? (<h2 className='text-sm  text-center'>No reviews for this product fo far</h2>) : (<h2 className='text-sm  text-center'>{reviews?.length} reviews of this product fo far</h2>)}
+      {(reviewsArrayWithoutEmptyStrings?.length == 0 ) ? (<h2 className='text-sm  text-center'>No reviews for this product fo far</h2>) : (<h2 className='text-sm  text-center'>{reviews?.length} reviews of this product fo far</h2>)}
     </div>
   );
 }

@@ -35,11 +35,9 @@ const PopularProduct = ({ id, name, price, productID, favouriteItemID, image, pr
     const userFavourites = useSelector((state) => state.user.userFavourites);
     const data = useSelector((state) => state.user.data);
     const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
-    // const userFavourites = useSelector((state) => state.user.userFavourites);
     let isFavourited = productObj?.userFavourited.includes(userID);
     function checkIfUserAddedToFavourite(userFavourites, id) {
-        // console.log("userFavourites  , id", userFavourites, id)
-        // let userFavourites = firebaseUserInfo?.favourites
+        
         if (userFavourites) {
             let arrayItem = data?.favouritesArray?.find(product => product.productID == id)
             // console.log("check ", arrayItem)
@@ -64,7 +62,7 @@ const PopularProduct = ({ id, name, price, productID, favouriteItemID, image, pr
     }
 
     function addtoFavourites() {
-        setIsFavourited(!isFavourited);
+        // setIsFavourited(!isFavourited);
         console.log("productID", id)
         console.log("productObj.userFavourited", productObj.userFavourited)
         addItemsToFavourites(id, userID, setProductFavouriteID, collectionString);
@@ -102,8 +100,7 @@ const PopularProduct = ({ id, name, price, productID, favouriteItemID, image, pr
                 </div>
             </Link>
 
-            {firebaseUserInfo?.accountVerified && (
-                !isInCart && (
+            {firebaseUserInfo?.accountVerified &&  (
                     <div
                         className="absolute bg-[#695acde4] bottom-0 right-0 rounded-t-xl rounded-b-xl rounded-bl-none runded rounded-tr-none p-[0.3rem]"
                         onClick={addItemToCartFromProduct}
@@ -111,7 +108,7 @@ const PopularProduct = ({ id, name, price, productID, favouriteItemID, image, pr
                         <Image src={addIcon} width={20} />
                     </div>
                 )
-            )}
+            }
 
             {firebaseUserInfo?.accountVerified && (isFavourited && checkIfUserAddedToFavourite(userFavourites, id) ?
                 (<div onClick={() => removeFromFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>

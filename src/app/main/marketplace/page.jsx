@@ -18,37 +18,60 @@ const page = () => {
     const productsData = useSelector((state) => state.user.productsData);
     const PopularProducts = useSelector((state) => state.user.PopularProducts);
     const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
-    const [productsArray, setProductsArray] = useState([])
+    const [productsArrays, setProductsArrays] = useState()
     
     const userID = useSelector((state) => state.user.userID);
 
 
     function filterProducts(value) {
-        const results = value === "all" ? productsArray : productsArray.filter((product) => {
-            return product.name === value || product.brandID === value;
+        const results = value === "all" ? 
+        data?.productsArray?.concat(data?.popularProductsArray) 
+        : 
+        data?.productsArray?.concat(data?.popularProductsArray).filter((product) => {
+            return product.name === value || product.brandID == value;
         });
-        console.log("results: " + results);
-        console.log("results: " + JSON.stringify(results));
-        setProductsArray(results);
-        console.log("productsArray: " + productsArray);
+        console.log(`results: ${value} ` + results);
+        // console.log("results: " + JSON.stringify(results));
+        setProductsArrays(results);
+        // console.log(value)
     }
 
+
+    function search(searchQuery){
+        console.log(searchQuery)
+        const results = (searchQuery == "" ) ?
+            data?.productsArray?.concat(data?.popularProductsArray)
+            :
+            data?.productsArray?.concat(data?.popularProductsArray).filter((product) => {
+                return product?.name?.includes(searchQuery.trim().toLowerCase()) || product?.brandID?.includes(searchQuery.trim().toLowerCase());
+            });
+        console.log(`results: ${searchQuery} ` + data?.productsArray?.concat(data?.popularProductsArray));
+        console.log("results: " + JSON.stringify(results));
+        // setProductsArrays(results.length == 0 ? data?.productsArray?.concat(data?.popularProductsArray) : results);
+        setProductsArrays(results.length == 0 ? data?.productsArray?.concat(data?.popularProductsArray) : results);
+    }
     
 
-    useEffect(()=>{
-        const newProductsArray = data?.productsArray?.concat(data?.popularProductsArray)
-        setProductsArray(newProductsArray)
-    }, [])
+    // const [productsArrays, setProductsArrays] = useState()
+
+    useEffect(() => {
+        const products = (data.productsArray && data.popularProductsArray) ? data.productsArray.concat(data.popularProductsArray) : []
+        setProductsArrays(products)
+    }, [data.productsArray, data.popularProductsArray])
+
+    // console.log("productsArray ", data.productsArray)
+    // console.log("popularProductsArray ", data.popularProductsArray)
+    // console.log("combination of two collections: " + JSON.stringify(data?.productsArray?.concat(data?.popularProductsArray) , null , 2))
     return (
         <>
             <div className='w-full relative min-h-screen max-h-fit border border-red-600 overflow-y-auto'>
                 <div className="p-[20px] flex flex-col gap-4 pb-[120px]">
-                    <SearchBar />
+                    <SearchBar search={search}/>
                     <BrandOptions filterProducts={filterProducts}/>
                     <div className="grid-container ">
                         {
                             data?.productsArray ?
-                            (data?.productsArray?.concat(data?.popularProductsArray)?.map((product) => (<Product name={product.name} price={product.price} id={product.id} image={product?.imageGalleryImages[0].imageURL} collectionString={product.collectionString} productObj={product} />))) : 
+                                (productsArrays?.map((product) => (<Product name={product.name} price={product.price} id={product.id} image={product?.imageGalleryImages[0].imageURL} collectionString={product.collectionString} productObj={product} />))) : 
                             ([...new Array(10)].map((product) => (<ProductLoadingSleleton />)))
                         }
                     </div>

@@ -88,7 +88,7 @@ export const step3ValidationSchema = Yup.object().shape({
         ),
     ninnumber: Yup.number()
         .required('Required')
-        .test("length", "too long", (value) => value.toString().length === 6),
+        .test("too long", (value) => value.toString().length >= 6),
     ninSlipPicture: Yup.mixed()
         .required('Image is required')
         .test('fileSize', 'Image must be less than 2MB', (value) => value && value.size <= 2 * 1024 * 1024)

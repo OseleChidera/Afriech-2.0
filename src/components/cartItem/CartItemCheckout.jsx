@@ -58,7 +58,7 @@ const CartItemCheckout = ({ id, selectCartItems, cartItemData, itemsToCheckout, 
             <label htmlFor={id} className='flex-auto rounded-md h-fit'>
                 <div className=" cart-item rounded-md relative  flex flex-1 gap-2 bg-white overflow-hidden p-2">
                     <div className=" w-fit  h-fit rounded-xl  shadow-2xl bg-whie overflow-hidden cart-item-image">
-                        <Image src={cartItemData?.imageGalleryImages[0].imageURL} className="aspect-auto object-cover " width={70} height={70}/>
+                        <Image src={cartItemData?.imageGalleryImages[0]?.imageURL} className="aspect-auto object-cover " width={70} height={70}/>
                     </div>
                     <div className="info p-2 text-black">
                         <h2 className="text-xs font-semibold">

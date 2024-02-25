@@ -55,7 +55,7 @@ export default function UserDetail({ name, value, index }) {
                   <input
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
-                      className="w-full p-2 px-5 rounded-xl text-black indent-2"
+                      className="w-full p-2 px-5 rounded-xl text-black indent-[2px]"
                       disabled={!isEditing}
                   />
               </div>

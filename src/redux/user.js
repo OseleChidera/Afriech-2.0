@@ -45,15 +45,10 @@ export const userSlice = createSlice({
     },
     reducers: {
         setUserId: (state, action) => {
-            // console.log("setUserId setUserId", action.payload)
             state.userID = action.payload
-            // console.log("setUserId setUserId", action.payload)
-
         },
         removeUserId: (state, action) => {
-            // console.log('loading true', action.payload)
             state.userID = action.payload
-            // console.log('loading true', action.payload)
         },
         setLoading: (state, action) => {
             state.loading = action.payload
@@ -99,15 +94,12 @@ export const userSlice = createSlice({
             state.signinIndex = action.payload
         },
         updateUserFormEntries: (state, action) => {
-            // console.log("updateUserFormEntriesssssssssssssssssssssssssssssssssssssssssssssssss ", action.payload)
             state.userFormEntries = action.payload
         },
         grantStorageAccess: (state, action) => {
             state.hasStorageAccessPermission = action.payload
         },
         setUserData: (state, action) => {
-            // console.log("ACTION PAYLOAD:" + action.payload)
-            //  console.log("setUserData reducer functionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn" + JSON.stringify(action.payload, null, 2))
             state.userData = action.payload
         },
         removeUserData: (state, action) => {
@@ -118,10 +110,7 @@ export const userSlice = createSlice({
             state.currentUserData = action.payload
         },
         setCurrentfirebaseUserInfo: (state, action) => {
-            // console.log("setCurrentfirebaseUserInfo:" + JSON.stringify(action.payload, null, 2))
             state.firebaseUserInfo = action.payload
-            // console.log("setCurrentfirebaseUserInfo:" + JSON.stringify(action.payload, null, 2))
-
         },
         showModalDispachFn: state => {
             state.showModal = true
@@ -130,47 +119,27 @@ export const userSlice = createSlice({
             state.showModal = false
         },
         setModalToshow: (state, action) => {
-            // console.log("wswawswswswswswsws state: ", JSON.stringify(state.modalToshow , null , 2))
-            // console.log("wswawswswswswswsws: action.payload", action.payload)
             state.modalToshow = action.payload
-            // console.log("wswawswswswswswsws state: ", JSON.stringify(state.modalToshow, null, 2))
-
         },
         setAuthCallbackUser: (state, action) => {
-            // console.log("setAuthCallbackUser state: ", JSON.stringify(state.modalToshow, null, 2))
-            // console.log("setAuthCallbackUser: action.payload", action.payload)
             state.authCallbackUser = action.payload
-            // console.log("setAuthCallbackUser state: ", JSON.stringify(state.modalToshow, null, 2))
-
         },
         setProductsData: (state, action) => {
-            // console.log("ACTION PAYLOAD:" + action.payload)
-            // console.log("setProductsData" + JSON.stringify(action.payload, null, 2))
             state.productsData = action.payload
         },
         setPopularProductsData: (state, action) => {
-            // console.log("ACTION PAYLOAD:" + action.payload)
-            // console.log("this data was dispatched to setPopularProductsData" + JSON.stringify(action.payload, null, 2))
             state.PopularProducts = action.payload
         },
         setuserCartData: (state, action) => {
-            // console.log("ACTION PAYLOAD:" + action.payload)
-            // console.log("this data was dispatched to setuserCartDataData" + JSON.stringify(action.payload, null, 2))
             state.userCartData = action.payload
         },
         setuserFavouritesData: (state, action) => {
-            // console.log("ACTION PAYLOAD:" + action.payload)
-            // console.log("this data was dispatched to setuserFavouritesData" + JSON.stringify(action.payload, null, 2))
             state.userFavourites = action.payload
         },
         setuserFinancingData: (state, action) => {
-            // console.log("ACTION PAYLOAD:" + action.payload)
-            // console.log("this data was dispatched to setuserFavouritesData" + JSON.stringify(action.payload, null, 2))
             state.userFinancingData = action.payload
         },
         setData: (state, action) => {
-            // console.log("ACTION PAYLOAD:" + action.payload)
-            // console.log("this data was dispatched to setData" + JSON.stringify(action.payload, null, 2))
             state.data = action.payload
         }
     }

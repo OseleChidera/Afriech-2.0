@@ -85,7 +85,7 @@ export default function UserInfoModal({ title, action, index }) {
     }
     return (
       <div
-        className="flex justify-between items-center w-full p-2 rounded-lg  bg-[#695acd]"
+        className="flex justify-between items-center w-full p-3 rounded-lg  bg-[#695acd]"
         key={index}
         onClick={() =>
           action == "verifyEmail"

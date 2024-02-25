@@ -37,11 +37,11 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
   // const userFavourites = useSelector((state) => state.user.userFavourites);
 
   function checkIfUserAddedToFavourite(userFavourites , id){
-    console.log("userFavourites  , id", userFavourites, id)
+    // console.log("userFavourites  , id", userFavourites, id)
     // let userFavourites = firebaseUserInfo?.favourites
     if (userFavourites) {
       let arrayItem = data?.favouritesArray?.find(product => product.productID == id)
-      console.log("check ", arrayItem)
+      // console.log("check ", arrayItem)
       if (!arrayItem) {
         return false
       }
@@ -54,19 +54,19 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
     setIsInCart(!isInCart);
     
     addItemsToCart(id, 1, userID, setProductCarTID, collectionString);
-    console.log("productCartIDDDDDDDDD" + productCartID);
+    // console.log("productCartIDDDDDDDDD" + productCartID);
   }
 
   function removeFromFavourites() {
-    console.log("removeFromFavourites got called" );
+    // console.log("removeFromFavourites got called" );
     removeItemFromFavourites(id, userID, collectionString)
   }
 
   function addtoFavourites() {
     // setIsFavourited(!isFavourited);
-    console.log("productID", id)
+    // console.log("productID", id)
     addItemsToFavourites(id, userID, setProductFavouriteID, collectionString);
-    console.log("ProductFavouriteID" + setProductFavouriteID);
+    // console.log("ProductFavouriteID" + setProductFavouriteID);
   }
 
   function removeProductFromCart(productCartID) {
@@ -78,10 +78,10 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
   }
 
 
-  console.log('favouritedArray ', productObj?.userFavourited)
+  // console.log('favouritedArray ', productObj?.userFavourited)
 
   let isFavourited = productObj?.userFavourited.includes(userID);
-  console.log("check if the user favourited the product", isFavourited)
+  // console.log("check if the user favourited the product", isFavourited)
 
 
   useEffect(()=>{

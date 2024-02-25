@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useState , useEffect} from 'react';
 import OrderPaymentComponentSkeleton from '../loading skeleton/OrderPaymentComponentSkeleton';
 import OrderPaymentComponent from './OrderPaymentComponent';
 import UnauthorizedAccess from '../UnauthorizedAccess/UnauthorizedAccess';
@@ -7,14 +7,19 @@ import { useSelector } from "react-redux";
 export default function PendingPayment() {
     const data = useSelector((state) => state.user.data);
     const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
+    const [arrayWithoutEmptyStrings, setArrayWithoutEmptyStrings] = useState([]);
 
+    useEffect(()=>{
+        setArrayWithoutEmptyStrings(data?.userData?.financing?.filter(arrayItem => typeof arrayItem == "object" && arrayItem !== null))
+    }, [data?.userData?.financing])
     return (
         <div>
-            {data?.paymentArray ? (
-                firebaseUserInfo?.accountVerified ? (
-                    data?.paymentArray.length !== 0 ? (
+            
+            <div className="">
+                {firebaseUserInfo?.accountVerified ? (
+                        arrayWithoutEmptyStrings?.length !== 0 ? (
                         <div className="p-[20px] flex flex-col gap-4 pb-[120px]">
-                            {data?.paymentArray?.map(item => (
+                            {arrayWithoutEmptyStrings?.map(item => (
                                 <OrderPaymentComponent
                                     key={item.orderId}
                                     orderID={item.orderId}
@@ -30,15 +35,12 @@ export default function PendingPayment() {
                         </div>
                     )
                 ) : (
-                    <UnauthorizedAccess />
+                        <div className="absolute top-0 left-0 w-full h-screen">
+                            <UnauthorizedAccess />
+                        </div>
                 )
-            ) : (
-                <div className="p-[20px] flex flex-col gap-4 pb-[120px]">
-                    {[...new Array(5)].map((item, index) => (
-                        <OrderPaymentComponentSkeleton key={index} />
-                    ))}
-                </div>
-            )}
+            }
+            </div>
         </div>
     );
 }

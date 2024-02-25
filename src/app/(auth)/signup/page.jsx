@@ -85,6 +85,11 @@ export default function Multistep() {
         newData.ninSlipPicture = image2Url;
         delete newData.confirm_password;
         delete newData.password;
+        newData.cart = [""]
+        newData.favourites = [""]
+        newData.financing = [""]
+        newData.reviews = [""]
+        newData.paymentCompleted = [""]
         newData.dateOfBirth = newData.dateOfBirth.getTime();
         dispatch(updateUserFormEntries(JSON.stringify(newData, null, 2)));
 

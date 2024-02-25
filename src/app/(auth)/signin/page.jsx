@@ -63,7 +63,11 @@ export default function Page({ user }) {
                 const [image1Url, image2Url] = await Promise.all([uploadProfilePicture(newData.profilePicture), uploadNinImage(newData.ninSlipPicture)]);
                 newData.profilePicture = image1Url;
                 newData.ninSlipPicture = image2Url;
-
+                newData.cart = [""]
+                newData.favourites = [""]
+                newData.financing = [""]
+                newData.reviews = [""]
+                newData.paymentCompleted = [""]
                 // Update Firestore document
                 updateDoc(docRef, newData);
                 toast.success(`User SignUp complete ${userIdFromLocalStorage}`, { onOpen: () => redirect("/home") });

@@ -115,14 +115,14 @@ export async function fetchProductDataById(docId, setterFunction, setMainImage, 
 export function generateRandomID(userIdLength = 20) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     // const userIdLength ;
-    let reviewID = '';
+    let randomID = '';
 
     for (let i = 0; i < userIdLength; i++) {
         const randomIndex = Math.floor(Math.random() * characters.length);
-        reviewID += characters.charAt(randomIndex);
+        randomID += characters.charAt(randomIndex);
     }
-
-    return reviewID;
+    console.log("randomID: ", randomID);
+    return randomID;
 }
 
 export async function getCurrentDateTime() {
@@ -201,12 +201,11 @@ export async function deleteReview(productID, reviewItemID, collectionString) {
 
 
 
-export async function addItemsToCart(productId, productQuantity = 1, userID, setProductCartID = undefined, collectionStringValue ) {
+export async function addItemsToCart(productId, productQuantity = 1, userID, setProductCartID = undefined, collectionStringValue) {
     console.log(productId, productQuantity, userID);
-    let cartItemID;
-
+    let cartItemID = generateRandomID(20);
     try {
-        const productDocRef = doc(database, `${collectionStringValue}`, productId);
+        const productDocRef = doc(database, collectionStringValue, productId);
         const currentUserRef = doc(database, 'Users', userID);
 
         await runTransaction(database, async (transaction) => {
@@ -214,65 +213,68 @@ export async function addItemsToCart(productId, productQuantity = 1, userID, set
             const productDocSnapshot = await getDoc(productDocRef);
 
             if (currentUserSnapshot.exists() && productDocSnapshot.exists()) {
-               try {
-                   const productData = { ...productDocSnapshot.data(), qty: productDocSnapshot.data().qty - productQuantity };
+                const productData = productDocSnapshot.data();
+                const updatedQty = Math.max(productData.qty - productQuantity, 0);
 
+                // Update product quantity in stock
+                transaction.update(productDocRef, { qty: updatedQty });
 
-                   // Update the product quantity in stock
-                   transaction.update(productDocRef, productData);
+                // Get existing cart array or create new if it doesn't exist
+                const existingCart = currentUserSnapshot.data().cart || [];
 
-                   // Get the existing array from the document
-                   let existingArray = currentUserSnapshot.data().cart || [];
+                // Add the product to the cart based on productQuantity
+                for (let i = 0; i < productQuantity; i++) {
+                    
+                    const cartItem = {
+                        ...productData,
+                        cartItemID,
+                        productID: productId,
+                        collectionString: collectionStringValue
+                    };
+                    delete cartItem.qty; // Remove quantity from cart item
 
-                   // Add the object to the array based on the productQuantity
-                   for (let i = 0; i < productQuantity; i++) {
-                       cartItemID = generateRandomID();
-                       const productID = productId
-                       const cartItem = { ...productData, cartItemID, productID, collectionString: collectionStringValue };
-                       delete cartItem.qty;
-                       delete cartItem.link;
-                       delete cartItem.reviews;
-                       delete cartItem.userFavourited;
-                       delete cartItem.description;
-                       const imageGallerylength = cartItem?.imageGalleryImages?.length
-                       delete cartItem.imageGalleryImages[imageGallerylength - 1];
-                       delete cartItem.imageGalleryImages[imageGallerylength - 2];
-                       delete cartItem.imageGalleryImages[imageGallerylength - 3];
-                       existingArray.push(cartItem);
+                    // Remove unnecessary fields from cart item
+                    delete cartItem.link;
+                    delete cartItem.reviews;
+                    delete cartItem.userFavourited;
+                    delete cartItem.description;
 
+                    // Remove last three images from image gallery
+                    cartItem.imageGalleryImages = cartItem.imageGalleryImages.slice(0, -3);
 
-                       if (setProductCartID) {
-                           setProductCartID(cartItemID) // or pass the cartitemId
-                       }
-                   }
+                    existingCart.push(cartItem);
+                }
 
-                   // Update the document with the modified array
-                   await updateDoc(currentUserRef, { cart: existingArray });
-                   //check if the setter function was passed
+                // Filter out any null or non-object elements from the cart array
+                const filteredCart = existingCart.filter(item => typeof item === 'object' && item !== null);
 
+                // Update user document with modified cart
+                transaction.update(currentUserRef, { cart: filteredCart });
 
-                   toast.success(`${productQuantity} item(s) added to cart`);
-                   if (productData.qty == 0) {
-                       toast.info(`Current stock has been depleted come back later`);
-                   }
-               } catch (error) {
-                   console.log("error " ,error)
-                    console.log("error " ,error.message)
-                   console.log("error " ,error.code)
-               }
+                // Call the setter function if provided
+                if (setProductCartID) {
+                    setProductCartID(cartItemID);
+                }
+
+                // Success message
+                toast.success(`${productQuantity} item(s) added to cart`);
+
+                // If the product is out of stock
+                if (updatedQty === 0) {
+                    toast.info(`Current stock has been depleted. Please come back later.`);
+                }
             } else {
+                // User or product not found
                 console.log("Document not found");
                 toast.error(`Document not found`);
             }
         });
     } catch (error) {
+        // Handle any errors
         console.error('Error updating product data:', error);
-        console.log(error.message);
-        toast.error(`Failed to add Item to Cart ${error.message}`);
+        toast.error(`Failed to add item to cart: ${error.message}`);
     }
 }
-
-
 
 export async function removeItemFromCart(productCollectionString,productID, cartItemID, userID) {
     console.log("productID ", productID)
@@ -532,7 +534,7 @@ export async function getUserFinancingData(userID, userDataSetterFn, cartDataSet
 
 
 
-export async function updateFinancingItemPrice(orderID, amountPayable, userID , paymentReciever) {
+export async function updateFinancingItemPrice(orderID, amountPayable, userID, paymentReciever) {
     console.log(orderID, amountPayable, userID);
 
     try {
@@ -562,8 +564,13 @@ export async function updateFinancingItemPrice(orderID, amountPayable, userID , 
                     }
                     else {
                         itemToUpdate.leftToPay -= amountPayable;
+                        
                         // Update the document with the modified array
+                        
                         await updateDoc(currentUserRef, { financing: existingArray });
+                        // sendMailReciept(currentUserSnapshot.data()?.fullname, currentUserSnapshot.data()?.email, orderID, itemToUpdate, amountPayable)
+                        // Call sendEmail function wherever you need to send an email
+                        
                     }
 
                     // Check if the setter function was passed
@@ -598,7 +605,8 @@ export function calculateTotalPrice(basket){
 export async function removeItemFromCartOnCheckout(existingCartItems, userID, setItemsToCheckout, basket) {
 
   
-    console.log("basket ", existingCartItems);
+    console.log("basket ", basket);
+    console.log("existingCartItems ", existingCartItems);
     console.log("userID ", userID);
     const totalPriceOfBasketItems = calculateTotalPrice(basket);
     try {
@@ -634,4 +642,39 @@ export async function removeItemFromCartOnCheckout(existingCartItems, userID, se
         return []; // Return an empty array in case of error
     }
 }
+
+export function extractLastName(fullName) {
+    // Split the full name by whitespace
+    const nameParts = fullName.split(' ');
+
+    // Check if there are multiple parts
+    if (nameParts.length > 1) {
+        // If there are multiple parts, return the last part (last name)
+        return nameParts[nameParts.length - 1];
+    } else {
+        // If there's only one part, return the whole string (last name)
+        return fullName;
+    }
+}
+
+
+export async function sendEmail (emailData){
+    console.log("send email function was called")
+    console.log("emailData: " + JSON.stringify(emailData ,  null , 2))
+    try {
+        const response = await fetch('http://localhost:4000/send-email', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(emailData),
+        });
+
+        if (response.ok) {
+            console.log('Email sent successfully');
+        } else {
+            console.error('Failed to send email');
+        }
+    } catch (error) {
+        console.error('Error sending email:', error.message, error);
+    }
+};
 

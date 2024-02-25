@@ -249,3 +249,65 @@ border: 0.2px solid black;
     opacity: 1;
   }
 }
+
+.email-p{
+  text-indent: 10px;
+}
+
+.email-product {
+    border-radius: 0.375rem;
+    position: relative;
+    display: inline;
+    flex-direction: row;
+    gap: 0.5rem;
+    background-color: #ffffff;
+    overflow: hidden;
+    padding: 0.5rem;
+    box-shadow:  0px -5px 150px rgba(0, 0, 0, 0.25);
+    border: 0.5px solid black;
+}
+.email-product-image{
+  width: fit-content;
+  height: fit-content;
+  border-radius: 0.75rem;
+  background-color: white;
+  overflow: hidden;
+  /* box-shadow:  -5px -5px 150px rgba(0, 0, 0, 0.17)
+  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow); */
+}
+
+.email-product-image image{
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.email-product-title{
+  padding: 0.5rem;
+   --tw-text-opacity: 1;
+    color: rgb(0 0 0 / var(--tw-text-opacity));
+}
+
+.email-product-title h2{
+    font-size: 0.75rem/* 12px */;
+    line-height: 1rem/* 16px */;
+     font-weight: 600;
+}
+.email-product-title h3{
+font-size: 0.75rem/* 12px */;
+    line-height: 1rem/* 16px */;
+}
+
+/* .{
+position: absolute;
+background-color: #695acde4;
+bottom: 0;
+right: 0;
+border-radius: 0.375rem;
+border-bottom-left-radius: 0;
+ border-top-right-radius: 0;
+ padding: 0.3rem;
+} */
+#checkoutInput{
+
+}
