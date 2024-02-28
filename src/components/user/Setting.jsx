@@ -27,7 +27,7 @@ export default function Setting({ icon, title, description, action }) {
             <div className="user-info flex-1 flex items-center justify-between  ">
                 <div className="flex gap-2  items-center">
                     <div className="flex items-center justify-center rounded-full ml-4 w-[20px] h-[20px]">
-                        <Image src={icon} width={20} height={20} className='w  ' />
+                        <Image src={icon} width={20} height={20} className='' alt='setting icon'/>
                     </div>
                     <div className="">
                         <h1 className='text-lg font-semibold capitalize'>{title}</h1>
@@ -35,7 +35,7 @@ export default function Setting({ icon, title, description, action }) {
                     </div>
                 </div>
                 <div className="w-fit ">
-                    <Image src={arrow} width={20} className='' />
+                    <Image src={arrow} width={20} className='' alt='right arrow'/>
                 </div>
             </div>
 

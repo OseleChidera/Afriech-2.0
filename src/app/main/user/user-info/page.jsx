@@ -17,6 +17,7 @@ export default function Page() {
     const data = useSelector((state) => state.user.data);
     const loading = useSelector((state) => state.user.loading);
     const authCallbackUser = useSelector((state) => state.user.authCallbackUser);
+    const authCallbackUserObj = JSON.parse(authCallbackUser)
 
     const userInfoArray = [
         {   
@@ -36,14 +37,14 @@ export default function Page() {
             index: 2,
             title: "Send email verification link",
             action: 'verifyEmail',
-            actionToPerfom: !authCallbackUser?.emailVerified
+            actionToPerfom: !authCallbackUserObj?.emailVerified
         },
         ,
         {
             index: 3,
             title: "Change your account email",
             action: 'changeEmail',
-            actionToPerfom: authCallbackUser?.emailVerified
+            actionToPerfom: authCallbackUserObj?.emailVerified
         },
         {
             index: 5,
@@ -55,8 +56,6 @@ export default function Page() {
     ]
 const [settings , setSettings] = useState()
 
-    // console.log(authCallbackUser)
-    // console.table(userInfoArray)
     const showModal = useSelector((state) => state.user.showModal);
 
     useEffect(() => {

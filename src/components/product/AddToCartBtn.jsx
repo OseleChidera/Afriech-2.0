@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import addICON from '../../../public/icons/add-01.svg';
-import minus from '../../../public/icons/minus-sign.svg';
-import { useSelector } from 'react-redux';
-import { formatNumberWithCommas, addItemsToCart } from '@/utils/helperFunctions';
+import React, { useEffect, useState } from 'react'; // Importing React and necessary hooks
+import Image from 'next/image'; // Importing Image component from Next.js
+import Link from 'next/link'; // Importing Link component from Next.js
+import addICON from '../../../public/icons/add-01.svg'; // Importing add icon image
+import minus from '../../../public/icons/minus-sign.svg'; // Importing minus icon image
+import { useSelector } from 'react-redux'; // Importing useSelector hook from react-redux
+import { formatNumberWithCommas, addItemsToCart } from '@/utils/helperFunctions'; // Importing utility functions
 
+// Component to handle adding items to cart
 export default function AddToCartBtn({ productID, price, qty, collectionString }) {
     // State to manage the quantity of items to add to cart
     const [itemQtyToAddToCart, setItemQtyToAddToCart] = useState(1);
@@ -50,7 +51,7 @@ export default function AddToCartBtn({ productID, price, qty, collectionString }
                     {/* Button to decrement quantity */}
                     <button className="flex items-center justify-centerc border-none px-3 py-2 rounded-xl bg-[#695acd]"
                         onClick={decrementCounter}>
-                        <Image src={minus} width={20} height={20} className="" />
+                        <Image src={minus} width={20} height={20} className="" alt='subtract icon'/>
                     </button>
                     {/* Input field for quantity */}
                     <input
@@ -60,11 +61,12 @@ export default function AddToCartBtn({ productID, price, qty, collectionString }
                         min="1"
                         placeholder="1"
                         value={itemQtyToAddToCart}
+                        onChange={()=>setItemQtyToAddToCart(itemQtyToAddToCart)}
                     />
                     {/* Button to increment quantity */}
                     <button className="flex items-center justify-centerc border-none px-3 py-2 rounded-xl bg-[#695acd]"
                         onClick={incrementCounter}>
-                        <Image src={addICON} width={20} height={20} className="" />
+                        <Image src={addICON} width={20} height={20} className="" alt='add icon'/>
                     </button>
                 </div>
                 {/* Button to add items to cart */}

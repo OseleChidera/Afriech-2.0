@@ -97,7 +97,7 @@ const dispatch = useDispatch()
           </h1>
           <div className="w-fit h-fit mx-auto">
             {/* <Image src={illustration}  className='mx-auto max-w-sm border border-red-500 md:max-w-md' /> */}
-            <Image src={illustration} width={250} objectFit='contain' className='max-w-md ' />
+            <Image src={illustration} width={250} objectFit='contain' className='max-w-md ' alt='landing page illustration'/>
           </div>
           
           <div className="flex flex-col gap-2 w-4/5 md:w-full md:flex-row mx-auto"  >
@@ -130,7 +130,7 @@ const dispatch = useDispatch()
         </div>
 
           <div className="flex flex-col gap-4  w-full md:flex-row-reverse md:gap-8  md:items-center md:justify-between ">
-            <Image src={atmImg} className='rounded-3xl w-full aspect-square grayscale-image object-cover  md:max-w-sm' />
+            <Image src={atmImg} className='rounded-3xl w-full aspect-square grayscale-image object-cover  md:max-w-sm' alt='aim image' />
           <div className="flex flex-col w-full object-contain break-normal gap-[0.85rem]">
             <h1 className="font-bold text-[3rem] leading-[2.85rem] text-[#FFAD08] text-shadow  md:text-6xl">
             Solutions to Kickstart Your Success

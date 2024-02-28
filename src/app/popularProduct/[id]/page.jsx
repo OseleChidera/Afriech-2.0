@@ -14,18 +14,33 @@ import AddToCartBtn from '../../../components/product/AddToCartBtn';
 import Reviews from '../../../components/product/Reviews';
 import { useSelector, useDispatch } from "react-redux";
 import DynamicProductLoadingSkeleton from '@/components/loading skeleton/DynamicProductLoadingSkeleton';
+import { useRouter, usePathname } from "next/navigation"; // Import useRouter and usePathname hooks from next/navigation
+import { setupAuthObserver } from "../../../../firebaseAuth"; 
+import { getUserData, fetchProductsData } from '@/utils/helperFunctions'; // Import getUserData and fetchProductsData functions from helperFunctions module
+import { setCurrentfirebaseUserInfo, setUserId, setLoading, setAuthCallbackUser, setProductsData, setPopularProductsData, setuserCartData, setuserFavouritesData, setuserFinancingData, setData } from '../../../redux/user'; // Import action creators from user Redux slice
+
 
 
 export default function Page({ params }) {
+    const dispatch = useDispatch(); 
     const productID = params.id
     const [product, setProduct] = useState({})
     const [productId, setProductId] = useState(productID)
     const [mainImage, setMainImage] = useState('')
-
-
     const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
     const data = useSelector((state) => state.user.data);
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+    const [userData, setUserData] = useState(null); 
+    const pathName = usePathname(); // Get current pathname using usePathname hook
+    const [fetchedData, setFetchedData] = useState({ // Local state for fetched data
+      userData: null,
+      productsArray: null,
+      popularProductsArray: null,
+      favouritesArray: null,
+      cartArray: null,
+      paymentArray: null,
+      paymentCompleteArray: null
+    });
 
     const selectGalleryImage = (index) => {
         setSelectedImageIndex(index);
@@ -38,19 +53,58 @@ export default function Page({ params }) {
     };
 
 
-    useEffect(() => {
+useEffect(() => {
         fetchProductDataById(productID, setProduct, setMainImage,"PopularProducts")
-        console.log('firebaseUserInfo?.accountVerified ', firebaseUserInfo)
     }, [])
 
 
-    console.log('main image', mainImage)
-    console.log('product', product)
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            // Fetch products data
+            await fetchProductsData(setFetchedData, 'Products', 'productsArray');
+            await fetchProductsData(setFetchedData, 'PopularProducts', 'popularProductsArray');
+    
+            // Set up authentication observer
+            setupAuthObserver((user) => {
+              if (user) {
+                getUserData(user.uid, setUserData, setFetchedData);
+                dispatch(setUserId(`${user.uid}`));
+                dispatch(setAuthCallbackUser(JSON.stringify(user)));
+                console.log('User is authenticated in mMMmmMM', user.uid);
+              } else {
+                console.log('User is not authenticated.mMMmmMM');
+              }
+            });
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+    
+        fetchData();
+    
+        return () => {
+          // Clean up the observer when the component is unmounted
+        };
+      }, [pathName]);
+    
+      // Dispatch actions to set Redux state with fetched data
+      useEffect(() => {
+        dispatch(setCurrentfirebaseUserInfo(fetchedData.userData));
+        dispatch(setData(fetchedData));
+    }, [fetchedData]);
+    // console.log('data?.userData?.accountVerified : ', fetchedData?.userData?.accountVerified)
+    
+
+
+    // console.log('main image', mainImage)
+    // console.log('product: ', product)
+    
     return (
         <>
-            {data?.userData?.accountVerified && <Location />}
-            {(product.reviews && product.qty) ? (<div className="w-full relative min-h-screen max-h-fit border border-red-600 overflow-y-auto p-6">
-                <div className={`flex flex-col gap-4  ${data?.userData?.accountVerified ? '' : ` mb-4`}`}>
+             {fetchedData?.userData?.accountVerified && <Location />}
+            {(product?.qty || product?.price) ? (<div className="w-full relative min-h-screen max-h-fit border border-red-600 overflow-y-auto p-6">
+                <div className={`flex flex-col gap-4  ${fetchedData?.userData?.accountVerified ? '' : ` mb-4`}`}>
                     <div
                         id="product-image-tag"
                         className="w-full h-[20%] border border-black shadow-2xl overflow-hidden rounded-md p-2 product-hero-image"
@@ -59,9 +113,10 @@ export default function Page({ params }) {
                             <Image
                                 src={mainImage}
                                 alt="product-image"
-                                className="object-contain w-full h-full"
+                                className="object-contain w-auto h-auto mx-auto"
                                 width={300}
                                 height={300}
+                                priority
                             />
                         )}
                     </div>
@@ -87,6 +142,7 @@ export default function Page({ params }) {
                             <div className="flex gap-4 overflow-x-auto p-1 items-center hide-scrollbar">
                                 {product?.imageGalleryImages?.map((image, index) => (
                                     <GalleryImage
+                                        key={index}
                                         imageUrl={image.imageURL}
                                         index={index}
                                         selectGalleryImage={selectGalleryImage}
@@ -108,9 +164,9 @@ export default function Page({ params }) {
                         </Link>
                     </div>
                 </div>
-                {data?.userData?.accountVerified && (<div className="mb-[100px]">
-                    {data?.userData?.accountVerified && (<Reviews productId={productId} reviews={product?.reviews} collectionString={"PopularProducts"} />)}
-                    {(product?.qty !== 0 && data?.userData?.accountVerified) && (<AddToCartBtn productID={productId} qty={product?.qty} price={product?.price} collectionString={"PopularProducts"} />)}
+                {fetchedData?.userData?.accountVerified && (<div className="mb-[100px]">
+                    {fetchedData?.userData?.accountVerified && (<Reviews productId={productId} reviews={product?.reviews} collectionString={"PopularProducts"} />)}
+                    {(product?.qty !== 0 && fetchedData?.userData?.accountVerified) && (<AddToCartBtn productID={productId} qty={product?.qty} price={product?.price} collectionString={"PopularProducts"} />)}
                 </div>)}
             </div>) : <DynamicProductLoadingSkeleton/>}
         </>

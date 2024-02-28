@@ -1,22 +1,22 @@
-"use client";
-import Nav from '@/components/Nav'
-import React, { useEffect, useState } from 'react'
-import SearchBar from '@/components/searchbar/SearchBar'
-import FavouriteProduct from '@/components/product/FavouriteProduct'
-import { useSelector, useDispatch } from "react-redux";
-import { getUserData } from '../../../utils/helperFunctions'
-import FavouriteProductLoadingSleleton from '@/components/loading skeleton/FavouriteProductLoadingSleleton'
+"use client"; 
+import Nav from '@/components/Nav'; // Import Nav component
+import React, { useEffect, useState } from 'react'; // Import React and necessary hooks
+import SearchBar from '@/components/searchbar/SearchBar'; // Import SearchBar component
+import FavouriteProduct from '@/components/product/FavouriteProduct'; // Import FavouriteProduct component
+import { useSelector, useDispatch } from "react-redux"; // Import useSelector and useDispatch hooks from react-redux
+import { getUserData } from '../../../utils/helperFunctions'; // Import getUserData function
+import FavouriteProductLoadingSleleton from '@/components/loading skeleton/FavouriteProductLoadingSleleton'; // Import FavouriteProductLoadingSleleton component
 
 export default function page() {
-
-  const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
-  const favouritesArray = useSelector((state) => state.user.data?.favouritesArray);
-  const [arrayWithoutEmptyStrings, setArrayWithoutEmptyStrings] = useState([]);
+  // Redux state management
+  const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo); // Get Firebase user info from Redux store
+  const favouritesArray = useSelector((state) => state.user.data?.favouritesArray); // Get favourites array from Redux store
+  const [arrayWithoutEmptyStrings, setArrayWithoutEmptyStrings] = useState([]); // Local state for array without empty strings
 
   useEffect(() => {
-    // Fetch data or perform any side effects
+    // Fetch data or perform any side effects when favouritesArray changes
     setArrayWithoutEmptyStrings(favouritesArray?.filter(arrayItem => typeof arrayItem === "object" && arrayItem !== null) || []);
-  }, [favouritesArray]);
+  }, [favouritesArray]); // Run effect whenever favouritesArray changes
 
   return (
     <div className="w-full relative min-h-screen max-h-fit border border-red-600 overflow-y-auto">
@@ -49,9 +49,7 @@ export default function page() {
           )}
         </div>
       </div>
-      <Nav />
+      <Nav /> 
     </div>
   );
 }
-
-

@@ -1,15 +1,17 @@
 // Import necessary modules and set up your server (e.g., using Express)
-const express = require('express');
-const sgMail = require('@sendgrid/mail');
-const app = express();
-const port = 5000
-require('dotenv').config();
-const cors = require('cors');
+const express = require('express'); // Import the Express framework
+const sgMail = require('@sendgrid/mail'); // Import the SendGrid library for sending emails
+const app = express(); // Create an Express application
+const port = 5000; // Define the port number for the server
+require('dotenv').config(); // Load environment variables from a .env file
+const cors = require('cors'); // Import the CORS middleware for handling cross-origin requests
+
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:3001',
 }));
 // Set up SendGrid API key
 // sgMail.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_KEY);
+
 
 // Set the Referrer-Policy header to "no-referrer"
 app.use((req, res, next) => {
@@ -17,11 +19,13 @@ app.use((req, res, next) => {
   next();
 });
 
+// Parse JSON bodies
 app.use(express.json());
 
-app.get('/',(req, res) => {
-    res.send('get request is working')
-})
+// Define a route to handle GET requests
+app.get('/', (req, res) => {
+    res.send('get request is working'); // Send a response indicating that the server is running
+});
 
 
 // Endpoint to send email
@@ -29,21 +33,16 @@ app.post('/send-email', async (req, res) => {
     // console.log("logged in post request", req.body) 
     const { fullName, userEmail, orderID, orderObject, amountPaid, transactionNumber, reference, amountLeftToPay } = req.body;
     // console.log(fullName, userEmail, orderID, orderObject, amountPaid)
+    console.log("fullname: ", fullName)
 console.log("amountLeftToPay - amountPaid: " + eval(orderObject?.leftToPay - amountPaid))
-    function splitName(fullName){
-        // Split the full name by whitespace
-        const nameParts = fullName.split(' ');
-
-        // Check if there are multiple parts
-        if (nameParts.length > 1) {
-            // If there are multiple parts, return the last part (last name)
-            return nameParts[nameParts.length - 1];
-        } else {
-            // If there's only one part, return the whole string (last name)
-            return fullName;
-        }
+    
+    function splitName(fullName) {
+        // Split the input string by space
+        const parts = fullName.split(' ');
+        
+        // Return the second part (index 1)
+        return parts.length > 1 ? parts[1] : " ";
     }
-
      function formatNumberWithCommas(value) {
         // Check if value is defined and not null
         if (value !== undefined && value !== null) {
@@ -71,8 +70,10 @@ console.log("amountLeftToPay - amountPaid: " + eval(orderObject?.leftToPay - amo
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>You just made a payment to Afritech for order <b>#${orderID}</b></title>
         </head>
-        <body>
-        <p class="email-p">     Hello ${splitName(fullName)}, you just completed your payment for order number <b>#${orderID}</b> totaling :  ₦${formatNumberWithCommas(orderObject.leftToPay)}  with transaction numbered: <b>#${transactionNumber}</b> with the transaction reference: <b>#${reference}</b></p>
+        <body id="email-template">
+        <p class="email-p"> Hello <b>${splitName(fullName)}</b>, <br> you just completed your payment for order number <b>#${orderID}</b> 
+        <br>totaling : ₦${formatNumberWithCommas(orderObject.leftToPay)}  <br>with transaction numbered: <b>#${transactionNumber}</b> 
+        <br>with the transaction reference: <b>#${reference}</b></p>
         
         <h4>Here is your order breakdown:</h4>
         <div className="email-product-list">
@@ -80,7 +81,7 @@ console.log("amountLeftToPay - amountPaid: " + eval(orderObject?.leftToPay - amo
             return `
                     <div class="email-product">
                         <div class="email-product-image">
-                            <img src="${item.imageGalleryImages[0].imageURL}" class="" width="70" height="70" />
+                            <img src="${item.imageGalleryImages[0].imageURL}" class="" width="70" height="70" alt="product image"/>
                         </div>
                         <div class="email-product-title">
                             <h3 class="">${item.name} - ₦${formatNumberWithCommas(item.price)}</h3>
@@ -89,7 +90,6 @@ console.log("amountLeftToPay - amountPaid: " + eval(orderObject?.leftToPay - amo
                 `;
         }).join('')}
         </div>
-        <h3>Outstanding balance : ₦${formatNumberWithCommas(orderObject.leftToPay - amountPaid)}</h3>
         <p>Regards,</p>
         <p>Afritech Team</p>
         </body>
@@ -103,8 +103,8 @@ console.log("amountLeftToPay - amountPaid: " + eval(orderObject?.leftToPay - amo
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>You just made a payment to Afritech for order <b>#${orderID}</b></title>
         </head>
-        <body>
-        <p class="email-p">     Hello ${splitName(fullName)}, you just made a payment of <b>₦${formatNumberWithCommas(amountPaid)}</b> to Afritech for order <b>#${orderID}</b> with transaction numbered: <b>#${transactionNumber}</b> with the transaction reference: <b>#${reference}</b></p>
+        <body id="email-template">
+        <p class="email-p">Hello  <b>${splitName(fullName)}</b>, <br>you just made a payment of <b>₦${formatNumberWithCommas(amountPaid)}</b> to Afritech for order <b>#${orderID}</b> with transaction numbered: <b>#${transactionNumber}</b> with the transaction reference: <b>#${reference}</b></p>
         
         <h4>Here is your order breakdown:</h4>
         <div className="email-product-list">
@@ -112,7 +112,7 @@ console.log("amountLeftToPay - amountPaid: " + eval(orderObject?.leftToPay - amo
             return `
                     <div class="email-product">
                         <div class="email-product-image">
-                            <img src="${item.imageGalleryImages[0].imageURL}" class="" width="70" height="70" />
+                            <img src="${item.imageGalleryImages[0].imageURL}" class="" width="70" height="70" alt="product image"/>
                         </div>
                         <div class="email-product-title">
                             <h3 class="">${item.name} - ₦${formatNumberWithCommas(item.price)}</h3>

@@ -1,65 +1,64 @@
-'use client'
-import React, { useState } from 'react'
-import Image from 'next/image'
-import { setModalToshow, hideModalDispachFn } from '../../redux/user'
+import React, { useState } from 'react';
+import Image from 'next/image';
+import { setModalToshow, hideModalDispachFn } from '../../redux/user';
 import { useSelector, useDispatch } from "react-redux";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, addDoc, doc, setDoc, updateDoc, onSnapshot, getDoc } from "firebase/firestore";
-import { database, storage, auth, firestore } from '../../../firebaseConfig';
+import { updateEmail, sendEmailVerification } from "firebase/auth";
+import { updateDoc, doc } from "firebase/firestore";
+import { database, auth } from '../../../firebaseConfig';
 import { toast } from 'react-toastify';
-import { getAuth, updateEmail, sendEmailVerification } from "firebase/auth";
 import { useRouter } from 'next/navigation';
-
 
 export default function ChangeEmailModal() {
     const [newEmail, setNewEmail] = useState(null);
     const [disableUploadBtn, setDisableUploadBtn] = useState(false);
     const hasPermission = useSelector((state) => state.user.hasStorageAccessPermission);
     const userID = useSelector((state) => state.user.userID);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const authCallbackUser = useSelector((state) => state.user.authCallbackUser);
+    const authCallbackUserObj = JSON.parse(authCallbackUser)
+    const router = useRouter();
 
-    const router = useRouter()
-
+    // Function to close the modal
     function closeModal() {
-        dispatch(hideModalDispachFn())
-        dispatch(setModalToshow(''))
+        dispatch(hideModalDispachFn());
+        dispatch(setModalToshow(''));
     }
 
+    // Function to handle email change
     async function ChangeEmailFn() {
-        console.log(newEmail)
+        console.log(newEmail);
         const userDocRef = doc(database, "Users", `${userID}`);
-        const confirmationAlert = window.confirm("Are you really sure you want to logout ?")
+        const confirmationAlert = window.confirm("Are you really sure you want to logout ?");
         if (confirmationAlert) {
             try {
                 // Update the email in Firebase Authentication
-                await updateEmail(authCallbackUser, newEmail);
+                await updateEmail(authCallbackUserObj, newEmail);
                 // Update the email in Firestore
                 await updateDoc(userDocRef, { email: newEmail });
-                closeModal()
+                closeModal();
                 toast.success('Email updated successfully.');
-                await sendEmailVerification(authCallbackUser);
+                // Send email verification
+                await sendEmailVerification(authCallbackUserObj);
+                // Sign out the user
                 await auth.signOut();
-                localStorage.removeItem('afriTechUserID')
+                localStorage.removeItem('afriTechUserID');
+                // Redirect to sign-in page
                 router.push("/signin");
             } catch (error) {
                 console.log(error.code);
-                if (error.code == 'auth/requires-recent-login') {
+                if (error.code === 'auth/requires-recent-login') {
+                    // Sign out the user if email change requires recent login
                     await auth.signOut();
-                    localStorage.removeItem('afriTechUserID')
-                    closeModal()
+                    localStorage.removeItem('afriTechUserID');
+                    closeModal();
                     router.push("/signin");
                     toast.error('requires-recent-login');
                 }
             }
-        }
-        else {
+        } else {
             toast.error('logout unsuccessful');
         }
-
     }
-
-   
 
     return (
         <div className='w-screen h-full bg-[#695acd74] fixed top-0 left-0 pointer-events-auto z-[100] flex justify-center items-center'>
@@ -70,7 +69,7 @@ export default function ChangeEmailModal() {
                         name="Profile-Photo"
                         disabled={!hasPermission}
                         placeholder='Enter your new email address'
-                        value={null}
+                        value={newEmail}
                         onChange={(event) => {
                             setNewEmail(event.target.value);
                         }}
@@ -79,10 +78,12 @@ export default function ChangeEmailModal() {
                 </div>
                 <div className="flex gap-4">
                     <button className="font-bold  bg-white text-[#695acd] rounded-xl  text-base  capitalize px-4 py-[0.55rem]" onClick={() => closeModal()}>Cancel</button>
-                    {newEmail && (<button disabled={disableUploadBtn} className=" font-bold  bg-white text-[#695acd] rounded-xl  text-base  capitalize px-4 py-[0.55rem] " onClick={() => ChangeEmailFn()}>Change Email</button>)}
-
+                    {/* Render Change Email button if newEmail is not null */}
+                    {newEmail && (
+                        <button disabled={disableUploadBtn} className="font-bold  bg-white text-[#695acd] rounded-xl  text-base  capitalize px-4 py-[0.55rem]" onClick={() => ChangeEmailFn()}>Change Email</button>
+                    )}
                 </div>
             </div>
         </div>
-    )
+    );
 }

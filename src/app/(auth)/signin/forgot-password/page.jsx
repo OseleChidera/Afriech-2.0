@@ -5,7 +5,6 @@ import * as Yup from 'yup';
 import { auth } from '../../../../../firebaseConfig'; // Import Firebase auth
 import { sendPasswordResetEmail } from "firebase/auth"; // Import sendPasswordResetEmail from Firebase auth
 import { toast } from 'react-toastify'; // Import toast from react-toastify
-import { redirectTo } from '@/utils/ServerFn'; // Import redirectTo from ServerFn
 import Link from 'next/link';
 import { useRouter } from 'next/navigation' 
 

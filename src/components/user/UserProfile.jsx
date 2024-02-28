@@ -13,6 +13,7 @@ export default function UserProfile() {
     const pathName = usePathname();
     const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
     const authCallbackUser = useSelector((state) => state.user.authCallbackUser);
+    const authCallbackUserObj = JSON.parse(authCallbackUser)
     // const isPathNameActive = pathName.includes(`/main/${buttonName}`) 
     const [isUserPathNameActive, setIsUserPathNameActive] = useState(pathName.includes(`/main/user`))
 
@@ -32,18 +33,17 @@ export default function UserProfile() {
           <div className="user-info flex-1 flex items-center justify-between  " >
                   <div className="flex gap-2  items-center">
                   <div className=" rounded-full overflow-hidden w-[70px] h-[70px]" onClick={() => showModal('viewePfp')}>
-                      {firebaseUserInfo?.profilePicture && (<Image src={firebaseUserInfo?.profilePicture} width={70} height={70} className='w  ' />)}
+                      {firebaseUserInfo?.profilePicture && (<Image src={firebaseUserInfo?.profilePicture} width={70} height={70} className='w  ' alt='profile picture' />)}
                       </div>
                       <div className="">
                       <h1 className='text-lg font-semibold capitalize'>{firebaseUserInfo?.fullname}</h1>
                       <h1 className='text-xs underline underline-offset-1 font-semibold '>{firebaseUserInfo?.email}</h1>
-                      {authCallbackUser?.emailVerified ? (<span className='text-xs underline underline-offset-2  '>Verified</span>) : (<span className='text-xs underline underline-offset-2 text-white '>Unverified</span>)}
+                      {authCallbackUserObj?.emailVerified ? (<span className='text-xs underline underline-offset-2  '>Verified</span>) : (<span className='text-xs underline underline-offset-2 text-white '>Unverified</span>)}
                       </div>
                   </div>
-              {/* <div className="w-fit  border border-black" onClick={() => showModal('changePfp')}> */}
               <Link href={`/main/user/user-info`}>
                     <div className="w-fit  " >
-                        <Image src={arrow} width={20} className='' />
+                        <Image src={arrow} width={20} className='' alt='right arrow'/>
                     </div>
                   </Link>
               </div>

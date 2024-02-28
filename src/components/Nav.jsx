@@ -50,10 +50,9 @@ const Nav = () => {
 
     useEffect(() => {
         const elements = document.querySelectorAll('.nav-item'); 
-        tl.to(document.querySelector('.active'), { top: '0%', ease: Power3.easeIn, duration: 0.35 })
+        // tl.to(document.querySelector('.active'), { top: '0%', ease: Power3.easeIn, duration: 0.35 })
         const inactiveElements = Array.from(elements).filter(element => !element.classList.contains('active'));
         tl.to(Array.from(inactiveElements), { top: '0%', ease: Power3.easeInOut, duration: 0.35, stagger: 0.2 })
-       
        
     }, []);
 
@@ -91,6 +90,7 @@ const NavBtns = ({ buttonName, baseIcon, activeIcon }) => {
                       src={activeIcon}
                       alt={buttonName}
                       width={25}
+                      height={25}
                       className={`aspect-square active-image `}
                   />
               </button>

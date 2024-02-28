@@ -279,7 +279,8 @@ border: 0.2px solid black;
 }
 
 .email-product-image image{
-  aspect-ratio: 1;
+  width: auto;
+  height: auto;
   object-fit: cover;
 }
 .email-product-title{
@@ -297,17 +298,6 @@ border: 0.2px solid black;
 font-size: 0.75rem/* 12px */;
     line-height: 1rem/* 16px */;
 }
-
-/* .{
-position: absolute;
-background-color: #695acde4;
-bottom: 0;
-right: 0;
-border-radius: 0.375rem;
-border-bottom-left-radius: 0;
- border-top-right-radius: 0;
- padding: 0.3rem;
-} */
-#checkoutInput{
-
+#email-template b{
+  text-transform: capitalize;
 }

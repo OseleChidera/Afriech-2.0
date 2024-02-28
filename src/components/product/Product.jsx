@@ -18,7 +18,7 @@ import {
 import { useSelector } from "react-redux";
 // import { toast } from "react-toastify";
 
-const Product = ({ id, name, price, productID, favouriteItemID, image, productObj, collectionString }) => {
+const Product = ({ id, name, qty, price, productID, favouriteItemID, image, productObj, collectionString }) => {
   const pathName = usePathname();
   const [isFavouriteClicked, setIsFavouriteClicked] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
@@ -91,7 +91,7 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
   return (
     <div className="product  relative rounded-xl  bg-white overflow-hidden w-fit">
       <div className=" w-fit  max-h-fit rounded-xl  shadow-2xl bg-whie border-[0.2px] border-black overflow-hidden mx-auto">
-        <Image src={image} className="object-cover aspect-square " width={180} height={180} />
+        <Image src={image} className="object-cover aspect-square " width={180} height={180} alt="product"/>
       </div>
       {collectionString == "Products" ? (<Link href="/product/[id]" as={`/product/${id}`}>
         <div className="info p-2">
@@ -106,21 +106,21 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
       </Link>)}
 
       
-      {(firebaseUserInfo?.accountVerified) && (<div
+      {(firebaseUserInfo?.accountVerified && qty !== 0) && (<div
         className="absolute bg-[#695acde4] bottom-0 right-0 rounded-t-xl rounded-b-xl rounded-bl-none runded rounded-tr-none p-[0.3rem]"
         onClick={addItemToCartFromProduct}
       >
-        <Image src={addIcon} width={20} />
+        <Image src={addIcon} width={20} height={20} alt="add icon"/>
       </div>)}
       
       {firebaseUserInfo?.accountVerified &&
         (isFavourited && checkIfUserAddedToFavourite(userFavourites, id) ? 
         (<div onClick={() => removeFromFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
-          <Image src={favouriteClicked} width={20} className={`scaleLikeIcon`} />
+          <Image src={favouriteClicked} width={20} height={20} className={`scaleLikeIcon`} alt="favourited"/>
         </div>)
         : 
         (<div onClick={() => addtoFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
-          <Image src={favourite} width={20} className={``} />
+          <Image src={favourite} width={20} height={20} className={``} alt="favourite"/>
         </div>))}
     </div>
   );
@@ -131,18 +131,3 @@ export default Product;
 
 
 
-
-
-
-
-// {
-//   !isPathNameActive && (!isFavourited ?
-//     (<div onClick={() => addtoFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
-//       <Image src={favourite} width={20} className={``} />
-//     </div>)
-//     :
-//     (<div onClick={() => removeFromFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
-//       <Image src={favouriteClicked} width={20} className={`scaleLikeIcon`} />
-//     </div>)
-//   )
-// }

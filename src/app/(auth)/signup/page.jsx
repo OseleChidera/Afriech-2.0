@@ -1,33 +1,30 @@
-'use client'
-import React, { useState, useContext, useEffect } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-// import { auth } from '@/firebase/firebaseConfig'
-import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
-import { collection, addDoc, doc, setDoc, updateDoc, onSnapshot, getDoc } from "firebase/firestore";
-import { database, storage } from '../../../../firebaseConfig';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import Step1 from "../../../components/multistep form/Step1.jsx";
-import Step2 from "../../../components/multistep form/Step2.jsx";
-import Step3 from "../../../components/multistep form/Step3.jsx";
-import Step4 from "../../../components/multistep form/Step4.jsx";
-import { useSelector, useDispatch } from "react-redux";
-import { setLoading, incrementSignup, decrementSignup, incrementSignin, decrementSignin, updateUserFormEntries, fetchDataByUserId, userData, setUserData, incrementAnimationCounter, decrementAnimationCounter } from '../../../redux/user'
-import { useRouter } from 'next/navigation'
+// Import necessary dependencies
+'use client'; 
+import React, { useState, useContext, useEffect } from 'react'; // Import React and necessary hooks
+import { collection, addDoc, doc, setDoc, updateDoc, onSnapshot, getDoc } from "firebase/firestore"; // Import Firestore methods
+import { database, storage } from '../../../../firebaseConfig'; // Import Firestore database and Firebase storage
+import { toast } from 'react-toastify'; // Import toast from react-toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for react-toastify
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Import Firebase storage methods
+import Step1 from "../../../components/multistep form/Step1.jsx"; // Import Step1 component
+import Step2 from "../../../components/multistep form/Step2.jsx"; // Import Step2 component
+import Step3 from "../../../components/multistep form/Step3.jsx"; // Import Step3 component
+import Step4 from "../../../components/multistep form/Step4.jsx"; // Import Step4 component
+import { useSelector, useDispatch } from "react-redux"; // Import useSelector and useDispatch from react-redux for Redux state management
+import { setLoading, incrementSignup, decrementSignup, incrementSignin, decrementSignin, updateUserFormEntries, fetchDataByUserId, userData, setUserData, incrementAnimationCounter, decrementAnimationCounter } from '../../../redux/user'; // Import Redux actions and selectors
+import { useRouter } from 'next/navigation'; // Import useRouter hook from Next.js for routing
 
 export default function Multistep() {
   // Redux state management
-  const pageindex = useSelector((state) => state.user.signupIndex);
-  const userFormEntries = useSelector((state) => state.user.userFormEntries);
-  const userIdFromLocalStorage = localStorage.getItem('afriTechUserID') ? JSON.parse(localStorage.getItem('afriTechUserID')) : null;
-  const userDataVariable = useSelector((state) => state.user.userData);
-  const dispatch = useDispatch();
+  const pageindex = useSelector((state) => state.user.signupIndex); // Get current page index from Redux store
+  const userFormEntries = useSelector((state) => state.user.userFormEntries); // Get user form entries from Redux store
+  const userIdFromLocalStorage = localStorage.getItem('afriTechUserID') ? JSON.parse(localStorage.getItem('afriTechUserID')) : null; // Get user ID from local storage
+  const userDataVariable = useSelector((state) => state.user.userData); // Get user data from Redux store
+  const dispatch = useDispatch(); // Get dispatch function from useDispatch hook
 
   // Local state
-  const [data, setData] = useState(userFormEntries);
-  const [animationCounter, setAnimationCounter] = useState(0);
+  const [data, setData] = useState(userFormEntries); // Initialize local state for form data
+  const [animationCounter, setAnimationCounter] = useState(0); // Initialize local state for animation counter
 
   // Function to upload NIN image to Firebase storage
   async function uploadNinImage(image) {
@@ -132,4 +129,4 @@ export default function Multistep() {
       {steps[pageindex]}
     </div>
   );
-};
+}

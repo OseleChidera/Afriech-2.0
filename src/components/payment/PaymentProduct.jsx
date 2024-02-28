@@ -10,7 +10,7 @@ const PaymentProduct = ({ productID, productName, productPrice, productImageUrl 
   return (
       <div className=" cart-item rounded-md relative  flex flex-1 gap-2 bg-white overflow-hidden p-2 items-center">
           <div className=" w-fit  h-fit rounded-xl  shadow-2xl bg-whie overflow-hidden cart-item-image">
-              {productImageUrl  && <Image src={productImageUrl} className="aspect-auto object-cover " width={70} height={70} />}
+              {productImageUrl  && <Image src={productImageUrl} className="object-cover w-auto h-auto " width={70} height={70}  alt='product'/>}
           </div>
           <div className="info p-2 text-black">
               <h2 className="text-xs font-semibold">

@@ -11,6 +11,8 @@ import { getAuth, sendEmailVerification } from "firebase/auth";
 export default function UserInfoModal({ title, action, index }) {
     // const [isEditing, setIsEditing] = useState(false);
     const authCallbackUser = useSelector((state) => state.user.authCallbackUser);
+    const authCallbackUserObj = JSON.parse(authCallbackUser)
+
     const userID = useSelector((state) => state.user.userID);
     const dispatch = useDispatch();
 
@@ -21,29 +23,12 @@ export default function UserInfoModal({ title, action, index }) {
         dispatch(setModalToshow(modalToShow))
     } 
 
-    // function resendUserVerificationEmail(authCallbackUser) {
-    //     if (authCallbackUser) {
-    //         // Send the verification email
-    //         sendEmailVerification(authCallbackUser)
-    //             .then(() => {
-    //                 // Email sent successfully
-    //                 console.log("Verification email sent successfully!");
-    //                 toast.success(`Verification email sent successfully!`);
-    //             })
-    //             .catch((error) => {
-    //                 // Handle errors
-    //                 console.error("Error sending verification email:", error);
-    //             });
-    //     } else {
-    //         // User is not signed in
-    //         console.error("User is not signed in.");
-    //     }
-    // }
+ 
     const sendVerificationEmail = () => {
         const user = auth.currentUser;
 
-        if (authCallbackUser) {
-            authCallbackUser.sendEmailVerification()
+        if (authCallbackUserObj) {
+            authCallbackUserObj.sendEmailVerification()
                 .then(() => {
                     console.log('Email verification sent successfully.');
                 })
@@ -89,7 +74,7 @@ export default function UserInfoModal({ title, action, index }) {
         key={index}
         onClick={() =>
           action == "verifyEmail"
-            ? resendUserVerificationEmail(authCallbackUser)
+            ? resendUserVerificationEmail(authCallbackUserObj)
             : showModal(action)
         }
       >

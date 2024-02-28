@@ -1,48 +1,41 @@
-'use client'
-import React, { useState } from 'react'
-import Image from 'next/image'
-import { setModalToshow, hideModalDispachFn } from '../../redux/user'
+import React, { useState } from 'react';
+import { setModalToshow, hideModalDispachFn } from '../../redux/user';
 import { useSelector, useDispatch } from "react-redux";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { collection, addDoc, doc, setDoc, updateDoc, onSnapshot, getDoc } from "firebase/firestore";
-import { database, storage, auth, firestore } from '../../../firebaseConfig';
+import { updateDoc, doc } from "firebase/firestore";
+import { database } from '../../../firebaseConfig';
 import { toast } from 'react-toastify';
-import { getAuth, updateEmail, sendEmailVerification } from "firebase/auth";
-import { useRouter } from 'next/navigation';
-import { Formik, Form, Field } from 'formik';
-import { step3ValidationSchema } from "../../utils/schemautils"
-
 
 export default function ChangeLocationModal() {
     const [disableUploadBtn, setDisableUploadBtn] = useState(false);
     const [selectedOption, setSelectedOption] = useState('');
     const userID = useSelector((state) => state.user.userID);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
+    // Function to close the modal
     function closeModal() {
-        dispatch(hideModalDispachFn())
-        dispatch(setModalToshow(''))
+        dispatch(hideModalDispachFn());
+        dispatch(setModalToshow(''));
     }
 
+    // Function to handle location change
     async function changeLocationFn() {
         const userDocRef = doc(database, "Users", `${userID}`);
         try {
-            // Update the email in Firestore
+            // Update the location in Firestore
             await updateDoc(userDocRef, { locationOption: selectedOption });
-            closeModal()
-            toast.success('location updated successfully.');
-
+            closeModal();
+            toast.success('Location updated successfully.');
         } catch (error) {
             console.log(error.code);
         }
     }
-    
 
     // Event handler for option change
     const handleOptionChange = (e) => {
         setSelectedOption(e.target.value);
     };
 
+    // Location options
     const locationOptions = [
         { value: 'Nigeria', label: 'Nigeria' },
         { value: 'Senegal', label: 'Senegal' },
@@ -64,10 +57,12 @@ export default function ChangeLocationModal() {
                 </div>
                 <div className="flex gap-4">
                     <button className="font-bold  bg-white text-[#695acd] rounded-xl  text-base  capitalize px-4 py-[0.55rem]" onClick={() => closeModal()}>Cancel</button>
-                    {selectedOption && (<button disabled={disableUploadBtn} className=" font-bold  bg-white text-[#695acd] rounded-xl  text-base  capitalize px-4 py-[0.55rem] " onClick={() => changeLocationFn()}>Save Changes</button>)}
-
+                    {/* Render "Save Changes" button if an option is selected */}
+                    {selectedOption && (
+                        <button disabled={disableUploadBtn} className="font-bold  bg-white text-[#695acd] rounded-xl  text-base  capitalize px-4 py-[0.55rem]" onClick={() => changeLocationFn()}>Save Changes</button>
+                    )}
                 </div>
             </div>
         </div>
-    )
+    );
 }

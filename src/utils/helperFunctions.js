@@ -77,7 +77,8 @@ export function formatNumberWithCommas(value) {
 
 
 
-export async function fetchProductDataById(docId, setterFunction, setMainImage, databaseName = 'Products') {
+export async function fetchProductDataById(docId, setterFunction, setMainImage, databaseName) {
+    console.log("values in fetch product by id: " +  {docId, setterFunction, setMainImage, databaseName})
     try {
         // Reference to the specific Firestore document using its ID
         const documentRef = doc(database, databaseName, docId); // Replace 'YourCollectionName' with the actual name of your collection
@@ -201,7 +202,7 @@ export async function deleteReview(productID, reviewItemID, collectionString) {
 
 
 
-export async function addItemsToCart(productId, productQuantity = 1, userID, setProductCartID = undefined, collectionStringValue) {
+export async function addItemsToCart(productId, productQuantity = 1, userID, setAddToCartQty = undefined, collectionStringValue) {
     console.log(productId, productQuantity, userID);
     let cartItemID = generateRandomID(20);
     try {
@@ -252,8 +253,8 @@ export async function addItemsToCart(productId, productQuantity = 1, userID, set
                 transaction.update(currentUserRef, { cart: filteredCart });
 
                 // Call the setter function if provided
-                if (setProductCartID) {
-                    setProductCartID(cartItemID);
+                if (setAddToCartQty) {
+                    setAddToCartQty(1);
                 }
 
                 // Success message

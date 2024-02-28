@@ -72,7 +72,7 @@ export default function Reviews({ reviews, productId, collectionString }) {
           reviewsArrayWithoutEmptyStrings?.map((review , index) => <Review key={index} date={review?.date} review={review?.review} userID={review?.userId} reviewID={review?.reviewId} productId={productId} collectionString={collectionString}/> )
         }
       </div>
-      {(reviewsArrayWithoutEmptyStrings?.length == 0 ) ? (<h2 className='text-sm  text-center'>No reviews for this product fo far</h2>) : (<h2 className='text-sm  text-center'>{reviews?.length} reviews of this product fo far</h2>)}
+      <h2 className='text-sm  text-center'>{reviewsArrayWithoutEmptyStrings?.length} review(s) of this product fo far</h2>
     </div>
   );
 }

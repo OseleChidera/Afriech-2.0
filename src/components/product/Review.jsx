@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 
 export default function Review({ productId, userID, reviewID, review, date, collectionString }) {
+     // Retrieve the user ID from the Redux store
     const userIdFromReduxStore = useSelector((state) => state.user.userID);
 
 
@@ -20,7 +21,7 @@ export default function Review({ productId, userID, reviewID, review, date, coll
          </div>
           {userID == userIdFromReduxStore && 
               (<div className="" onClick={() => deleteReview(productId, reviewID, collectionString)}>
-                  <Image src={trashIcon} width={20} height={20} />
+                  <Image src={trashIcon} width={20} height={20} alt='trash icon'/>
               </div>)
           }
           <span id="review-time" className='text-[0.55rem] absolute right-2 bottom-1'>{date}</span>

@@ -18,6 +18,7 @@ export default function DynamicProductLoadingSkeleton({  }) {
                                 className="object-contain w-full h-full"
                                 width={300}
                                 height={300}
+                                priority
                             />
                     </div>
                     <div id="product-details">
@@ -38,14 +39,14 @@ export default function DynamicProductLoadingSkeleton({  }) {
                             <div className='relative border-[-0.5px] border-black w-full p-2 rounded-lg  text-white bg-gray-500 text-balance h-10 animate-pulse'>
                             </div>
                         </div>
-                        <p className="text-gray-700 text-lg indent-12  margin-0 ">
+                        <div className="text-gray-700 text-lg indent-12  margin-0 ">
                             <div className="h-2 bg-gray-500 rounded-full mb-2 animate-pulse w-full"></div>
                             <div className="h-2 bg-gray-500 rounded-full mb-2 animate-pulse w-full"></div>
                             <div className="h-2 bg-gray-500 rounded-full mb-2 animate-pulse w-full"></div>
                             <div className="h-2 bg-gray-500 rounded-full mb-2 animate-pulse w-full"></div>
                             <div className="h-2 bg-gray-500 rounded-full mb-2 animate-pulse w-full"></div>
                             <div className="h-2 bg-gray-500 rounded-full mb-2 animate-pulse w-11/12"></div>
-                        </p>
+                        </div>
                     </div>
 
                     

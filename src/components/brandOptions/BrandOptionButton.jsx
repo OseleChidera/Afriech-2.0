@@ -1,21 +1,24 @@
-'use client'
-import React from 'react'
+'use client'; // Indicates that this code runs on the client side
+import React from 'react'; // Import React library
 
-const BrandOptionButton = ({brandID}) => {
-  return (
-    <div className='rounded-2xl px-3 py-1 border bg-[#695acde4] text-white border-white capitalize text-xl'>
-      <input
-        type="checkbox"
-        id={id}
-        onChange={handleCheckboxChange}
-        checked={isSelected}
-        className='hidden'
-      />
-      <label htmlFor={id} className='flex-auto rounded-md h-fit'>
-        {brandID}
-      </label>
-    </div>
-  )
-}
+// Functional component for a brand option button
+const BrandOptionButton = ({ brandID }) => {
+    return (
+        <div className='rounded-2xl px-3 py-1 border bg-[#695acde4] text-white border-white capitalize text-xl'>
+            {/* Checkbox input (hidden) */}
+            <input
+                type="checkbox"
+                id={id} // Note: id variable is not defined
+                onChange={handleCheckboxChange} // handleCheckboxChange function is not defined
+                checked={isSelected} // isSelected variable is not defined
+                className='hidden'
+            />
+            {/* Label for the checkbox */}
+            <label htmlFor={id} className='flex-auto rounded-md h-fit'>
+                {brandID}
+            </label>
+        </div>
+    );
+};
 
-export default BrandOptionButton
+export default BrandOptionButton; // Export BrandOptionButton component

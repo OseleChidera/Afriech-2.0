@@ -18,7 +18,7 @@ import {
 import { useSelector } from "react-redux";
 // import { toast } from "react-toastify";
 
-const PopularProduct = ({ id, name, price, productID, favouriteItemID, image, productObj, collectionString }) => {
+const PopularProduct = ({ id, name, qty ,price, productID, favouriteItemID, image, productObj, collectionString }) => {
     const pathName = usePathname();
     const [isFavouriteClicked, setIsFavouriteClicked] = useState(false);
     const [isInCart, setIsInCart] = useState(false);
@@ -91,7 +91,7 @@ const PopularProduct = ({ id, name, price, productID, favouriteItemID, image, pr
     return (
         <div className="product  relative rounded-xl  bg-white overflow-hidden w-fit">
             <div className=" w-fit  max-h-fit rounded-xl  shadow-2xl bg-whie border border-black overflow-hidden mx-auto">
-                <Image src={image} className="object-cover aspect-square " width={180} height={180} />
+                <Image src={image} className="object-cover aspect-square " width={180} height={180} alt="product"/>
             </div>
             <Link href="/product/[id]" as={`/popularProduct/${id}`}>
                 <div className="info p-2">
@@ -100,23 +100,23 @@ const PopularProduct = ({ id, name, price, productID, favouriteItemID, image, pr
                 </div>
             </Link>
 
-            {firebaseUserInfo?.accountVerified &&  (
+            {(firebaseUserInfo?.accountVerified && qty !== 0) &&  (
                     <div
                         className="absolute bg-[#695acde4] bottom-0 right-0 rounded-t-xl rounded-b-xl rounded-bl-none runded rounded-tr-none p-[0.3rem]"
                         onClick={addItemToCartFromProduct}
                     >
-                        <Image src={addIcon} width={20} />
+                        <Image src={addIcon} width={20} height={20} alt="popular product add icon"/>
                     </div>
                 )
             }
 
             {firebaseUserInfo?.accountVerified && (isFavourited && checkIfUserAddedToFavourite(userFavourites, id) ?
                 (<div onClick={() => removeFromFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
-                    <Image src={favouriteClicked} width={20} className={`scaleLikeIcon`} />
+                    <Image src={favouriteClicked} width={20} height={20} className={`scaleLikeIcon`} alt="popular product favourite icon"/>
                 </div>)
                 :
                 (<div onClick={() => addtoFavourites()} className={`absolute bg-[#695acde4] top-0 right-0 rounded-t-nne rounded-br-none rounded-bl-xl runded rounded-tr-xl p-[0.3rem]`}>
-                    <Image src={favourite} width={20} className={``} />
+                    <Image src={favourite} width={20} height={20} className={``} alt="popular product favourite icon"/>
                 </div>))}
         </div>
     );
