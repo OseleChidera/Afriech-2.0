@@ -62,9 +62,7 @@ input[type="text"] {
   /* box-shadow: 40px 0px 80px white; */
 }
 .product{
-   /* box-shadow: inset  1px 1px 1px 1.2px #695acde4;
-   box-shadow:black ; */
-   border: 0.05px solid black;
+ 
 }
 .shadow-inner{
   box-shadow: inset 1px 0px 2px #f9f9f5;
@@ -133,11 +131,10 @@ display: none;
 
 .grid-container {
   display: grid; /* Set the display property to grid */
-  grid-template-columns: repeat(auto-fit, minmax(150px, 0.5fr)); /* Define the grid columns to auto-fit with a minimum width of 150px and a maximum of 0.5 fractional units */
-  grid-gap: 20px; /* Set the gap between grid items to 20px */
-  /* padding: 20px; */ /* Commented out padding to remove padding */
-  /* justify-content: start;  */
-  /* align-items: start;  */
+  grid-template-columns: repeat(auto-fit, minmax(170px, 0.5fr)); /* Define the grid columns to auto-fit with a minimum width of 150px and a maximum of 0.5 fractional units */
+  /* grid-gap: 20px;  */
+  grid-row-gap: 20px;
+  grid-column-gap: 20px;
 }
 
 @keyframes likeProd {

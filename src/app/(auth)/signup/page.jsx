@@ -19,7 +19,6 @@ export default function Multistep() {
   const pageindex = useSelector((state) => state.user.signupIndex); // Get current page index from Redux store
   const userFormEntries = useSelector((state) => state.user.userFormEntries); // Get user form entries from Redux store
   const userIdFromLocalStorage = localStorage.getItem('afriTechUserID') ? JSON.parse(localStorage.getItem('afriTechUserID')) : null; // Get user ID from local storage
-  const userDataVariable = useSelector((state) => state.user.userData); // Get user data from Redux store
   const dispatch = useDispatch(); // Get dispatch function from useDispatch hook
 
   // Local state
@@ -94,8 +93,8 @@ export default function Multistep() {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           dispatch(setUserData(docSnap.data()));
-          toast.success('User SignUp complete');
-          redirect("/signin");
+          toast.success('User SignUp complete', { autoClose: 500, onOpen: () => redirect("/signin") });
+          // redirect("/signin");
         } else {
           console.log('No such document!');
         }

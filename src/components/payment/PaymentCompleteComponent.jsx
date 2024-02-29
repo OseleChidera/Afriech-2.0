@@ -1,11 +1,8 @@
 "use client";
 import Nav from "@/components/Nav";
 import React, { useState } from "react";
-import { usePaystackPayment } from "react-paystack";
-import { PaystackButton } from 'react-paystack';
 import { useSelector, useDispatch } from "react-redux";
 import PaymentProduct from "./PaymentProduct";
-import { formatNumberWithCommas, updateFinancingItemPrice } from "@/utils/helperFunctions";
 
 // This component renders a summary of completed payments for a specific order.
 export default function PaymentCompleteComponent({ orderID, productsArray, leftToPay, financingTotal }) {

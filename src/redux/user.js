@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 const formEntries = {
-    email: 'deraemma8@gmail.com',
+    email: 'derae960@gmail.com',
     password: '11111111',
     confirm_password: '11111111',
     fullname: '',
@@ -20,24 +20,17 @@ export const userSlice = createSlice({
     name: "user",
     initialState: {
         userID: '',
-        loading: false,
         signupIndex: 0,
         signinIndex: 0,
-        // homePageNavIndex: 0,
+        userData: null,
         animationCounter: 0,
         userFormEntries: formEntries,
-        currentUserData: null,
-        userData: null,
         hasStorageAccessPermission: true,
-        userAge: null,
         firebaseUserInfo: {},
-        userCartData: [],
         userFavourites: [],
         showModal: true,
         modalToshow: "",
         authCallbackUser: null,
-        productsData: null,
-        PopularProducts: [],
         userFinancingData: [],
         data: {}
     },
@@ -47,9 +40,6 @@ export const userSlice = createSlice({
         },
         removeUserId: (state, action) => {
             state.userID = action.payload
-        },
-        setLoading: (state, action) => {
-            state.loading = action.payload
         },
         incrementSignup: (state, action = false) => {
             if (action.payload) {
@@ -85,17 +75,11 @@ export const userSlice = createSlice({
         incrementSigninToStartMultistep: (state) => {
             state.signinIndex = 1
         },
-        sethomePageNavIndex: (state, action) => {
-            state.homePageNavIndex = action.payload
-        },
         incrementSigninByAmmount: (state, action) => {
             state.signinIndex = action.payload
         },
         updateUserFormEntries: (state, action) => {
             state.userFormEntries = action.payload
-        },
-        grantStorageAccess: (state, action) => {
-            state.hasStorageAccessPermission = action.payload
         },
         setUserData: (state, action) => {
             state.userData = action.payload
@@ -103,9 +87,8 @@ export const userSlice = createSlice({
         removeUserData: (state, action) => {
             state.userData = action.payload
         },
-        setCurrentUserData: (state, action) => {
-            // console.log("ACTION PAYLOAD:" + action.payload)
-            state.currentUserData = action.payload
+        grantStorageAccess: (state, action) => {
+            state.hasStorageAccessPermission = action.payload
         },
         setCurrentfirebaseUserInfo: (state, action) => {
             state.firebaseUserInfo = action.payload
@@ -122,28 +105,18 @@ export const userSlice = createSlice({
         setAuthCallbackUser: (state, action) => {
             state.authCallbackUser = action.payload
         },
-        setProductsData: (state, action) => {
-            state.productsData = action.payload
-        },
-        setPopularProductsData: (state, action) => {
-            state.PopularProducts = action.payload
-        },
-        setuserCartData: (state, action) => {
-            state.userCartData = action.payload
-        },
+        
         setuserFavouritesData: (state, action) => {
             state.userFavourites = action.payload
-        },
-        setuserFinancingData: (state, action) => {
-            state.userFinancingData = action.payload
         },
         setData: (state, action) => {
             state.data = action.payload
         }
     }
 })
-export const { setUserId, setUserData, removeUserData, setLoading, incrementSignup, decrementSignup, incrementSignin, decrementSignin, incrementSigninToStartMultistep, incrementSigninByAmmount, updateUserFormEntries, grantStorageAccess, sethomePageNavIndex, setCurrentUserData, setSignupIndex, setCurrentfirebaseUserInfo, incrementAnimationCounter, decrementAnimationCounter, showModalDispachFn, hideModalDispachFn, setModalToshow, setAuthCallbackUser, setProductsData, setPopularProductsData, setuserCartData, setuserFavouritesData, setuserFinancingData, setData } = userSlice.actions;
-// export const userData = (state) => state.user.userData;
+
+export const {setUserId,removeUserId,incrementSignup,decrementSignup,incrementAnimationCounter,decrementAnimationCounter,setSignupIndex,incrementSignin,decrementSignin,incrementSigninToStartMultistep,incrementSigninByAmmount,updateUserFormEntries,setUserData,removeUserData ,grantStorageAccess,setCurrentfirebaseUserInfo,showModalDispachFn,hideModalDispachFn,setModalToshow,setAuthCallbackUser,setuserFavouritesData,setData } = userSlice.actions;
+
 export default userSlice.reducer;
 
 

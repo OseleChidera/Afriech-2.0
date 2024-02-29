@@ -102,16 +102,16 @@ export default function OrderPaymentComponent({ orderID, productsArray, leftToPa
                         className="text-black w-[65%] p-2"
                         placeholder={`Total to pay ₦${formatNumberWithCommas(leftToPay)}`}
                     />
-                    <div className="flex flex-row justify-end border border-black">
-                        <div id="percentageValues" className="flex gap-3 items p-2 border border-black">
+                    <div className="flex flex-row justify-end ">
+                        <div id="percentageValues" className="flex gap-3 items p-2 ">
                             <button
-                                className={`px-2 border border-black bg-white text-[#695acd] capitalize text-center py-1 rounded-md w-full ${amount > leftToPay ? "opacity-[0.5]" : ""}`}
+                                className={`px-2  bg-white text-[#695acd] capitalize text-center py-1 rounded-md w-full ${amount > leftToPay ? "opacity-[0.5]" : ""}`}
                                 onClick={() => setAmount(leftToPay / 2)}
                             >
                                 50%
                             </button>
                             <button
-                                className={`px-2 border border-black bg-white text-[#695acd] capitalize text-center py-1 rounded-md w-full ${amount > leftToPay ? "opacity-[0.5]" : ""}`}
+                                className={`px-2  bg-white text-[#695acd] capitalize text-center py-1 rounded-md w-full ${amount > leftToPay ? "opacity-[0.5]" : ""}`}
                                 onClick={() => setAmount(leftToPay)}
                             >
                                 100%
@@ -120,7 +120,7 @@ export default function OrderPaymentComponent({ orderID, productsArray, leftToPa
                         <div className="info p-2 text-black flex flex-col items-center justify-center">
                             <PaystackButton {...componentProps}>
                                 <div
-                                    className={`px-5 border border-black bg-white text-[#695acd] capitalize text-center py-1 rounded-md w-full ${amount > leftToPay ? "opacity-[0.5]" : ""}`}
+                                    className={`px-5  bg-white text-[#695acd] capitalize text-center py-1 rounded-md w-full ${amount > leftToPay ? "opacity-[0.5]" : ""}`}
                                     onClick={() => configurePayment(orderID)}
                                     disabled={amount > leftToPay || !amount}
                                 >

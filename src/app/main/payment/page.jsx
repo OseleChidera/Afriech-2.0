@@ -12,7 +12,7 @@ import PaymentComplete from '@/components/payment/PaymentComplete'; // Import Pa
 export default function page() {
   // Redux state management
   const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo); // Get firebaseUserInfo from Redux store
-  const userFinancingData = useSelector((state) => state.user.userFinancingData); // Get userFinancingData from Redux store
+ 
   const data = useSelector((state) => state.user.data); // Get data from Redux store
   const [buttonsState, setButtonsState] = useState(0); // Local state for buttonsState
   const [filteredArray, setFilteredArray] = useState([]); // Local state for filteredArray
@@ -23,6 +23,7 @@ export default function page() {
     setFilteredArray(filtered);
   }, [data?.userData]);
 
+  // console.log("userData: " , data?.userData?.financing , data?.userData?.paymentCompleted)
   return (
     <>
       <div className="pt-8">

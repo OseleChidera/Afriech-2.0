@@ -25,15 +25,15 @@ export default function UserProfile() {
     } 
 
     useEffect(() => {
-        console.log("firebaseUserInfo ", firebaseUserInfo)
+        // console.log("firebaseUserInfo ", firebaseUserInfo)
     }, []);
   return (
      
       <div className="flex items-center justify-between gap-3 rounded-xl bg-[#695acde4] text-white p-2 sticky top-0 mb-4">
           <div className="user-info flex-1 flex items-center justify-between  " >
                   <div className="flex gap-2  items-center">
-                  <div className=" rounded-full overflow-hidden w-[70px] h-[70px]" onClick={() => showModal('viewePfp')}>
-                      {firebaseUserInfo?.profilePicture && (<Image src={firebaseUserInfo?.profilePicture} width={70} height={70} className='w  ' alt='profile picture' />)}
+                  <div className=" rounded-full overflow-hidden w-[70px] h-[70px] flex items-center justify-center" onClick={() => showModal('viewePfp')}>
+                      {firebaseUserInfo?.profilePicture && (<Image src={firebaseUserInfo?.profilePicture} width={70} height={70} className='w-auto h-auto ' alt='profile picture' priority/>)}
                       </div>
                       <div className="">
                       <h1 className='text-lg font-semibold capitalize'>{firebaseUserInfo?.fullname}</h1>

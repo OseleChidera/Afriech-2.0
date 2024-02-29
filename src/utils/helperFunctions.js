@@ -1,18 +1,13 @@
-import { collection, addDoc, doc, getDocs,setDoc, updateDoc, onSnapshot, getDoc, runTransaction } from 'firebase/firestore';
+import { collection, addDoc, doc, getDocs, setDoc, updateDoc, onSnapshot, getDoc, runTransaction } from 'firebase/firestore';
 import { database } from '../../firebaseConfig'; // Import your Firebase configuration
 import { toast } from "react-toastify";
-import { useSelector, useDispatch } from "react-redux";
-import { setPopularProductsData } from '@/redux/user';
 
-export async function getUserData(userID, userDataSetterFn,setFetchedData) {
-
-
+export async function getUserData(userID, userDataSetterFn, setFetchedData) {
 
     try {
         const userDocRef = doc(database, 'Users', userID);
         const initialSnapshot = await getDoc(userDocRef);
         const initialUserData = initialSnapshot.data();
-
         // Set initial data
         userDataSetterFn(initialUserData);
         setFetchedData((prevData) => ({
@@ -23,31 +18,21 @@ export async function getUserData(userID, userDataSetterFn,setFetchedData) {
         const unsubscribeUserInfo = onSnapshot(userDocRef, (snapshot) => {
             const fetchedUserData = snapshot.data();
             userDataSetterFn(fetchedUserData);
-
-            // console.log("fetchedUserData   fetchedUserData", JSON.stringify(fetchedUserData,null,2))
             setFetchedData((prevData) => ({
                 ...prevData,
                 ['userData']: fetchedUserData,
             }));
-            // if (fetchedData.cartArray !== null && fetchedData.favouritesArray !== null) {
-                // cartDataSetterFn(fetchedUserData.cart)
-                setFetchedData((prevData) => ({
-                    ...prevData,
-                    ['cartArray']: fetchedUserData.cart,
-                    ['favouritesArray']: fetchedUserData.favourites,
-                    ['paymentArray']: fetchedUserData.financing,
-                    ['paymentCompleteArray']: fetchedUserData.paymentCompletedArray,
-                }));
-               
-                // favouritesSetterFn(fetchedUserData.favourites)
-                // console.log("fetchedUserData.cart ", fetchedUserData.cart)
-                // console.log("fetchedUserData.favourites ", fetchedUserData.favourites)
-                // console.log("fetchedUserData.financing ", fetchedUserData.financing)
-                // setFinancingData(fetchedUserData.financing)
-               
-            // }
-        })
 
+            setFetchedData((prevData) => ({
+                ...prevData,
+                ['cartArray']: fetchedUserData.cart,
+                ['favouritesArray']: fetchedUserData.favourites,
+                ['paymentArray']: fetchedUserData.financing,
+                ['paymentCompleteArray']: fetchedUserData.paymentCompletedArray,
+            }));
+
+
+        })
         // Cleanup the listener when the component unmounts or as needed
         return () => unsubscribeUserInfo();
     } catch (error) {
@@ -61,13 +46,10 @@ export function formatNumberWithCommas(value) {
     if (value !== undefined && value !== null) {
         // Convert the number to a string
         let numberString = value.toString();
-
         // Use a regular expression to add commas
         numberString = numberString.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
         return numberString;
     }
-
     // Return a default value or handle the case when value is undefined or null
     return "N/A";
 }
@@ -78,7 +60,7 @@ export function formatNumberWithCommas(value) {
 
 
 export async function fetchProductDataById(docId, setterFunction, setMainImage, databaseName) {
-    console.log("values in fetch product by id: " +  {docId, setterFunction, setMainImage, databaseName})
+    // console.log("values in fetch product by id: " + { docId, setterFunction, setMainImage, databaseName })
     try {
         // Reference to the specific Firestore document using its ID
         const documentRef = doc(database, databaseName, docId); // Replace 'YourCollectionName' with the actual name of your collection
@@ -92,11 +74,9 @@ export async function fetchProductDataById(docId, setterFunction, setMainImage, 
             if (docSnapshot.exists()) {
                 const data = docSnapshot.data();
                 setterFunction(data)
-                console.log('fetchProductDataById data ', data)
+                // console.log('fetchProductDataById data ', data)
                 setMainImage(data.imageGalleryImages[0].imageURL)
 
-                // console.log('Document data:', data);
-                // Perform any actions with the data here
             } else {
                 console.log('Document does not exist');
                 // Handle the case where the document does not exist
@@ -111,32 +91,26 @@ export async function fetchProductDataById(docId, setterFunction, setMainImage, 
 }
 
 
-
-
 export function generateRandomID(userIdLength = 20) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    // const userIdLength ;
     let randomID = '';
 
     for (let i = 0; i < userIdLength; i++) {
         const randomIndex = Math.floor(Math.random() * characters.length);
         randomID += characters.charAt(randomIndex);
     }
-    console.log("randomID: ", randomID);
+    // console.log("randomID: ", randomID);
     return randomID;
 }
 
 export async function getCurrentDateTime() {
     const currentDate = new Date();
-
     const day = currentDate.getDate().toString().padStart(2, '0');
     const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
     const year = currentDate.getFullYear().toString();
-
     const hours = currentDate.getHours().toString().padStart(2, '0');
     const minutes = currentDate.getMinutes().toString().padStart(2, '0');
     const seconds = currentDate.getSeconds().toString().padStart(2, '0');
-
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 }
 
@@ -144,7 +118,7 @@ export async function getCurrentDateTime() {
 
 export async function addReview(userID, productId, newReview, setReview, collectionString) {
     const dataCollectionReference = collection(database, `${collectionString}`);
-    const reviewID =  generateRandomID()
+    const reviewID = generateRandomID()
     const reviewUploadDate = await getCurrentDateTime()
     console.table(userID, productId, newReview)
     const productDocRef = doc(dataCollectionReference, productId);  // Replace 'yourFirestoreCollectionReference' with your actual reference
@@ -152,18 +126,15 @@ export async function addReview(userID, productId, newReview, setReview, collect
         // Get the current data of the document
         const productDocSnapshot = await getDoc(productDocRef);
         const productData = productDocSnapshot.data();
-
         // Update the reviews array
-        const updatedReviews = [...productData.reviews, { userId: userID, reviewId: reviewID, review: newReview, date: reviewUploadDate  }];
-
+        const updatedReviews = [...productData.reviews, { userId: userID, reviewId: reviewID, review: newReview, date: reviewUploadDate }];
         // Update the Firestore document with the new reviews array
         await updateDoc(productDocRef, { reviews: updatedReviews });
-
-        console.log('Review added successfully!');
+        // console.log('Review added successfully!');
         toast.success(`Review added successfully`);
         setReview('')
     } catch (error) {
-        console.log('Error adding review:', error, error.code , error.message);
+        console.log('Error adding review:', error, error.code, error.message);
         toast.error(error.message);
     }
 }
@@ -171,8 +142,8 @@ export async function addReview(userID, productId, newReview, setReview, collect
 
 
 export async function deleteReview(productID, reviewItemID, collectionString) {
-    console.log("productID ", productID)
-    console.log("reviewItemID ", reviewItemID)
+    // console.log("productID ", productID)
+    // console.log("reviewItemID ", reviewItemID)
     try {
         const docRef = doc(database, `${collectionString}`, productID);
         const documentData = await getDoc(docRef);
@@ -180,16 +151,13 @@ export async function deleteReview(productID, reviewItemID, collectionString) {
         if (documentData.exists()) {
             const reviewsArray = documentData.data().reviews;
             console.log(reviewsArray)
-
             // Filter out the review with the given reviewID
             const updatedReviews = reviewsArray.filter((review) => review.reviewId !== reviewItemID);
-            console.log(updatedReviews)
-
-
+            // console.log(updatedReviews)
             // Update the document with the modified reviews array
             await updateDoc(docRef, { reviews: updatedReviews });
             toast.success(`Review deleted successfully`);
-            console.log('Review deleted successfully.');
+            // console.log('Review deleted successfully.');
         } else {
             console.error(`Product with ID ${productID} not found.`);
         }
@@ -203,7 +171,7 @@ export async function deleteReview(productID, reviewItemID, collectionString) {
 
 
 export async function addItemsToCart(productId, productQuantity = 1, userID, setAddToCartQty = undefined, collectionStringValue) {
-    console.log(productId, productQuantity, userID);
+    // console.log(productId, productQuantity, userID);
     let cartItemID = generateRandomID(20);
     try {
         const productDocRef = doc(database, collectionStringValue, productId);
@@ -225,7 +193,7 @@ export async function addItemsToCart(productId, productQuantity = 1, userID, set
 
                 // Add the product to the cart based on productQuantity
                 for (let i = 0; i < productQuantity; i++) {
-                    
+
                     const cartItem = {
                         ...productData,
                         cartItemID,
@@ -277,16 +245,16 @@ export async function addItemsToCart(productId, productQuantity = 1, userID, set
     }
 }
 
-export async function removeItemFromCart(productCollectionString,productID, cartItemID, userID) {
-    console.log("productID ", productID)
-    console.log("cartItemID ", cartItemID)
-    console.log("userID ", userID)
+export async function removeItemFromCart(productCollectionString, productID, cartItemID, userID) {
+    // console.log("productID ", productID)
+    // console.log("cartItemID ", cartItemID)
+    // console.log("userID ", userID)
     try {
         const userRef = doc(database, 'Users', userID);
         const productRef = doc(database, `${productCollectionString}`, productID);
         const userDocumentData = await getDoc(userRef);
         const productDocumentData = await getDoc(productRef);
-        console.log("productDocumentData ", productDocumentData)
+        // console.log("productDocumentData ", productDocumentData)
 
         if (userDocumentData.exists() && productDocumentData.exists()) {
             const cartArray = userDocumentData.data().cart;
@@ -301,7 +269,7 @@ export async function removeItemFromCart(productCollectionString,productID, cart
             await updateDoc(productRef, { qty: productDocumentData.data().qty + 1 })
 
             toast.success(`Item removed from cart successfully`);
-            console.log('Item removed from cart successfully.');
+            // console.log('Item removed from cart successfully.');
         } else {
             console.error(`Product with ID ${productID} not found.`);
         }
@@ -313,7 +281,7 @@ export async function removeItemFromCart(productCollectionString,productID, cart
 
 
 export async function addItemsToFavourites(productId, userID, setProductFavouriteID, collectionString) {
-    console.log(productId, userID);
+    // console.log(productId, userID);
 
     try {
         const productDocRef = doc(database, `${collectionString}`, productId);
@@ -324,36 +292,26 @@ export async function addItemsToFavourites(productId, userID, setProductFavourit
             const productDocSnapshot = await getDoc(productDocRef);
 
             if (currentUserSnapshot.exists() && productDocSnapshot.exists()) {
-                    // Get the existing array from the document
-                    let existingArray = currentUserSnapshot.data().favourites || [];
+                // Get the existing array from the document
+                let existingArray = currentUserSnapshot.data().favourites || [];
                 let productuserFavourites = productDocSnapshot.data().userFavourited
-                        const favouriteItemID = generateRandomID();
-                        const productID = productId
-                const favouriteItem = { ...productDocSnapshot.data() , favouriteItemID, productID };
-                        delete favouriteItem.qty;
-                        delete favouriteItem.link;
-                        delete favouriteItem.reviews;
-                        delete favouriteItem.description;
-                        delete favouriteItem.userFavourited;
-                        // const imageGallerylength = favouriteItem?.imageGalleryImages?.length
-                        // delete favouriteItem.imageGalleryImages[imageGallerylength - 1];
-                        // delete favouriteItem.imageGalleryImages[imageGallerylength - 2];
-                        // delete favouriteItem.imageGalleryImages[imageGallerylength - 3];
-                        existingArray.push(favouriteItem);
-                        productuserFavourites.push(userID)
-                        if (setProductFavouriteID) {
-                            setProductFavouriteID(favouriteItemID) // or pass the cartitemId
-                        }
-                    
-
-                    // Update the document with the modified array
+                const favouriteItemID = generateRandomID();
+                const productID = productId
+                const favouriteItem = { ...productDocSnapshot.data(), favouriteItemID, productID };
+                delete favouriteItem.link;
+                delete favouriteItem.reviews;
+                delete favouriteItem.description;
+                delete favouriteItem.userFavourited;
+                existingArray.push(favouriteItem);
+                productuserFavourites.push(userID)
+                if (setProductFavouriteID) {
+                    setProductFavouriteID(favouriteItemID) // or pass the cartitemId
+                }
+                // Update the document with the modified array
                 await updateDoc(currentUserRef, { favourites: existingArray });
-                await updateDoc(productDocRef, { userFavourited: productuserFavourites } );
-                    //check if the setter function was passed
-                
-                
-                    toast.success(`Item added to favourites`);
-                 
+                await updateDoc(productDocRef, { userFavourited: productuserFavourites });
+                toast.success(`Item added to favourites`);
+
             } else {
                 console.log("Document not found");
                 toast.error(`Document not found`);
@@ -367,7 +325,7 @@ export async function addItemsToFavourites(productId, userID, setProductFavourit
 }
 
 export async function addPopularItemsToFavourites(productId, userID, setProductFavouriteID) {
-    console.log(productId, userID);
+    // console.log(productId, userID);
 
     try {
         const productDocRef = doc(database, 'PopularProducts', productId);
@@ -389,23 +347,16 @@ export async function addPopularItemsToFavourites(productId, userID, setProductF
                 delete favouriteItem.reviews;
                 delete favouriteItem.description;
                 delete favouriteItem.userFavourited;
-                // const imageGallerylength = favouriteItem?.imageGalleryImages?.length
-                // delete favouriteItem.imageGalleryImages[imageGallerylength - 1];
-                // delete favouriteItem.imageGalleryImages[imageGallerylength-2];
-                // delete favouriteItem.imageGalleryImages[imageGallerylength - 3];
                 existingArray.push(favouriteItem);
                 productuserFavourites.push(userID)
                 if (setProductFavouriteID) {
                     setProductFavouriteID(favouriteItemID) // or pass the cartitemId
-                } 
+                }
 
 
                 // Update the document with the modified array
                 await updateDoc(currentUserRef, { favourites: existingArray });
                 await updateDoc(productDocRef, { userFavourited: productuserFavourites });
-                //check if the setter function was passed
-
-
                 toast.success(`Item added to favourites`);
 
             } else {
@@ -422,7 +373,7 @@ export async function addPopularItemsToFavourites(productId, userID, setProductF
 
 
 export async function removeItemFromFavourites(productId, userID, collectionString) {
-    console.log(productId, userID);
+    // console.log(productId, userID);
 
     try {
         const productDocRef = doc(database, `${collectionString}`, productId);
@@ -436,16 +387,13 @@ export async function removeItemFromFavourites(productId, userID, collectionStri
                 // Get the existing array from the document
                 let userFavouritesArray = currentUserSnapshot.data().favourites;
                 let productuserFavourites = productDocSnapshot.data().userFavourited
-                
-               let newUserFavouritesArray = userFavouritesArray.filter((product) => product.productID !== productId)
-               let newProductUserFavouritedArray = productuserFavourites.filter((id) => id !== userID) 
+
+                let newUserFavouritesArray = userFavouritesArray.filter((product) => product.productID !== productId)
+                let newProductUserFavouritedArray = productuserFavourites.filter((id) => id !== userID)
 
                 // Update the document with the modified array
                 await updateDoc(currentUserRef, { favourites: newUserFavouritesArray });
                 await updateDoc(productDocRef, { userFavourited: newProductUserFavouritedArray });
-                //check if the setter function was passed
-
-
                 toast.success(`Item removed from favourites`);
 
             } else {
@@ -461,7 +409,7 @@ export async function removeItemFromFavourites(productId, userID, collectionStri
 }
 
 
-export async function fetchProductsData(setData, collectionName,key) {
+export async function fetchProductsData(setData, collectionName, key) {
     try {
         const dataCollectionRef = collection(database, collectionName);
 
@@ -504,7 +452,7 @@ export async function fetchProductsData(setData, collectionName,key) {
 
 
 export async function getUserFinancingData(userID, userDataSetterFn, cartDataSetterFn = null, favouritesSetterFn = null) {
-    console.log("userID: ", userID)
+    // console.log("userID: ", userID)
 
 
     try {
@@ -512,13 +460,13 @@ export async function getUserFinancingData(userID, userDataSetterFn, cartDataSet
         // Fetch initial data
         const initialSnapshot = await getDoc(userDocRef);
         const userFinancingArray = initialSnapshot.data().financing;
-        console.log("initialUserData ", userFinancingArray)
+        // console.log("initialUserData ", userFinancingArray)
         // Set initial data
         userDataSetterFn(userFinancingArray);
         // Set up real-time listener for changes
         const unsubscribe = onSnapshot(userDocRef, (snapshot) => {
             const fetchedUserData = snapshot.data();
-            console.log("fetchedUserData ", fetchedUserData)
+            // console.log("fetchedUserData ", fetchedUserData)
             userDataSetterFn(fetchedUserData);
             if (cartDataSetterFn !== null && favouritesSetterFn !== null) {
                 cartDataSetterFn(fetchedUserData.cart)
@@ -536,7 +484,7 @@ export async function getUserFinancingData(userID, userDataSetterFn, cartDataSet
 
 
 export async function updateFinancingItemPrice(orderID, amountPayable, userID, paymentReciever) {
-    console.log(orderID, amountPayable, userID);
+    // console.log(orderID, amountPayable, userID);
 
     try {
         const currentUserRef = doc(database, 'Users', userID);
@@ -554,28 +502,20 @@ export async function updateFinancingItemPrice(orderID, amountPayable, userID, p
 
                 if (itemToUpdate) {
                     // Update the leftToPay value of the found item
-                    if(itemToUpdate.leftToPay - amountPayable === 0){
-                        console.log("paymentCompletedArr ", paymentCompletedArr)
+                    if (itemToUpdate.leftToPay - amountPayable === 0) {
+                        // console.log("paymentCompletedArr ", paymentCompletedArr)
                         paymentCompletedArr.push(itemToUpdate)
-                        console.log("paymentCompletedArr after push", paymentCompletedArr)
+                        // console.log("paymentCompletedArr after push", paymentCompletedArr)
                         existingArray = existingArray.filter(order => order.orderId !== orderID)
                         await updateDoc(currentUserRef, { paymentCompletedArray: paymentCompletedArr });
                         await updateDoc(currentUserRef, { financing: existingArray });
-                        
+
                     }
                     else {
                         itemToUpdate.leftToPay -= amountPayable;
-                        
                         // Update the document with the modified array
-                        
                         await updateDoc(currentUserRef, { financing: existingArray });
-                        // sendMailReciept(currentUserSnapshot.data()?.fullname, currentUserSnapshot.data()?.email, orderID, itemToUpdate, amountPayable)
-                        // Call sendEmail function wherever you need to send an email
-                        
                     }
-
-                    // Check if the setter function was passed
-                    // Note: You mentioned a toast notification, but didn't provide implementation details, assuming you have it somewhere
                     toast.success(`Your payment of ₦${formatNumberWithCommas(amountPayable)} to ${paymentReciever} was made successfully`);
                 } else {
                     console.log("Item with the given orderID not found");
@@ -592,7 +532,7 @@ export async function updateFinancingItemPrice(orderID, amountPayable, userID, p
     }
 }
 
-export function calculateTotalPrice(basket){
+export function calculateTotalPrice(basket) {
     const totalPrice = basket?.reduce((accumulator, currentValue) => {
         // Add the price of the current object to the accumulator
         // console.log("total price ", accumulator + currentValue.price);
@@ -604,21 +544,17 @@ export function calculateTotalPrice(basket){
 
 
 export async function removeItemFromCartOnCheckout(existingCartItems, userID, setItemsToCheckout, basket) {
-
-  
-    console.log("basket ", basket);
-    console.log("existingCartItems ", existingCartItems);
-    console.log("userID ", userID);
-    const totalPriceOfBasketItems = calculateTotalPrice(basket);
+    // console.log("basket ", basket);
+    // console.log("existingCartItems ", existingCartItems);
+    // console.log("userID ", userID);
+    // const totalPriceOfBasketItems = calculateTotalPrice(basket);
     try {
         const userRef = doc(database, 'Users', userID);
         const userDocument = await getDoc(userRef);
-
         if (userDocument.exists()) {
             const cartArray = existingCartItems;
             const financingArray = userDocument.data().financing || [];
             console.table("cartArray ", cartArray);
-
             // Update the document with the modified cart and financing arrays
             const newOrderid = generateRandomID(5);
             await updateDoc(userRef, { cart: cartArray });
@@ -647,7 +583,6 @@ export async function removeItemFromCartOnCheckout(existingCartItems, userID, se
 export function extractLastName(fullName) {
     // Split the full name by whitespace
     const nameParts = fullName.split(' ');
-
     // Check if there are multiple parts
     if (nameParts.length > 1) {
         // If there are multiple parts, return the last part (last name)
@@ -659,16 +594,15 @@ export function extractLastName(fullName) {
 }
 
 
-export async function sendEmail (emailData){
-    console.log("send email function was called")
-    console.log("emailData: " + JSON.stringify(emailData ,  null , 2))
+export async function sendEmail(emailData) {
+    // console.log("send email function was called")
+    // console.log("emailData: " + JSON.stringify(emailData, null, 2))
     try {
-        const response = await fetch('http://localhost:5000/send-email', {
+        const response = await fetch('https://afritech-sendgrid-email-server.onrender.com/send-email', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(emailData),
         });
-
         if (response.ok) {
             console.log('Email sent successfully');
         } else {

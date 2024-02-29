@@ -1,6 +1,6 @@
 'use client'
 import React, { useState ,useEffect} from 'react'
-import { generateRandomUserId, getCurrentDateTime , addReview } from '../../utils/helperFunctions'
+import { addReview } from '../../utils/helperFunctions'
 import { useSelector, useDispatch } from "react-redux";
 import Review from './Review';
 

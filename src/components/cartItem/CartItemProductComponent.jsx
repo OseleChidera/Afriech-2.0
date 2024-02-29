@@ -2,7 +2,6 @@ import Image from "next/image";
 import React, { useState } from "react";
 import phone from "../../../public/images/samsung-galaxy-s21-ultra-5g-4.jpg";
 import addIcon from '../../../public/icons/add.svg';
-import favourite from '../../../public/icons/favourite.svg';
 import trashIcon from '../../../public/icons/trashIcon.svg';
 import { usePathname } from "next/navigation";
 

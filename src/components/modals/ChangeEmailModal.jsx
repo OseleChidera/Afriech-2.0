@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import Image from 'next/image';
 import { setModalToshow, hideModalDispachFn } from '../../redux/user';
 import { useSelector, useDispatch } from "react-redux";
-import { updateEmail, sendEmailVerification } from "firebase/auth";
+import { updateEmail, sendEmailVerification , getAuth } from "firebase/auth";
 import { updateDoc, doc } from "firebase/firestore";
-import { database, auth } from '../../../firebaseConfig';
+import { database } from '../../../firebaseConfig';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 
@@ -17,6 +16,7 @@ export default function ChangeEmailModal() {
     const authCallbackUser = useSelector((state) => state.user.authCallbackUser);
     const authCallbackUserObj = JSON.parse(authCallbackUser)
     const router = useRouter();
+    const auth = getAuth()
 
     // Function to close the modal
     function closeModal() {
@@ -28,17 +28,17 @@ export default function ChangeEmailModal() {
     async function ChangeEmailFn() {
         console.log(newEmail);
         const userDocRef = doc(database, "Users", `${userID}`);
-        const confirmationAlert = window.confirm("Are you really sure you want to logout ?");
+        const confirmationAlert = window.confirm("Are you really sure you want to change your email ?, you would be required to signin again after.");
         if (confirmationAlert) {
             try {
                 // Update the email in Firebase Authentication
-                await updateEmail(authCallbackUserObj, newEmail);
+                await updateEmail(auth.currentUser, newEmail);
                 // Update the email in Firestore
                 await updateDoc(userDocRef, { email: newEmail });
                 closeModal();
                 toast.success('Email updated successfully.');
                 // Send email verification
-                await sendEmailVerification(authCallbackUserObj);
+                await sendEmailVerification(auth.currentUser);
                 // Sign out the user
                 await auth.signOut();
                 localStorage.removeItem('afriTechUserID');
@@ -63,7 +63,7 @@ export default function ChangeEmailModal() {
     return (
         <div className='w-screen h-full bg-[#695acd74] fixed top-0 left-0 pointer-events-auto z-[100] flex justify-center items-center'>
             <div id='modal-img' className="h-fit w-4/5 max-w-[90%] mx-auto  border bg-[rgb(105,90,205)] text-white p-6 rounded-xl flex flex-col items-center gap-3 ">
-                <div className="w-[90%] border border-black flex flex-col gap-4">
+                <div className="w-[90%]  flex flex-col gap-4">
                     <input
                         type="email"
                         name="Profile-Photo"

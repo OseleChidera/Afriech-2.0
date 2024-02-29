@@ -44,8 +44,8 @@ export default function Page({ params }) {
 
     return (
         <>
-            {data?.userData?.accountVerified && <Location />}
-            {product  ? (
+            <Location />
+            {product.qty  ? (
                 <div className="w-full relative min-h-screen max-h-fit border border-red-600 overflow-y-auto p-6">
                     <div className={`flex flex-col gap-4  ${data?.userData?.accountVerified ? '' : ` mb-4`}`}>
                         <div
@@ -102,7 +102,7 @@ export default function Page({ params }) {
                         
                         <div>
                             <Link href={`${product?.link}`} className='capitalize font-semibold text-xl underline underline-offset-1'>
-                                <button className='font-bold bg-[#695acd] text-white rounded-xl text-xl capitalize px-4 py-[0.55rem] relative'>find out more</button>
+                                <button className='font-bold bg-[#695acd] text-white rounded-xl text-xl capitalize px-4 py-[0.55rem] relative mb-4'>find out more</button>
                             </Link>
                         </div>
                         

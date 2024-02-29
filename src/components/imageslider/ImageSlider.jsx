@@ -10,15 +10,18 @@ export default function ImageSlider() {
     // Retrieve popular products from Redux store
     const popularProductsArray = useSelector((state) => state.user.data?.popularProductsArray);
 
-    // Inline style for slide container
-    const divStyle = {
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundSize: 'cover',
-        height: '300px',
-    };
+
+const divStyle = {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center center',
+    height: '40vh',
+};
+
 
     return (
         <Slide>
@@ -26,6 +29,7 @@ export default function ImageSlider() {
                 popularProductsArray.map((product, index) => (
                     <div key={index}>
                         <div style={{ ...divStyle, 'backgroundImage': `url(${product.imageGalleryImages[Math.floor(Math.random() * 6)].imageURL})` }}>
+                            {/* <Image src={product.imageGalleryImages[Math.floor(Math.random() * 6)].imageURL} priority width={300} height={300}/> */}
                             <Link href={`/popularProduct/${product.id}`}>
                                 <span className='font-bold bg-[#695acd] text-white rounded-xl text-xs capitalize px-4 py-[0.55rem] absolute bottom-[1rem] right-[1rem]'>{product.name}</span>
                             </Link>

@@ -13,11 +13,7 @@ import UnauthorizedAccess from '@/components/UnauthorizedAccess/UnauthorizedAcce
 const page = () => {
     // Redux state management
     const data = useSelector((state) => state.user.data); // Get data from Redux store
-    const productsData = useSelector((state) => state.user.productsData); // Get productsData from Redux store
-    const PopularProducts = useSelector((state) => state.user.PopularProducts); // Get PopularProducts from Redux store
-    const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo); // Get firebaseUserInfo from Redux store
     const [productsArrays, setProductsArrays] = useState(); // Local state for productsArrays
-    
     const userID = useSelector((state) => state.user.userID); // Get userID from Redux store
 
     // Function to filter products based on brand or name
@@ -28,7 +24,7 @@ const page = () => {
         data?.productsArray?.concat(data?.popularProductsArray).filter((product) => {
             return product.name === value || product.brandID == value;
         });
-        console.log(`results: ${value} ` + results);
+        // console.log(`results: ${value} ` + results);
         setProductsArrays(results);
     }
 
@@ -41,8 +37,8 @@ const page = () => {
             data?.productsArray?.concat(data?.popularProductsArray).filter((product) => {
                 return product?.name?.includes(searchQuery.trim().toLowerCase()) || product?.brandID?.includes(searchQuery.trim().toLowerCase());
             });
-        console.log(`results: ${searchQuery} ` + data?.productsArray?.concat(data?.popularProductsArray));
-        console.log("results: " + JSON.stringify(results));
+        // console.log(`results: ${searchQuery} ` + data?.productsArray?.concat(data?.popularProductsArray));
+        // console.log("results: " + JSON.stringify(results));
         setProductsArrays(results.length == 0 ? data?.productsArray?.concat(data?.popularProductsArray) : results);
     }
     
@@ -58,7 +54,7 @@ const page = () => {
                 <div className="p-[20px] flex flex-col gap-4 pb-[120px]">
                     <SearchBar search={search}/> {/* Render SearchBar component */}
                     <BrandOptions filterProducts={filterProducts}/> {/* Render BrandOptions component */}
-                    <div className="grid-container ">
+                    <div className="grid-container">
                         {
                             data?.productsArray ?
                                 (productsArrays?.map((product,index) => (<Product key={index} name={product.name} qty={product.qty} price={product.price} id={product.id} image={product?.imageGalleryImages[0].imageURL} collectionString={product.collectionString} productObj={product} />))) : 

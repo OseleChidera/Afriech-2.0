@@ -7,7 +7,7 @@ import ProductLoadingSleleton from '../loading skeleton/ProductLoadingSleleton';
 
 // Component to display popular items
 const PopularItems = () => {
-  const PopularProducts = useSelector((state) => state.user.PopularProducts); // Accessing popular products from Redux store
+ 
   const data = useSelector((state) => state.user.data); // Accessing user data from Redux store
   const pathName = usePathname(); // Getting current pathname using usePathname hook
   const [isPathNameActive, setIsPathNameActive] = useState(pathName.includes(`/popularproduct/`)); // State to track if current pathname includes '/popularproduct/'

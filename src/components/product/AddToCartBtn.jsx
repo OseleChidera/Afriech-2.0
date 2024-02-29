@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'; // Importing React and necessary hooks
 import Image from 'next/image'; // Importing Image component from Next.js
-import Link from 'next/link'; // Importing Link component from Next.js
 import addICON from '../../../public/icons/add-01.svg'; // Importing add icon image
 import minus from '../../../public/icons/minus-sign.svg'; // Importing minus icon image
 import { useSelector } from 'react-redux'; // Importing useSelector hook from react-redux

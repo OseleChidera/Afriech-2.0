@@ -23,7 +23,7 @@ const Location = () => {
 
   function showCartFn(fetchCartItems) {
         setShowCart(!showCart)
-        console.log(showCart)
+        // console.log(showCart)
   }
     
   

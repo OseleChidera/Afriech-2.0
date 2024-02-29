@@ -1,11 +1,9 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import phone from "../../../public/images/samsung-galaxy-s21-ultra-5g-4.jpg";
 import addIcon from "../../../public/icons/add.svg";
 import favourite from "../../../public/icons/favourite.svg";
 import favouriteClicked from "../../../public/icons/favouriteChecked.svg";
-import trashIcon from "../../../public/icons/trashIcon.svg";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import {
@@ -36,6 +34,8 @@ const PopularProduct = ({ id, name, qty ,price, productID, favouriteItemID, imag
     const data = useSelector((state) => state.user.data);
     const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
     let isFavourited = productObj?.userFavourited.includes(userID);
+
+    
     function checkIfUserAddedToFavourite(userFavourites, id) {
         
         if (userFavourites) {
@@ -78,10 +78,6 @@ const PopularProduct = ({ id, name, qty ,price, productID, favouriteItemID, imag
     }
 
 
-    // console.log('favouritedArray ', productObj?.userFavourited)
-
-   
-    // console.log("check if the user favourited the product", isFavourited)
 
 
     useEffect(() => {
@@ -89,9 +85,9 @@ const PopularProduct = ({ id, name, qty ,price, productID, favouriteItemID, imag
     }, [])
 
     return (
-        <div className="product  relative rounded-xl  bg-white overflow-hidden w-fit">
-            <div className=" w-fit  max-h-fit rounded-xl  shadow-2xl bg-whie border border-black overflow-hidden mx-auto">
-                <Image src={image} className="object-cover aspect-square " width={180} height={180} alt="product"/>
+        <div className=" relative  rounded-xl  bg-white w-full   border-[0.02px] border-black">
+            <div className="max-h-fit rounded-xl  shadow-2xl bg-white  border-black overflow-hidden mx-auto">
+                <Image src={image} className=" w-full" width={170} height={170} alt="product" priority objectFit="cover"/>
             </div>
             <Link href="/product/[id]" as={`/popularProduct/${id}`}>
                 <div className="info p-2">

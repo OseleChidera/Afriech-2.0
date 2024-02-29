@@ -1,16 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
-import { auth } from "../../../firebaseConfig";
-import { database } from '../../../firebaseConfig';
+import {auth} from '../../../firebaseConfig';
 
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { toast } from 'react-toastify';
 import { SigninSchema } from '../../utils/schemautils'
 import { useSelector, useDispatch } from "react-redux";
-import { setUserId, removeUserData, setLoading, fetchDataByUserId, setCurrentUserData, incrementSigninToStartMultistep, incrementSignin } from '../../redux/user'
+import { setUserId, incrementSigninToStartMultistep,  } from '../../redux/user'
 import axios from 'axios';
 import { useRouter } from 'next/navigation' 
 
@@ -69,9 +67,8 @@ export default function SigninMain ({ nextStep, isDisabled }){
                                 checkForUserData(uID);
                             })
                             .catch((error) => {
-                                console.log(error.message);
                                 toast.error("auth/invalid-login-credential signup first", 
-                                {onOpen: () => redirect("/signup")}
+                                {onOpen: () => router.push("/signup")}
                                 );
                                 console.log(error.code, error.message);
                             });
@@ -104,7 +101,7 @@ export default function SigninMain ({ nextStep, isDisabled }){
                                 <div className="flex flex-row items-center w-full">
                                     <Field
                                         name="password"
-                                        type={showPassword ? "password" : "text"}
+                                        type={!showPassword ? "password" : "text"}
                                         className="w-full p-2 px-5 rounded-xl"
                                         placeholder="Enter your password"
                                     />

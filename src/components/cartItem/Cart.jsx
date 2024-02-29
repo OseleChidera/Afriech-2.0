@@ -99,9 +99,9 @@ export default function Cart ({ setShowCart, showCartFn, showCart, userIDString 
                 getUserData(user.uid, setUserData, setFetchedData);
                 dispatch(setUserId(`${user.uid}`));
                 dispatch(setAuthCallbackUser(JSON.stringify(user)));
-                console.log('User is authenticated in mMMmmMM', user.uid);
+                // console.log('User is authenticated in mMMmmMM', user.uid);
               } else {
-                console.log('User is not authenticated.mMMmmMM');
+                console.log('User is not authenticated ');
               }
             });
           } catch (error) {
@@ -129,26 +129,26 @@ export default function Cart ({ setShowCart, showCartFn, showCart, userIDString 
             </div>
             <div className={`location-btn ${showCart ? 'show-cart flex flex-col gap-2' : "hidden"} w-[75vw] absolute top-10 right-0 border border-black rounded-sm p-2 bg-[#f9f9f5]`}>
                 {selectCartItems ? (
-                    <button onClick={() => removeSelectCartItemsFn()} className='px-5 border border-black bg-[#695acd] text-white capitalize text-center py-1 rounded-md'>
+                    <button onClick={() => removeSelectCartItemsFn()} className='px-5  bg-[#695acd] text-white capitalize text-center py-1 rounded-md'>
                         Cancel
                     </button>
                 ) : (
-                    <button onClick={() => setSelectCartItemsFn()} className='px-5 border border-black bg-[#695acd] text-white capitalize text-center py-1 rounded-md'>
+                    <button onClick={() => setSelectCartItemsFn()} className='px-5  bg-[#695acd] text-white capitalize text-center py-1 rounded-md'>
                         Checkout specific items
                     </button>
                 )}
                 <div className={`border border-black bg-[#f9f9f5]  flex flex-col gap-2 min-h-fit max-h-[15rem]  overflow-y-auto pt-2 pb-2`}>
-                    {newArray ? (
-                        newArray.map((cartItemData, index) => (
+                    {newArray?.length !== 0 ? (
+                        newArray?.map((cartItemData, index) => (
                             <CartItemCheckout key={index} selectCartItems={selectCartItems} id={cartItemData.cartItemID} cartItemData={cartItemData} itemsToCheckout={itemsToCheckout} cart={data.cartArray} collectionString={cartItemData.collectionString} />
                         ))
                     ) : (
-                        <div className="border border-black w-full text-xl text-[#695acd] flex items-center justify-center">
-                            <div className="h1">No Items To Display</div>
+                        <div className=" w-full text-xl text-[#695acd] flex items-center justify-center">
+                            <p className="text-sm">No Item(s) To Display</p>
                         </div>
                     )}
                 </div>
-                <button onClick={() => handleCheckOut(userIDString)} className={`px-5 border border-black bg-[#695acd] text-white capitalize text-center py-1 rounded-md ${''}`}>
+                <button onClick={() => handleCheckOut(userIDString)} className={`px-5  bg-[#695acd] text-white capitalize text-center py-1 rounded-md ${''}`}>
                     Checkout Items
                 </button>
             </div>

@@ -15,7 +15,6 @@ export default function Page() {
 
     const userInfo = useSelector((state) => state.user.firebaseUserInfo);
     const data = useSelector((state) => state.user.data);
-    const loading = useSelector((state) => state.user.loading);
     const authCallbackUser = useSelector((state) => state.user.authCallbackUser);
     const authCallbackUserObj = JSON.parse(authCallbackUser)
 

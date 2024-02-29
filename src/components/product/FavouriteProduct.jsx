@@ -1,12 +1,8 @@
 "use client";
 import Image from "next/image"; // Importing Image component from Next.js
 import React, { useEffect, useState } from "react"; // Importing React and necessary hooks
-import phone from "../../../public/images/samsung-galaxy-s21-ultra-5g-4.jpg"; // Importing phone image
 import addIcon from "../../../public/icons/add.svg"; // Importing add icon image
-import favourite from "../../../public/icons/favourite.svg"; // Importing favourite icon image
-import favouriteClicked from "../../../public/icons/favouriteChecked.svg"; // Importing clicked favourite icon image
 import trashIcon from "../../../public/icons/trashIcon.svg"; // Importing trash icon image
-import { usePathname } from "next/navigation"; // Importing usePathname hook from Next.js
 import Link from "next/link"; // Importing Link component from Next.js
 import {
     formatNumberWithCommas,
@@ -17,17 +13,10 @@ import {
 import { useSelector } from "react-redux"; // Importing useSelector hook from react-redux
 
 // Product component to display individual product information
-const Product = ({ id, name, price, productID, favouriteItemID, image, productObj, collectionString }) => {
-    const pathName = usePathname(); // Get current pathname using usePathname hook
-    const [isFavouriteClicked, setIsFavouriteClicked] = useState(false); // State to track if favourite button is clicked
-    const [isInCart, setIsInCart] = useState(false); // State to track if product is in cart
-    const [productFavouritedArray, setProductFavouritedArray] = useState(productObj?.userFavourited); // State to manage array of favourited products
+const Product = ({ id, name, price, productID, favouriteItemID, image, productObj, collectionString , array , qty}) => {
     const [productCartID, setProductCarTID] = useState(""); // State to manage product cart ID
-    const [productFavouriteID, setProductFavouriteID] = useState(""); // State to manage product favourite ID
     const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo); // Get user information from Redux store
-    const [isPathNameActive, setIsPathNameActive] = useState(
-        pathName.includes(`/main/favourite`)
-    ); // State to track if current pathname is active
+
     const userID = useSelector((state) => state.user.userID); // Get user ID from Redux store
 
     // Function to remove product from favourites
@@ -45,10 +34,10 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
     }, []);
 
     return (
-        <div className="product  relative rounded-xl  bg-white overflow-hidden max-w-fit">
+        <div className={`relative  rounded-xl  bg-white    border-[0.02px] border-black ${array > 2 ? 'w-full' : "w-[180px]"}`}>
             {/* Product image */}
-            <div className="w-fit  max-h-fit rounded-xl  shadow-2xl bg-whie border border-black overflow-hidden mx-auto">
-                <Image src={image} className="object-cover aspect-square" width={180} height={180} alt="favourite product image"/>
+            <div className="max-h-fit rounded-xl  shadow-2xl bg-white  border-black overflow-hidden mx-auto">
+                <Image src={image} className="aspect-square w-full" width={170} height={170} alt="favourite product image"/>
             </div>
             {/* Product information */}
             <Link href="/product/[id]" as={`/product/${id}`}>
@@ -58,7 +47,7 @@ const Product = ({ id, name, price, productID, favouriteItemID, image, productOb
                 </div>
             </Link>
             {/* Add to cart button */}
-            {firebaseUserInfo?.accountVerified && (
+            {(firebaseUserInfo?.accountVerified && qty !== 0) && (
                 <div
                     className="absolute bg-[#695acde4] bottom-0 right-0 rounded-t-xl rounded-b-xl rounded-bl-none runded rounded-tr-none p-[0.3rem]"
                     onClick={addItemToCartFromProduct}

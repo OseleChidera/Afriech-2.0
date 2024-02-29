@@ -1,21 +1,20 @@
 'use client'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from "react-redux";
-import { collection, addDoc, doc, setDoc, updateDoc, onSnapshot, getDocn } from "firebase/firestore";
-import { database, storage } from '../../../firebaseConfig';
 import { toast } from "react-toastify";
 import { showModalDispachFn, setModalToshow } from '../../redux/user'
-import { auth } from '../../../firebaseAuth'
 import { getAuth, sendEmailVerification } from "firebase/auth";
+import { useRouter } from 'next/navigation';
+
+
 
 export default function UserInfoModal({ title, action, index }) {
-    // const [isEditing, setIsEditing] = useState(false);
+    const router = useRouter()
     const authCallbackUser = useSelector((state) => state.user.authCallbackUser);
     const authCallbackUserObj = JSON.parse(authCallbackUser)
-
+    const auth = getAuth();
     const userID = useSelector((state) => state.user.userID);
     const dispatch = useDispatch();
-
 
     function showModal(modalToShow) {
         console.log("changePfp: ",modalToShow)
@@ -23,46 +22,20 @@ export default function UserInfoModal({ title, action, index }) {
         dispatch(setModalToshow(modalToShow))
     } 
 
- 
-    const sendVerificationEmail = () => {
-        const user = auth.currentUser;
-
-        if (authCallbackUserObj) {
-            authCallbackUserObj.sendEmailVerification()
-                .then(() => {
-                    console.log('Email verification sent successfully.');
-                })
-                .catch((error) => {
-                    console.error('Error sending email verification:', error.message);
-                });
-        } else {
-            console.error('No user signed in.');
-        }
-    };
 
 
-    function resendUserVerificationEmail(user) {
+    async function resendUserVerificationEmail(user) {
         if (user) {
             // Send the verification email
-            sendEmailVerification(user)
-                .then(() => {
-                    // Email sent successfully
-                    console.log("Verification email sent successfully!");
-                    toast.success(`Verification email sent successfully!`, {
-                        position: "top-right",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: false,
-                        progress: undefined,
-                        theme: "colored",
-                    });
-                })
-                .catch((error) => {
-                    // Handle errors
-                    console.error("Error sending verification email:", error);
-                });
+            sendEmailVerification(auth.currentUser)
+                .then(() => {toast.success(`Verification email sent successfully! signin again`, { autoClose: 500 , onOpen: ()=> {
+                    router.push('/main/user')
+                    toast.info("Signin again", { autoClose: 500 })
+                    auth.signOut();
+                    localStorage.removeItem('afriTechUserID');
+                    router.push('/signin')
+                }})})
+                .catch((error) => { console.error("Error sending verification email:", error)});
         } else {
             // User is not signed in
             console.error("User is not signed in.");

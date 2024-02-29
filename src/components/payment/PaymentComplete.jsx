@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import OrderPaymentComponentSkeleton from '../loading skeleton/OrderPaymentComponentSkeleton';
 import PaymentCompleteComponent from './PaymentCompleteComponent';
 import UnauthorizedAccess from '../UnauthorizedAccess/UnauthorizedAccess';
 import { useSelector } from "react-redux";

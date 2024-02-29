@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import CartItemProductComponent from './CartItemProductComponent';
-import { getUserData } from '@/utils/helperFunctions';
 import { usePathname } from "next/navigation";
 import { formatNumberWithCommas, removeItemFromCart } from '@/utils/helperFunctions';
 import trashIcons from '../../../public/icons/trashIcon.svg';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
-import { collection, addDoc, doc, setDoc, updateDoc, onSnapshot, getDoc, runTransaction } from 'firebase/firestore';
-import { database } from '../../../firebaseConfig'; // Import your Firebase configuration
-import { toast } from "react-toastify";
+
 
 
 const CartItemCheckout = ({ id, selectCartItems, cartItemData, itemsToCheckout, cart, collectionString }) => {

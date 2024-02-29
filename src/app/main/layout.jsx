@@ -9,8 +9,12 @@ import { collection, getDocs, getDoc, getFirestore, doc, onSnapshot } from "fire
 import { getUserData, fetchProductsData } from '@/utils/helperFunctions'; // Import getUserData and fetchProductsData functions from helperFunctions module
 import Nav from '@/components/Nav'; // Import Nav component
 import { useRouter, usePathname } from "next/navigation"; // Import useRouter and usePathname hooks from next/navigation
+import { getAuth , onAuthStateChanged } from 'firebase/auth';
+
 
 const layout = ({ children }) => {
+  const router = useRouter()
+  const auth = getAuth()
   const dispatch = useDispatch(); // Get dispatch function from useDispatch hook
   const [userData, setUserData] = useState(null); 
   const pathName = usePathname(); // Get current pathname using usePathname hook
@@ -37,9 +41,10 @@ const layout = ({ children }) => {
             getUserData(user.uid, setUserData, setFetchedData);
             dispatch(setUserId(`${user.uid}`));
             dispatch(setAuthCallbackUser(JSON.stringify(user)));
-            console.log('User is authenticated in mMMmmMM', user.uid);
+            // console.log('User is authenticated ', user.uid);
           } else {
-            console.log('User is not authenticated.mMMmmMM');
+            console.log('User is not authenticated');
+            router.push("/signin")
           }
         });
       } catch (error) {
@@ -60,12 +65,13 @@ const layout = ({ children }) => {
     dispatch(setData(fetchedData));
   }, [dispatch, fetchedData]);
 
+useEffect(()=>{
 
+},[])
   return (
     <div className='w-full min-h-screen max-h-fit bg-[#ffffff] relative shadow-2xl'>
       <Location /> {/* Render Location component */}
       {children} {/* Render children components */}
-      {/* <Nav/> */}
     </div>
   );
 }

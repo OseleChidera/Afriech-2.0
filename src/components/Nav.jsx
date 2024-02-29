@@ -1,17 +1,10 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
 import homeIconActive from "../../public/icons/home-inactive.svg";
-import homeIcon from "../../public/icons/home-05-active.svg";
 import storeIconActive from "../../public/icons/store-inactive.svg";
-import storeIcon from "../../public/icons/store-active.svg";
 import favourites from "../../public/icons/favourite.svg"
 import payment from '../../public/icons/history.svg'
-import shoppingCartIconActive from "../../public/icons/shopping-cart-active.svg"
-import shoppingCartIconInactive from "../../public/icons/shopping-cart-inactive.svg"
 import userIconActive from "../../public/icons/user-inactive.svg";
-import userIcon from "../../public/icons/user-active.svg";
-import clipboardIconActive from "../../public/icons/clipboard-inactive.svg";
-import clipboardIcon from "../../public/icons/clipboard-active.svg";
 import Link from 'next/link';
 import Image from 'next/image';
 import { gsap, Power3, TimelineLite } from 'gsap';
@@ -82,8 +75,8 @@ const NavBtns = ({ buttonName, baseIcon, activeIcon }) => {
     const [isPathNameActive, setIsPathNameActive] = useState(pathName.includes(`/main/${buttonName}`))
   
   return (
-      <Link href={`/main/${buttonName}`} >
-          <div className={`flex flex-col items-center gap-1 h-fit tab flex-1 relative nav-item nav-button ${pathName.includes(`/main/home`) ? 'nav-item' : "nav-item-no-animation"} max-h-fit`}>
+      <Link href={`/main/${buttonName}`} className='active:nav-item'>
+          <div className={`flex flex-col items-center gap-1 h-fit tab flex-1 relative nav-item nav-button ${pathName.includes(`/main/home`) ? " " : "nav-item-no-animation"} max-h-fit`}>
               <button id="icon-div" className={`flex flex-col items-center justify-center p-4 rounded-2xl 
                 focused ${isPathNameActive ? 'shadow-inner' : ''} `} >
                   <Image

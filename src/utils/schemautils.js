@@ -11,10 +11,6 @@ export const SigninSchema = Yup.object().shape({
         .required("Required"),
 });
 
-
-
-
-// });
 export const step1ValidationSchema = Yup.object().shape({
     email: Yup.string()
         .min(2, 'Too Short!')
@@ -36,14 +32,6 @@ export const step2ValidationSchema = Yup.object().shape({
         .min(2, 'Too Short!')
         .max(15, 'Too Long!')
         .required('Required'),
-    // lastname: Yup.string()
-    //     .min(2, 'Too Short!')
-    //     .max(15, 'Too Long!')
-    //     .required('Required'),
-    // Username: Yup.string()
-    //     .min(2, 'Too Short!')
-    //     .max(20, 'Too Long!')
-    //     .required('Required'),
     phone: Yup.string()
         .min(10, 'Too Short!')
         .max(13, 'Too Long!')
@@ -78,7 +66,7 @@ export const step3ValidationSchema = Yup.object().shape({
 
     bvnnumber: Yup.string()
         .min(10, 'Too Short!')
-        .max(60, 'Too Long!')
+        .max(13, 'Too Long!')
         .required('Required'),
     profilePicture: Yup.mixed()
         .required('Image is required')

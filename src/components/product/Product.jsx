@@ -1,11 +1,9 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import phone from "../../../public/images/samsung-galaxy-s21-ultra-5g-4.jpg";
 import addIcon from "../../../public/icons/add.svg";
 import favourite from "../../../public/icons/favourite.svg";
 import favouriteClicked from "../../../public/icons/favouriteChecked.svg";
-import trashIcon from "../../../public/icons/trashIcon.svg";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import {
@@ -34,7 +32,6 @@ const Product = ({ id, name, qty, price, productID, favouriteItemID, image, prod
   const userID = useSelector((state) => state.user.userID);
   const userFavourites = useSelector((state) => state.user.userFavourites);
   const firebaseUserInfo = useSelector((state) => state.user.firebaseUserInfo);
-  // const userFavourites = useSelector((state) => state.user.userFavourites);
 
   function checkIfUserAddedToFavourite(userFavourites , id){
     // console.log("userFavourites  , id", userFavourites, id)
@@ -89,12 +86,12 @@ const Product = ({ id, name, qty, price, productID, favouriteItemID, image, prod
   },[])
   
   return (
-    <div className="product  relative rounded-xl  bg-white overflow-hidden w-fit">
-      <div className=" w-fit  max-h-fit rounded-xl  shadow-2xl bg-whie border-[0.2px] border-black overflow-hidden mx-auto">
-        <Image src={image} className="object-cover aspect-square " width={180} height={180} alt="product"/>
+    <div className=" relative  rounded-xl  bg-white w-full   border-[0.02px] border-black">
+      <div className=" max-h-fit rounded-xl  shadow-2xl bg-white  border-black overflow-hidden mx-auto">
+        <Image src={image} className=" aspect-square w-full" width={170} height={170} alt="product"/>
       </div>
       {collectionString == "Products" ? (<Link href="/product/[id]" as={`/product/${id}`}>
-        <div className="info p-2">
+        <div className="info p-2 ">
           <h2 className="text-base font-semibold ">{name}</h2>
           <h3 className="text-sm">₦{formatNumberWithCommas(price)}</h3>
         </div>

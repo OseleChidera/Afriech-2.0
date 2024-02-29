@@ -22,10 +22,10 @@ export default function LogoutModal() {
       try {
         await auth.signOut();
         localStorage.removeItem('afriTechUserID');
-        toast.success("logout successful");
+        // toast.success("logout successful", { autoClose: 300});
         closeModal();
-        toast.success("You can choose to sign in again");
-        router.push("/signin");
+        toast.success("You can choose to sign in again", { autoClose: 300, onOpen: () => router.push("/signin")});
+        
       } catch (error) {
         console.error('Error during logout:', error.message);
       }

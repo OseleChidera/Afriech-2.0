@@ -4,7 +4,6 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 import UserProfile from '@/components/user/UserProfile'
 import Setting from '@/components/user/Setting'
-import { redirectTo } from '@/utils/ServerFn'
 import help from '../../../../public/icons/help-1.svg'
 import security from '../../../../public/icons/security-1.svg'
 import legal from '../../../../public/icons/legal-1.svg'
@@ -14,7 +13,6 @@ import Modal from '@/components/user/Modal'
 import { useSelector, useDispatch } from "react-redux";
 
 export default function page() {
-  // const [showModal, setShowModal] = useState(false)
   
   const settingOptions = [
     {

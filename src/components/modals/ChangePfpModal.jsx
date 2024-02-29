@@ -61,7 +61,7 @@ export default function ChangePfpModal() {
     return (
         <div className='w-screen h-full bg-[#695acd74] fixed top-0 left-0 pointer-events-auto z-[100] flex justify-center items-center'>
             <div id='modal-img' className="h-fit w-4/5 max-w-[90%] mx-auto  border bg-[rgb(105,90,205)] text-white p-6 rounded-xl flex flex-col items-center gap-3 ">
-                <div className="w-[90%] border border-black flex flex-col gap-4">
+                <div className="w-[90%]  flex flex-col gap-4">
                     {/* Input field for selecting profile picture */}
                     <input
                         type="file"
@@ -77,7 +77,7 @@ export default function ChangePfpModal() {
                     {/* Display selected profile picture */}
                     {newProfilePicture && (
                         <div className="w-fit h-fit border border-black mx-auto">
-                            <Image src={URL.createObjectURL(newProfilePicture)} className='object-cover' width={100} height={100} loading='lazy' objectFit='cover' alt='profile picture '/>
+                            <Image src={URL.createObjectURL(newProfilePicture)} className='w-auto h-auto' width={100} height={100} alt='profile picture ' priority/>
                         </div>
                     )}
                 </div>
